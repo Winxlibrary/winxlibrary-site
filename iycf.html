@@ -1,105 +1,441 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>IYCF Analyse</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IYCF Analyse</title>
 
-<style>
-body {
-  font-family: Arial;
-  background: #f4f6f8;
-}
+  <style>
+    :root{
+      --bg:#f4f6f8;
+      --nav:#2c3e50;
+      --primary:#3498db;
+      --primary-dark:#2f86c3;
+      --text:#1f2d3d;
+      --muted:#6b7785;
+      --card:#ffffff;
+      --shadow:0 2px 10px rgba(0,0,0,0.08);
+      --radius:14px;
+    }
 
-.nav {
-  background: #2c3e50;
-  padding: 10px;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
 
-.nav a {
-  color: white;
-  margin: 10px;
-  text-decoration: none;
-  font-weight: bold;
-}
+    .nav {
+      background: var(--nav);
+      padding: 12px 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .nav a {
+      color: #fff;
+      margin: 8px 12px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .nav a:hover { text-decoration: underline; }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
-}
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 40px;
+    }
 
-.card {
-  background: white;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 6px 18px;
+    }
+    .hero img { height: 62px; }
+    .hero h1 {
+      font-size: 30px;
+      margin: 0;
+    }
+    .hero .subtitle{
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
 
-.button {
-  display: inline-block;
-  padding: 10px 15px;
-  background: #3498db;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .grid { grid-template-columns: 1fr; }
+    }
 
-.logo-section {
-  text-align: center;
-  margin-bottom: 20px;
-}
-</style>
+    .card {
+      background: var(--card);
+      padding: 18px 18px;
+      margin-bottom: 14px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2{
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+    .card h4{
+      margin: 14px 0 6px;
+      color: var(--nav);
+      font-size: 15px;
+    }
+    .card p{
+      margin: 8px 0;
+      color: var(--text);
+    }
+    .card ul{
+      margin: 8px 0 0 20px;
+    }
+    .muted { color: var(--muted); }
+
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .pill{
+      background:#eef5fb;
+      color:#1b5f8f;
+      border:1px solid #d7eaf8;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:13px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+      align-items:center;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 14px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(52,152,219,0.25);
+    }
+    .button:hover { background: var(--primary-dark); }
+    .button.secondary{
+      background: #e9eef3;
+      color: #223;
+      box-shadow: none;
+      font-weight: 700;
+    }
+    .button.secondary:hover{ background:#dde6ee; }
+
+    .version-box{
+      background:#fbfbfc;
+      border:1px solid #e7eaee;
+      padding:12px 12px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+    .version-line{
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 14px;
+      padding: 3px 0;
+    }
+    .badge{
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #dbe7f3;
+      background: #eef5fb;
+      color: #1b5f8f;
+      white-space: nowrap;
+    }
+    .badge.warn{
+      background:#fff4e5;
+      border-color:#ffe0b2;
+      color:#8a5a00;
+    }
+    .badge.ok{
+      background:#eaf7ee;
+      border-color:#c7ebd2;
+      color:#1f6b37;
+    }
+
+    .footer{
+      text-align:center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 18px 0 0;
+    }
+  </style>
 </head>
 
 <body>
-
-<!-- ✅ Navigation -->
-<div class="nav">
-  <a href="index.html">Home</a>
-  <a href="downloads.html">Downloads</a>
-  <a href="support.html">Support</a>
-  <a href="about.html">About</a>
-</div>
-
-<div class="container">
-
-  <!-- ✅ Logo + Title -->
-<div style="display:flex; align-items:center; gap:15px;">
-  <img src="iycf-logo.png" style="height:60px;">
-  <h1>IYCF Analyse 🍼</h1>
-</div>
-
-  <!-- ✅ Download Card -->
-  <div class="card">
-    <strong>Version:</strong> v1.1.1<br><br>
-    Go to Downloads to get the  Latest Version
-    </a>
+  <!-- ✅ Navigation -->
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="downloads.html">Downloads</a>
+    <a href="support.html">Support</a>
+    <a href="about.html">About</a>
   </div>
 
-  <!-- ✅ Overview -->
-  <div class="card">
-    <h2>Overview</h2>
-    <p>
-      Desktop tool for analysing IYCF survey data with validation,
-      indicators, and reporting. The IYCF Analyse Application is a desktop tool designed to import, validate, and analyse Infant and Young Child Feeding (IYCF) survey data. It supports logic aware validation, unweighted and weighted indicator computation, and professional-quality outputs aligned with WHO, UNICEF, DHS, and SMART methodologies.
-      This release focuses on data quality assurance, robust indicator computation, and clear reporting workflows for field teams and analysts.
-    </p>
+  <div class="container">
+    <!-- ✅ Hero -->
+    <div class="hero">
+      <img src="iycf-logo.png" alt="IYCF Analyse Logo" />
+      <div>
+        <h1>IYCF Analyse 🍼</h1>
+        <div class="subtitle">Desktop tool for IYCF survey data validation, indicator computation, and reporting.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT COLUMN -->
+      <div>
+        <!-- ✅ Overview -->
+        <div class="card">
+          <h2>Overview</h2>
+          <p>
+            Desktop tool for analysing IYCF survey data with validation,
+            indicators, and reporting. The IYCF Analyse Application is a desktop tool designed to import,
+            validate, and analyse Infant and Young Child Feeding (IYCF) survey data.
+            It supports logic-aware validation, unweighted and weighted indicator computation,
+            and outputs aligned with WHO, UNICEF, DHS, and SMART methodologies.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Excel Import</span>
+            <span class="pill">Logic-aware Validation</span>
+            <span class="pill">Weighted/Unweighted Indicators</span>
+            <span class="pill">Exportable Reports</span>
+          </div>
+        </div>
+
+        <!-- ✅ Purpose (from doc) -->
+        <div class="card">
+          <h2>Purpose</h2>
+          <p>
+            The IYCF Analyse Application is a desktop-based tool designed to support the import,
+            validation, analysis, and reporting of Infant and Young Child Feeding (IYCF) survey data.
+          </p>
+          <p>This helps ensure collected data is:</p>
+          <ul>
+            <li>Structurally correct</li>
+            <li>Logically consistent</li>
+            <li>Analytically valid</li>
+            <li>Ready for reporting and decision making</li>
+          </ul>
+          <p class="muted">
+            Built around standard IYCF concepts and computation logic aligned with WHO, UNICEF, DHS, and SMART practices.
+          </p>
+        </div>
+
+        <!-- ✅ How It Works (from doc) -->
+        <div class="card">
+          <h2>How It Works</h2>
+
+          <h4>1. Data Import</h4>
+          <ul>
+            <li>Imports IYCF data from an Excel file using a predefined template</li>
+            <li>Requires a sheet named “IYCF”</li>
+            <li>Ensures required columns (including Weight and Strata) are present</li>
+          </ul>
+
+          <h4>2. Data Validation</h4>
+          <ul>
+            <li>Logic-aware validation (skip logic respected)</li>
+            <li>Errors → rows excluded from analysis</li>
+            <li>Warnings → rows included, but flagged for review</li>
+            <li>Default values safely applied where appropriate (e.g., missing weights default to 1)</li>
+          </ul>
+
+          <h4>3. Indicator Computation</h4>
+          <ul>
+            <li>Calculates key IYCF indicators by appropriate age groups</li>
+            <li>Supports both unweighted and weighted, survey-design-aware analysis</li>
+            <li>Automatically excludes non-applicable cases from denominators</li>
+          </ul>
+
+          <h4>4. Data Review</h4>
+          <ul>
+            <li>Spreadsheet-style review of imported records</li>
+            <li>Filter records by: All, Warnings, Invalid</li>
+            <li>Search by ID, cluster, age, warnings, or errors</li>
+          </ul>
+
+          <h4>5. Reporting and Export</h4>
+          <ul>
+            <li>Export a full analysed Excel report with tables and confidence intervals</li>
+            <li>Dashboard-ready CSV outputs</li>
+            <li>Data Issues Excel file with summary + detailed errors/warnings</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div>
+        <!-- ✅ Download + Version Tracking -->
+        <div class="card">
+          <h2>Download</h2>
+          <p class="muted">Get the latest release of IYCF Analyse.</p>
+
+          <div class="actions">
+            <a id="downloadBtn" class="button" href="#" download>
+              ⬇️ Download Latest
+            </a>
+            <a class="button secondary" href="downloads.html">
+              View Downloads
+            </a>
+          </div>
+
+          <div class="version-box" aria-live="polite">
+            <div class="version-line">
+              <span>Current version</span>
+              <span><strong id="currentVersion">v1.1.1</strong></span>
+            </div>
+            <div class="version-line">
+              <span>Latest version</span>
+              <span>
+                <strong id="latestVersion">Checking…</strong>
+                <span id="statusBadge" class="badge">status</span>
+              </span>
+            </div>
+            <div class="version-line">
+              <span>Release notes</span>
+              <span><a id="releaseNotes" href="downloads.html">View</a></span>
+            </div>
+          </div>
+
+          <p class="muted" style="margin-top:10px">
+            Tip: Host a <strong>version.json</strong> next to this page so the site can auto-detect updates.
+          </p>
+        </div>
+
+        <!-- ✅ Key Features -->
+        <div class="card">
+          <h2>Key Features</h2>
+          <ul>
+            <li>Excel import &amp; validation</li>
+            <li>Indicator computation</li>
+            <li>Weighted analysis</li>
+            <li>Error &amp; warning detection</li>
+            <li>Export reports</li>
+          </ul>
+        </div>
+
+        <!-- ✅ Quick Help -->
+        <div class="card">
+          <h2>Quick Help</h2>
+          <p class="muted" style="margin:0 0 10px;">
+            Need assistance using the tool or fixing import errors?
+          </p>
+          <a class="button secondary" href="support.html">Go to Support</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © IYCF Analyse — Built for nutrition analysts and program teams.
+    </div>
   </div>
 
-  <!-- ✅ Features -->
-  <div class="card">
-    <h2>Key Features</h2>
-    <ul>
-      <li>Excel import & validation</li>
-      <li>Indicator computation</li>
-      <li>Weighted analysis</li>
-      <li>Error & warning detection</li>
-      <li>Export reports</li>
-    </ul>
-  </div>
+  <!-- ✅ Version tracking script -->
+  <script>
+    /**
+     * VERSION TRACKING SETUP
+     * 1) Update CURRENT_VERSION when you release a new build.
+     * 2) Update DEFAULT_DOWNLOAD_URL to your actual installer/zip path.
+     * 3) Optional: Host "version.json" with:
+     *    { "latestVersion":"v1.1.2", "downloadUrl":"downloads/IYCF_Analyse_v1.1.2.zip", "releaseNotesUrl":"downloads.html" }
+     */
 
-</div>
+    const CURRENT_VERSION = "v1.1.1";
 
+    // ✅ Set this to the real file path you want users to download:
+    const DEFAULT_DOWNLOAD_URL = "downloads/IYCF_Analyse_v1.1.1.zip";
+
+    // ✅ Optional JSON endpoint (same folder as iycf.html unless you change it)
+    const VERSION_JSON_URL = "version.json";
+
+    const currentVersionEl = document.getElementById("currentVersion");
+    const latestVersionEl = document.getElementById("latestVersion");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const releaseNotesEl = document.getElementById("releaseNotes");
+    const badge = document.getElementById("statusBadge");
+
+    function setBadge(text, type){
+      badge.textContent = text;
+      badge.className = "badge " + (type || "");
+    }
+
+    function compareVersions(a, b){
+      // Basic semver-ish compare: "v1.2.10" vs "v1.2.3"
+      // Returns: 1 if a>b, -1 if a<b, 0 if equal
+      const pa = (a || "").replace(/^v/i,"").split(".").map(n => parseInt(n,10) || 0);
+      const pb = (b || "").replace(/^v/i,"").split(".").map(n => parseInt(n,10) || 0);
+      const len = Math.max(pa.length, pb.length);
+      for(let i=0;i<len;i++){
+        const da = pa[i] || 0, db = pb[i] || 0;
+        if(da > db) return 1;
+        if(da < db) return -1;
+      }
+      return 0;
+    }
+
+    async function initVersionTracking(){
+      currentVersionEl.textContent = CURRENT_VERSION;
+
+      // default download
+      downloadBtn.href = DEFAULT_DOWNLOAD_URL;
+
+      // Attempt to fetch latest version info
+      try {
+        const res = await fetch(VERSION_JSON_URL, { cache: "no-store" });
+        if(!res.ok) throw new Error("No version.json found");
+
+        const data = await res.json();
+
+        const latest = data.latestVersion || CURRENT_VERSION;
+        const dl = data.downloadUrl || DEFAULT_DOWNLOAD_URL;
+        const notes = data.releaseNotesUrl || "downloads.html";
+
+        latestVersionEl.textContent = latest;
+        downloadBtn.href = dl;
+        releaseNotesEl.href = notes;
+
+        const cmp = compareVersions(latest, CURRENT_VERSION);
+        if(cmp > 0){
+          setBadge("Update available", "warn");
+        } else {
+          setBadge("Up to date", "ok");
+        }
+      } catch (e){
+        // fallback if no version.json
+        latestVersionEl.textContent = CURRENT_VERSION;
+        setBadge("Up to date", "ok");
+      }
+    }
+
+    initVersionTracking();
+  </script>
 </body>
 </html>
