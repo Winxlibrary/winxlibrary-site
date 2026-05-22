@@ -328,7 +328,7 @@
         
         <div class="btnRow">
           <button class="button secondary" type="button" onclick="wizGo(5)">Back</button>
-          <button class="button" type="but   ton" onclick="wizGo(7)">Next</button>
+          <button class="button" type="button" onclick="wizGo(7)">Next</button>
         </div>
       </div>
 
@@ -844,15 +844,96 @@ function shouldShowAppetite(muac, oedema, z) {
   return muacLt115 || oedemaPlus12 || samByZ;
 }
 
+// ---------- FIX 1: admissionDecision must match your oedema values ----------
+function admissionDecision(whzZ, mu, oedema){
+  const hasOedema = (oedema === "plus1" || oedema === "plus2" || oedema === "plus3");
+  if (oedema === "plus3") return { label: "ADMIT: INPATIENT (SAM - OEDEMA +++)", cls: "bg-red" };
+  if (hasOedema) return { label: "ADMIT: INPATIENT (SAM - OEDEMA)", cls: "bg-red" };
+
+  if ((isFinite(whzZ) && whzZ < -3) || (isFinite(mu) && mu < 11.5))
+    return { label: "ADMIT: INPATIENT (SAM)", cls: "bg-red" };
+
+  if ((isFinite(whzZ) && whzZ < -2) || (isFinite(mu) && mu < 12.5))
+    return { label: "OUTPATIENT CARE (OTC)", cls: "bg-yellow" };
+
+  return { label: "NORMAL", cls: "bg-green" };
+}
+
+// ---------- FIX 2: wizReset uses correct element IDs + correct oedema default ----------
+function wizReset(){
+  document.getElementById("wizSex").value = "boy";
+  document.getElementById("wizAge").value = "";
+  document.getElementById("wizWeight").value = "";
+  document.getElementById("wizHeight").value = "";
+  document.getElementById("wizMuac").value = "";
+
+  // Your HTML uses id="wOedema" (NOT wizOedema) and values are none/plus1/plus2/plus3
+  const oed = document.getElementById("wOedema");
+  if (oed) oed.value = "none";
+
+  const out = document.getElementById("wizResult");
+  if (out) out.innerHTML = "<span class='loading'>Click “Calculate” to generate results…</span>";
+
+  window.__lastWizard = null;
+  wizGo(1);
+}
+
+// ---------- FIX 3: shouldShowAppetite stays OK (but keep it exactly once) ----------
+function shouldShowAppetite(muac, oedema, z) {
+  if (oedema === "plus3") return false;            // oedema +++ → appetite NOT required
+
+  const muacLt115 = muac > 0 && muac < 11.5;
+  const oedemaPlus12 = (oedema === "plus1" || oedema === "plus2");
+  const samByZ = (z !== null && z < -3);
+
+  return muacLt115 || oedemaPlus12 || samByZ;      // show appetite only in SAM pathway
+}
+
+// ---------- FIX 4: calculateWizard fully closed and safe ----------
 function calculateWizard() {
   try {
-    console.log("Result not found");    console.log("✅ Wizard running");
+    const out = document.getElementById("wizResult");
+    if (!out) return;
+
+    if (!DATA_READY) {
+      out.innerHTML = "<span class='loading'>Reference data still loading…</span>";
       return;
     }
 
-    const out = document.getElementById("wizResult");
-    if (!out) {
+    const sex = document.getElementById("wizSex").value;
+    const age = parseFloat(document.getElementById("wizAge").value);
+    const w   = parseFloat(document.getElementById("wizWeight").value);
+    const h   = parseFloat(document.getElementById("wizHeight").value);
+    const mu  = parseFloat(document.getElementById("wizMuac").value);
+    const oedema = document.getElementById("wOedema").value;
 
+    if (isNaN(age) || isNaN(w) || isNaN(h)) { out.innerHTML = "Fill Age, Weight, Height"; return; }
+    if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
+
+    // WHZ z-score from last WHZ calc (optional)
+    const z = window.__lastWHZ ? window.__lastWHZ.z : null;
+
+    // Appetite visibility control
+    const appetiteBox = document.getElementById("wAppetite");
+    const appetiteHint = document.getElementById("wAppetiteHint");
+    if (appetiteBox && appetiteHint) {
+      const show = shouldShowAppetite(mu, oedema, z);
+      appetiteBox.style.display = show ? "block" : "none";
+      appetiteHint.style.display = "block";
+      appetiteHint.textContent = show
+        ? "Appetite test is REQUIRED (SAM assessment)."
+        : (oedema === "plus3" ? "Appetite test NOT required for oedema +++." : "Appetite test not required.");
+    }
+
+    const model = computeWizardModel(sex, age, w, h, mu, oedema);
+    window.__lastWizard = model;
+    renderWizard(model);
+
+  } catch (err) {
+    console.error(err);
+    alert("Wizard error: " + err.message);
+  }
+}
 
 
 function printWizard(){
