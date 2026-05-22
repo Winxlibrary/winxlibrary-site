@@ -845,54 +845,56 @@ function shouldShowAppetite(muac, oedema, z) {
 }
 
 function calculateWizard() {
-  const out = document.get if (!out) return;  const out = document.getElementById("wizResult");
+  alert("✅ Button is working!");
 
-  if (!DATA_READY){
-    out.innerHTML = "<span class='loading'>Reference data still loading…</span>";
+  const out = document.getElementById("wizResult");
+
+  if (!out) {
+    alert("❌ wizResult not found");
     return;
   }
 
-  const sex = document.getElementById("wizSex").value;
-  const age = parseFloat(document.getElementById("wizAge").value);
-  const w = parseFloat(document.getElementById("wizWeight").value);
-  const h = parseFloat(document.getElementById("wizHeight").value);
-  const mu = parseFloat(document.getElementById("wizMuac").value);
-  const oedema = document.getElementById("wOedema").value;
+  out.innerHTML = "✅ Calculation triggered successfully!";
+}
 
-  // ✅ FIX: define z BEFORE use
-  const z = window.__lastWHZ ? window.__lastWHZ.z : null;
+    const sex = document.getElementById("wizSex")?.value;
+    const age = parseFloat(document.getElementById("wizAge")?.value);
+    const w = parseFloat(document.getElementById("wizWeight")?.value);
+    const h = parseFloat(document.getElementById("wizHeight")?.value);
+    const mu = parseFloat(document.getElementById("wizMuac")?.value);
+    const oedema = document.getElementById("wOedema")?.value;
 
-  // ✅ CONTROL APPETITE VISIBILITY
-  const appetiteBox = document.getElementById("wAppetite");
-  const appetiteHint = document.getElementById("wAppetiteHint");
+    const z = window.__lastWHZ ? window.__lastWHZ.z : null;
 
-  if (appetiteBox && appetiteHint) {
-    if (shouldShowAppetite(mu, oedema, z)) {
-      appetiteBox.style.display = "block";
-      appetiteHint.textContent = "Appetite test is REQUIRED (SAM assessment).";
-    } else {
-      appetiteBox.style.display = "none";
-      appetiteHint.textContent =
-        oedema === "plus3"
-          ? "Appetite test NOT required for oedema +++."
-          : "Appetite test not required.";
+    if (isNaN(age) || isNaN(w) || isNaN(h)) {
+      out.innerHTML = "Fill Age, Weight, Height";
+      return;
     }
+
+    if (age < 0 || age > 59) {
+      out.innerHTML = "0–59 months only";
+      return;
+    }
+
+    if (typeof computeWizardModel !== "function") {
+      out.innerHTML = "System error";
+      console.error("❌ Missing computeWizardModel");
+      return;
+    }
+
+    const model = computeWizardModel(sex, age, w, h, mu, oedema);
+    window.__lastWizard = model;
+
+    if (typeof renderWizard === "function") {
+      renderWizard(model);
+    } else {
+      console.error("❌ renderWizard missing");
+    }
+
+  } catch (err) {
+    console.error("🔥 ERROR:", err);
+    alert("Error: " + err.message);
   }
-
-  if (isNaN(age) || isNaN(w) || isNaN(h)) {
-    out.innerHTML = "Fill Age, Weight, Height";
-    return;
-  }
-
-  if (age < 0 || age > 59) {
-    out.innerHTML = "0–59 months only";
-    return;
-  }
-
-  const model = computeWizardModel(sex, age, w, h, mu, oedema);
-  window.__lastWizard = model;
-
-  renderWizard(model);
 }
 
 
