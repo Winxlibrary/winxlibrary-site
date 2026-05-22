@@ -101,14 +101,14 @@
 </head>
 
 <body>
-<div class="topbar">
-  <div class="nav">
-    <a href="index.html">Home</a>
-    <a href="downloads.html">Downloads</a>
-    <a href="support.html">Support</a>
-    <a href="about.html">About</a>
+  <div class="topbar">
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="support.html">Support</a>
+      <a href="about.html">About</a>
+    </div>
   </div>
-</div>
 
   <div class="container">
     <h2>Nutrition Assessment Tools</h2>
@@ -140,6 +140,7 @@
     </div>
 
     <!-- ✅ MANUAL Z-SCORE TOOL (0–59 months) -->
+    <!-- NOTE: MUAC intentionally removed from this manual card -->
     <div class="card">
       <h3>Child Z-Score (Manual) (0–59 months)</h3>
 
@@ -158,7 +159,7 @@
       <label>Height/Length (cm)</label>
       <input id="mHeight" type="number" step="0.1" />
 
-          <div class="btnRow">
+      <div class="btnRow">
         <button class="button" onclick="calcAndRenderManual()">Calculate</button>
         <button class="button secondary" onclick="printFromManual()">Print Report</button>
       </div>
@@ -239,19 +240,19 @@
       <!-- STEP 7 RESULT -->
       <div id="w7" class="stepBox" style="display:none;">
         <h4>Step 7: Result</h4>
-
         <div class="btnRow">
           <button class="button" onclick="runWizard()">Calculate</button>
           <button class="button secondary" onclick="printFromWizard()">Print Report</button>
           <button class="button secondary" onclick="wizReset()">Restart</button>
         </div>
-
         <div id="wRes" class="result"><span class="loading">Click “Calculate” to generate results…</span></div>
       </div>
     </div>
   </div>
 
   <script>
+    "use strict";
+
     // =========================================================
     // LOAD REFERENCE FILES
     // =========================================================
@@ -289,8 +290,8 @@
 
     function calculateBMI() {
       const sex = document.getElementById("bmiSex").value;
-      const y = parseInt(document.getElementById("ageYears").value);
-      const m = parseInt(document.getElementById("ageMonths").value) || 0;
+      const y = parseInt(document.getElementById("ageYears").value, 10);
+      const m = parseInt(document.getElementById("ageMonths").value, 10) || 0;
       const w = parseFloat(document.getElementById("bmiWeight").value);
       const h = parseFloat(document.getElementById("bmiHeight").value);
 
@@ -309,12 +310,14 @@
 
       const bmi = w / ((h / 100) * (h / 100));
       const ref = (sex === "boy") ? boysData[age] : girlsData[age];
+
       if (!ref) {
         out.innerHTML = "No reference for this age";
         return;
       }
 
       const z = computeZ_BMI(bmi, ref);
+
       let cat = "";
       if (z < -3) cat = "Severe Thinness";
       else if (z < -2) cat = "Thinness";
@@ -335,10 +338,12 @@
       if (L === 0) return Math.log(value / M) / S;
       return (Math.pow(value / M, L) - 1) / (L * S);
     }
+
     function lerp(a, b, t) { return a + (b - a) * t; }
 
     function interpLMS(table, x, keyName) {
       if (!table || table.length === 0 || !isFinite(x)) return null;
+
       const t = table.slice().sort((a, b) => (a[keyName] ?? 0) - (b[keyName] ?? 0));
 
       if (x <= t[0][keyName]) return { L: t[0].L, M: t[0].M, S: t[0].S };
@@ -349,6 +354,7 @@
 
       let i = 1;
       while (i < t.length && t[i][keyName] < x) i++;
+
       const a = t[i - 1], b = t[i];
       const ax = a[keyName], bx = b[keyName];
       const ratio = (x - ax) / (bx - ax);
@@ -387,15 +393,16 @@
     }
 
     function admissionDecision(zWhz, mu, oedema) {
-      // Oedema overrides
       if (oedema === "yes") return { label: "ADMIT: INPATIENT (SAM - OEDEMA)", cls: "bg-red" };
 
       if ((isFinite(zWhz) && zWhz < -3) || (isFinite(mu) && mu < 11.5)) {
         return { label: "ADMIT: INPATIENT (SAM)", cls: "bg-red" };
       }
+
       if ((isFinite(zWhz) && zWhz < -2) || (isFinite(mu) && mu < 12.5)) {
         return { label: "OUTPATIENT CARE (OTC)", cls: "bg-yellow" };
       }
+
       return { label: "NORMAL", cls: "bg-green" };
     }
 
@@ -403,32 +410,34 @@
     function isBadMuac(mu) { return isFinite(mu) && mu < 12.5; }
 
     // =========================================================
-    // CORE COMPUTE (shared, but outputs are rendered separately)
+    // CORE COMPUTE
     // =========================================================
-    function computeAll(sex, ageMonths, weightKg, heightCm, muacCm, oedema="no") {
+    function computeAll(sex, ageMonths, weightKg, heightCm, muacCm, oedema = "no") {
       const wfl = (sex === "boy") ? wflBoys : wflGirls;
       const wfh = (sex === "boy") ? wfhBoys : wfhGirls;
       const wfa = (sex === "boy") ? wfaBoys : wfaGirls;
       const hfa = (sex === "boy") ? hfaBoys : hfaGirls;
 
       if (!wfl.length || !wfh.length || !wfa.length || !hfa.length) {
-        return { ok:false, error:"Reference data still loading…" };
+        return { ok: false, error: "Reference data still loading…" };
       }
 
       if (!isFinite(ageMonths) || ageMonths < 0 || ageMonths > 59) {
-        return { ok:false, error:"Age must be 0–59 months." };
+        return { ok: false, error: "Age must be 0–59 months." };
       }
+
       if (!isFinite(weightKg) || weightKg <= 0) {
-        return { ok:false, error:"Enter a valid weight (kg)." };
+        return { ok: false, error: "Enter a valid weight (kg)." };
       }
+
       if (!isFinite(heightCm) || heightCm <= 0) {
-        return { ok:false, error:"Enter a valid height/length (cm)." };
+        return { ok: false, error: "Enter a valid height/length (cm)." };
       }
 
       // WHZ: WFL for 0–24m, WFH for 25–59m
       const whzTable = (ageMonths <= 24) ? wfl : wfh;
       const key = detectLenHeiKey(whzTable);
-      if (!key) return { ok:false, error:"WHZ reference key not found (Length/Height)." };
+      if (!key) return { ok: false, error: "WHZ reference key not found (Length/Height)." };
 
       const whzRef = interpLMS(whzTable, heightCm, key);
       const zWhz = whzRef ? lmsZ(weightKg, whzRef.L, whzRef.M, whzRef.S) : NaN;
@@ -441,13 +450,11 @@
       const hfaRef = interpLMS(hfa, ageMonths, "Age");
       const zHfa = hfaRef ? lmsZ(heightCm, hfaRef.L, hfaRef.M, hfaRef.S) : NaN;
 
-      // Badges
-      const muBadge  = badgeForMuac(muacCm);
+      const muBadge = badgeForMuac(muacCm);
       const whzBadge = badgeForZ(zWhz, "SAM", "MAM");
       const wfaBadge = badgeForZ(zWfa, "Severe Underweight", "Underweight");
       const hfaBadge = badgeForZ(zHfa, "Severe Stunting", "Stunted");
 
-      // Decision (includes oedema override)
       const decision = admissionDecision(zWhz, muacCm, oedema);
 
       return {
@@ -460,22 +467,24 @@
     }
 
     // =========================================================
-    // RENDER (targetId decides where it shows)
+    // RENDER
     // =========================================================
     function renderResult(model, targetId) {
       const out = document.getElementById(targetId);
 
       if (!model || !model.ok) {
-        out.innerHTML = "<span class='loading'>" + (model?.error || "Waiting for input…") + "</span>";
+        out.innerHTML = "<span class='loading'>" + ((model && model.error) ? model.error : "Waiting for input…") + "</span>";
         return;
       }
 
       const { input, z, badges, decision } = model;
 
-      const showWHZ  = isBadZ(z.whz) || input.oedema === "yes"; // show WHZ if oedema too
-      const showWFA  = isBadZ(z.wfa);
-      const showHFA  = isBadZ(z.hfa);
-      const showMUAC = isBadMuac(input.muacCm) && isFinite(input.muacCm);
+      const showWHZ = isBadZ(z.whz) || input.oedema === "yes";
+      const showWFA = isBadZ(z.wfa);
+      const showHFA = isBadZ(z.hfa);
+
+      // MUAC row shown ONLY if MUAC is provided (Wizard) and is abnormal
+      const showMUAC = isFinite(input.muacCm) && isBadMuac(input.muacCm);
 
       let rowsHtml = "";
 
@@ -533,7 +542,7 @@
             <div class="row-sub">Mid-Upper Arm Circumference</div>
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <div><b>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"} cm</b></div>
+            <div><b>${input.muacCm.toFixed(1)} cm</b></div>
             <span class="badge ${badges.muac.cls}">${badges.muac.text}</span>
           </div>
         </div>`;
@@ -551,11 +560,9 @@
 
       out.innerHTML = `
         <div class="rows">${rowsHtml}</div>
-
         <div class="finalBox">
           <div class="finalTitle">Admission Decision</div>
           <span class="badge ${decision.cls}">${decision.label}</span>
-
           <div class="muted" style="margin-top:10px;">
             <b>Below-normal zones:</b><br>
             • <span class="badge bg-red">Z &lt; -3</span> Severe<br>
@@ -566,42 +573,36 @@
     }
 
     // =========================================================
-    // MANUAL actions (separate model)
+    // MANUAL actions (MUAC not used here)
     // =========================================================
-function calcAndRenderManual() {
-  const sex = document.getElementById("mSex").value;
-  const age = parseFloat(document.getElementById("mAge").value);
-  const w   = parseFloat(document.getElementById("mWeight").value);
-  const h   = parseFloat(document.getElementById("mHeight").value);
+    function calcAndRenderManual() {
+      const sex = document.getElementById("mSex").value;
+      const age = parseFloat(document.getElementById("mAge").value);
+      const w = parseFloat(document.getElementById("mWeight").value);
+      const h = parseFloat(document.getElementById("mHeight").value);
 
-  // ✅ NO MUAC in manual → pass NaN
-  const model = computeAll(sex, age, w, h, NaN, "no");
+      // MUAC intentionally not used in manual card
+      const model = computeAll(sex, age, w, h, NaN, "no");
 
-  renderResult(model, "mResult");
-  window.__lastManualModel = model;
-}
-
+      renderResult(model, "mResult");
+      window.__lastManualModel = model;
+    }
 
     function printFromManual() {
-      if (window.__lastManualModel?.ok) printReport(window.__lastManualModel);
+      if (window.__lastManualModel && window.__lastManualModel.ok) printReport(window.__lastManualModel);
     }
 
     // =========================================================
-    // WIZARD navigation + actions (fully independent)
+    // WIZARD navigation + actions
     // =========================================================
-function wizNext(step) {
-  for (let i = 1; i <= 7; i++) {
-    const el = document.getElementById("w" + i);
-    if (el) el.style.display = "none";
-  }
-
-  const next = document.getElementById("w" + step);
-  if (next) {
-    next.style.display = "block";
-  } else {
-    console.error("Step not found:", step);
-  }
-}
+    function wizNext(step) {
+      for (let i = 1; i <= 7; i++) {
+        const el = document.getElementById("w" + i);
+        if (el) el.style.display = "none";
+      }
+      const next = document.getElementById("w" + step);
+      if (next) next.style.display = "block";
+    }
 
     function wizReset() {
       document.getElementById("wSex").value = "boy";
@@ -615,31 +616,39 @@ function wizNext(step) {
       wizNext(1);
     }
 
-function runWizard() {
-  const sex    = document.getElementById("wSex").value;
-  const age    = parseFloat(document.getElementById("wAge").value);
-  const w      = parseFloat(document.getElementById("wWt").value);
-  const h      = parseFloat(document.getElementById("wHt").value);
-  const mu     = parseFloat(document.getElementById("wMuac").value);
-  const oedema = document.getElementById("wOedema").value;
+    function runWizard() {
+      const sex = document.getElementById("wSex").value;
+      const age = parseFloat(document.getElementById("wAge").value);
+      const w = parseFloat(document.getElementById("wWt").value);
+      const h = parseFloat(document.getElementById("wHt").value);
+      const mu = parseFloat(document.getElementById("wMuac").value);
+      const oedema = document.getElementById("wOedema").value;
 
-  const model = computeAll(sex, age, w, h, mu, oedema);
-  renderResult(model, "wRes");
+      const model = computeAll(sex, age, w, h, mu, oedema);
+      renderResult(model, "wRes");
 
-  window.__lastWizardModel = model;
-}
-
+      window.__lastWizardModel = model;
+    }
 
     function printFromWizard() {
-      if (window.__lastWizardModel?.ok) printReport(window.__lastWizardModel);
+      if (window.__lastWizardModel && window.__lastWizardModel.ok) printReport(window.__lastWizardModel);
     }
 
     // =========================================================
-    // PRINT REPORT (works for Manual + Wizard without mixing)
+    // PRINT REPORT
     // =========================================================
     function printReport(model) {
       const { input, z, badges, decision } = model;
       const now = new Date();
+
+      // Only show MUAC in printout if MUAC was provided (Wizard)
+      const muacRow = isFinite(input.muacCm)
+        ? `<tr><td>MUAC</td><td>${input.muacCm.toFixed(1)} cm</td></tr>`
+        : "";
+
+      const muacScoreRow = isFinite(input.muacCm)
+        ? `<tr><td>MUAC</td><td>${input.muacCm.toFixed(1)}</td><td>${badges.muac.text}</td></tr>`
+        : "";
 
       const html = `
       <html>
@@ -672,7 +681,7 @@ function runWizard() {
             <tr><td>Age</td><td>${input.ageMonths} months</td></tr>
             <tr><td>Weight</td><td>${input.weightKg} kg</td></tr>
             <tr><td>Height/Length</td><td>${input.heightCm} cm</td></tr>
-            <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) + " cm" : "N/A"}</td></tr>
+            ${muacRow}
             <tr><td>Oedema</td><td>${input.oedema === "yes" ? "Yes" : "No"}</td></tr>
           </table>
         </div>
@@ -683,7 +692,7 @@ function runWizard() {
             <tr><td>WHZ</td><td>${isFinite(z.whz) ? z.whz.toFixed(2) : "N/A"}</td><td>${badges.whz.text}</td></tr>
             <tr><td>WFA</td><td>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</td><td>${badges.wfa.text}</td></tr>
             <tr><td>HFA</td><td>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</td><td>${badges.hfa.text}</td></tr>
-            <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"}</td><td>${badges.muac.text}</td></tr>
+            ${muacScoreRow}
           </table>
         </div>
 
@@ -708,11 +717,10 @@ function runWizard() {
       w.document.close();
     }
 
-    // Initialize wizard to step 1
-    wizReset();
-window.onload = function () {
-  wizReset();
-};
+    // Initialize wizard safely on load
+    window.onload = function () {
+      wizReset();
+    };
   </script>
 </body>
 </html>
