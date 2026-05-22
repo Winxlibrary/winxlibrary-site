@@ -155,61 +155,71 @@
     </div>
 
     <!-- ✅ WIZARD (INDEPENDENT — DOES NOT TOUCH MANUAL FIELDS) -->
-    <div class="card">
-      <h3>Child Z-Score Wizard (Independent) (0–59 months)</h3>
+<div class="card"><div classChild Assessment Wizard (IMAM)</h3>
 
-      <div id="wizStep1">
-        <h4>Step 1 of 5</h4>
-        <label>Sex</label>
-        <select id="wSex">
-          <option value="boy">Boy</option>
-          <option value="girl">Girl</option>
-        </select>
-        <button class="button" onclick="wizGo(2)">Next</button>
-      </div>
+<!-- STEP 1 -->
+<div id="w1">
+<h4>Step 1: Sex</h4>
+<select id="wSex">
+<option value="boy">Boy</option>
+<option value="girl">Girl</option>
+</select>
+<button onclick="next(2)">Next</button>
+</div>
 
-      <div id="wizStep2" style="display:none;">
-        <h4>Step 2 of 5</h4>
-        <label>Age (months)</label>
-        <input id="wAge" type="number" min="0" max="59" />
-        <div class="btnRow">
-          <button class="button" onclick="wizGo(3)">Next</button>
-          <button class="button secondary" onclick="wizGo(1)">Back</button>
-        </div>
-      </div>
+<!-- STEP 2 -->
+<div id="w2" style="display:none;">
+<h4>Step 2: Age (months)</h4>
+<input id="wAge" type="number">
+<button onclick="next(3)">Next</button>
+<button onclick="next(1)">Back</button>
+</div>
 
-      <div id="wizStep3" style="display:none;">
-        <h4>Step 3 of 5</h4>
-        <label>Weight (kg)</label>
-        <input id="wWeight" type="number" step="0.1" />
-        <div class="btnRow">
-          <button class="button" onclick="wizGo(4)">Next</button>
-          <button class="button secondary" onclick="wizGo(2)">Back</button>
-        </div>
-      </div>
+<!-- STEP 3 -->
+<div id="w3" style="display:none;">
+<h4>Step 3: Weight (kg)</h4>
+<input id="wWt" type="number">
+<button onclick="next(4)">Next</button>
+<button onclick="next(2)">Back</button>
+</div>
 
-      <div id="wizStep4" style="display:none;">
-        <h4>Step 4 of 5</h4>
-        <label>Height/Length (cm)</label>
-        <input id="wHeight" type="number" step="0.1" />
-        <label>MUAC (cm)</label>
-        <input id="wMuac" type="number" step="0.1" placeholder="e.g. 12.0" />
-        <div class="btnRow">
-          <button class="button" onclick="calcAndRenderWizard(); wizGo(5)">Finish</button>
-          <button class="button secondary" onclick="wizGo(3)">Back</button>
-        </div>
-      </div>
+<!-- STEP 4 -->
+<div id="w4" style="display:none;">
+<h4>Step 4: Height/Length (cm)</h4>
+<input id="wHt" type="number">
+<button onclick="next(5)">Next</button>
+<button onclick="next(3)">Back</button>
+</div>
 
-      <div id="wizStep5" style="display:none;">
-        <h4>Results</h4>
-        <div class="btnRow">
-          <button class="button secondary" onclick="wizReset()">New Patient</button>
-          <button class="button" onclick="printFromWizard()">Print Report</button>
-        </div>
-        <div id="wResult" class="result"></div>
-      </div>
-    </div>
-  </div>
+<!-- STEP 5 -->
+<div id="w5" style="display:none;">
+<h4>Step 5: MUAC (cm)</h4>
+<input id="wMuac" type="number">
+<button onclick="next(6)">Next</button>
+<button onclick="next(4)">Back</button>
+</div>
+
+<!-- STEP 6 -->
+<div id="w6" style="display:none;">
+<h4>Step 6: Oedema</h4>
+<select id="wOedema">
+<option value="no">No</option>
+<option value="yes">Yes</option>
+</select>
+<button onclick="next(7)">Next</button>
+<button onclick="next(5)">Back</button>
+</div>
+
+<!-- STEP 7 RESULT -->
+<div id="w7" style="display:none;">
+<h4>Step 7: Result</h4>
+<div id="wRes" class="result"></div>
+<button onclick="runWizard()">Calculate</button>
+<button onclick="next(1)">Restart</button>
+</div>
+
+</div>
+
 
   <script>
     // ================== LOAD FILES ==================
