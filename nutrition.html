@@ -96,6 +96,7 @@ input {
 <div style="display:flex; gap:10px;">
   <input id="ageYears" type="number" placeholder="Years" min="5" max="19">
   <input id="ageMonths" type="number" placeholder="Months" min="0" max="11">
+  <input id="ageMonths" type="number" min="0" max="11">
 </div>
 
   <label>Weight (kg)</label>
@@ -157,7 +158,7 @@ function calculateBMIforAge() {
 
   // ✅ CONVERT AGE
   let age = (years * 12) + months;
-  <input id="ageMonths" type="number" min="0" max="11">
+  
 
   // ✅ VALIDATE RANGE
   if (age < 61 || age > 228) {
