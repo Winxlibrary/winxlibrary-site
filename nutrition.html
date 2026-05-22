@@ -91,8 +91,12 @@ input {
     <option value="girl">Girl</option>
   </select>
 
-  <label>Age (months)</label>
-  <input id="age" type="number">
+<label>Age</label>
+
+<div style="display:flex; gap:10px;">
+  <input id="ageYears" type="number" placeholder="Years" min="5" max="19">
+  <input id="ageMonths" type="number" placeholder="Months" min="0" max="11">
+</div>
 
   <label>Weight (kg)</label>
   <input id="weight">
@@ -133,7 +137,17 @@ fetch('bmi_girls_5_19.json')
 function calculateBMIforAge() {
 
   let sex = document.getElementById("sex").value;
-  let age = parseInt(document.getElementById("age").value);
+  let years = parseInt(document.getElementById("ageYears").value); let months = parseInt(document.getElementById("ageMonths").value) || 0;  if (!years) {   document.getElementById("bmiResult").innerHTML = "Enter age in years.";   return; } 
+  // ✅ convert to months let age = (years * 12) + months;
+  age = Math.round(age);
+  
+// ✅ ✅ PUT VALIDATION RIGHT HERE
+if (age < 61 || age > 228) {
+  document.getElementById("bmiResult").innerHTML =
+    "Age must be between 5 and 19 years.";
+  return;
+}
+
   let w = parseFloat(document.getElementById("weight").value);
   let h = parseFloat(document.getElementById("height").value);
 
