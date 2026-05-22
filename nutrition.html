@@ -187,7 +187,7 @@
       <h3>Child Z-Score Assessment (0–59 months)</h3>
       <div class="muted">
         Enter Sex, Age, Weight, Height/Length once → get WHZ (wasting), WFA (underweight), HFA (stunting).  
-        Color alerts follow IMAM cutoffs: &lt;-3 red, -3..&lt;-2 yellow, -2..+2 green. 【1-3f4689】
+        Color alerts follow IMAM cutoffs: &lt;-3 red, -3..&lt;-2 yellow, -2..+2 green. 
       </div>
 
       <label>Sex</label>
@@ -490,8 +490,12 @@
           "<div class='finalTitle'>Overall Flag</div>" +
           "<span class='badge " + final.cls + "'>" + final.label + "</span>" +
           "<div class='muted' style='margin-top:8px;'>" +
-            "<div class='muted'>" +"<div classCutoffs: < -3 (Red - Severe), -3 to < -2 (Yellow - Moderate), -2 to +2 (Green - Normal)" +
-               "</div>"
+"<div class='muted' style='margin-top:8px;'>" +
+  "<b>Under-nutrition cutoffs (IMAM):</b><br>" +
+  "• <span class='badge bg-red'>Severe</span> : Z &lt; -3<br>" +
+  "• <span class='badge bg-yellow'>Moderate</span> : -3 ≤ Z &lt; -2<br>" +
+  "• <span class='badge bg-green'>Normal</span> : -2 ≤ Z ≤ +2" +
+"</div>"
         "</div>";
     }
   </script>
