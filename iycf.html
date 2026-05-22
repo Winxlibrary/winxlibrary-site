@@ -71,11 +71,19 @@
       font-size: 14px;
     }
 
-   .grid {
+.grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;   /* better proportion */
   gap: 18px;
+  grid-template-columns: 1fr;
 }
+
+/* Only on big screens */
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
     @media (max-width: 860px){
       .grid { grid-template-columns: 1fr; }
     }
