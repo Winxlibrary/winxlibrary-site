@@ -496,7 +496,6 @@ function printBMI(){
       <tr><td>Z-score</td><td>${d.z.toFixed(2)}</td></tr>
       <tr><td>Status</td><td><b>${d.cat}</b></td></tr>
     </table>
-    window.print();
   </body></html>`;
   const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
 }
@@ -553,7 +552,6 @@ function printWHZ(){
       <tr><td>WHZ Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
       <tr><td>Status</td><td><b>${d.status}</b></td></tr>
     </table>
-    window.print();
   </body></html>`;
   const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
 }
@@ -602,7 +600,6 @@ function printWFA(){
       <tr><td>WFA Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
       <tr><td>Status</td><td><b>${d.status}</b></td></tr>
     </table>
-    window.print();
   </body></html>`;
   const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
 }
@@ -651,7 +648,6 @@ function printHFA(){
       <tr><td>HFA Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
       <tr><td>Status</td><td><b>${d.status}</b></td></tr>
     </table>
-    window.print();
   </body></html>`;
   const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
 }
@@ -880,7 +876,6 @@ function printWizard(){
       </div>
     </div>
 
-    window.print();
   </body></html>`;
 
   const w = window.open("", "_blank");
