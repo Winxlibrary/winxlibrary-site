@@ -138,54 +138,42 @@ function calculateBMIforAge() {
 
   let sex = document.getElementById("sex").value;
 
-  // ✅ GET YEARS + MONTHS
   let years = parseInt(document.getElementById("ageYears").value);
   let months = parseInt(document.getElementById("ageMonths").value) || 0;
 
-  let w = parseFloat(document.getElementById("weight").value);
-  let h = parseFloat(document.getElementById("height").value);
+  let weight = parseFloat(document.getElementById("weight").value);
+  let height = parseFloat(document.getElementById("height").value);
 
-  // ✅ DEBUG (you will SEE values now)
-  console.log("Years:", years);
-  console.log("Months:", months);
-
-  // ✅ CHECK AGE ENTERED
+  // ✅ CHECK INPUTS FIRST
   if (isNaN(years)) {
     document.getElementById("bmiResult").innerHTML = "Enter age in years.";
     return;
   }
 
-  // ✅ CONVERT TO MONTHS
-  let age = (years * 12) + months;
-
-  console.log("Total months:", age); // ✅ IMPORTANT DEBUG
-
-  // ✅ VALIDATION
-  if (age < 61 || age > 228) {
-    document.getElementById("bmiResult").innerHTML =
-      "Age must be between 5 and 19 years.";
-    return;
-  }
-
-  // ✅ CHECK OTHER INPUTS
-  if (isNaN(w) || isNaN(h)) {
+  if (isNaN(weight) || isNaN(height)) {
     document.getElementById("bmiResult").innerHTML = "Enter weight and height.";
     return;
   }
 
-  // ✅ BMI CALCULATION
-  let bmi = w / ((h / 100) * (h / 100));
+  // ✅ CONVERT AGE
+  let age = (years * 12) + months;
 
-  console.log("BMI:", bmi);
+  // ✅ VALIDATE RANGE
+  if (age < 61 || age > 228) {
+    document.getElementById("bmiResult").innerHTML =
+      "Age must be between 5 and 19 years.";
+    return;  // ✅ THIS STOPS EVERYTHING
+  }
+
+  // ✅ BMI
+  let bmi = weight / ((height / 100) * (height / 100));
 
   // ✅ GET REFERENCE
   let ref = (sex === "boy") ? boysData[age] : girlsData[age];
 
-  console.log("Reference:", ref);
-
   if (!ref) {
     document.getElementById("bmiResult").innerHTML =
-      "Age not found in reference table.";
+      "Age not in reference table.";
     return;
   }
 
@@ -198,9 +186,9 @@ function calculateBMIforAge() {
   else if (bmi < ref.p2) category = "Overweight";
   else category = "Obese";
 
-  // ✅ SHOW RESULT (WITH AGE DISPLAY)
+  // ✅ OUTPUT
   document.getElementById("bmiResult").innerHTML =
-    "<b>Total Age (months):</b> " + age + "<br>" +   // ✅ NOW VISIBLE
+    "<b>Total Age (months):</b> " + age + "<br>" +
     "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
     "<b>Status:</b> " + category;
 }
