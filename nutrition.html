@@ -595,26 +595,50 @@
     // =========================================================
     // WIZARD navigation + actions
     // =========================================================
-    function wizNext(step) {
-      for (let i = 1; i <= 7; i++) {
-        const el = document.getElementById("w" + i);
-        if (el) el.style.display = "none";
-      }
-      const next = document.getElementById("w" + step);
-      if (next) next.style.display = "block";
-    }
+function wizNext(step) {
+  for (let i = 1; i <= 7; i++) {
+    const el = document.getElementById("w" + i);
+    if (el) el.style.display = "none";
+  }
+  const next = document.getElementById("w" + step);
+  if (next) next.style.display = "block";
+}
 
-    function wizReset() {
-      document.getElementById("wSex").value = "boy";
-      document.getElementById("wAge").value = "";
-      document.getElementById("wWt").value = "";
-      document.getElementById("wHt").value = "";
-      document.getElementById("wMuac").value = "";
-      document.getElementById("wOedema").value = "no";
-      document.getElementById("wRes").innerHTML = "<span class='loading'>Click “Calculate” to generate results…</span>";
-      window.__lastWizardModel = null;
-      wizNext(1);
-    }
+function wizReset() {
+  document.getElementById("wSex").value = "boy";
+  document.getElementById("wAge").value = "";
+  document.getElementById("wWt").value = "";
+  document.getElementById("wHt").value = "";
+  document.getElementById("wMuac").value = "";
+  document.getElementById("wOedema").value = "no";
+
+  document.getElementById("wRes").innerHTML =
+    "<span class='loading'>Click Calculate to generate results…</span>";
+
+  window.__lastWizardModel = null;
+  wizNext(1);
+}
+
+function runWizard() {
+  const sex = document.getElementById("wSex").value;
+  const age = parseFloat(document.getElementById("wAge").value);
+  const w = parseFloat(document.getElementById("wWt").value);
+  const h = parseFloat(document.getElementById("wHt").value);
+  const mu = parseFloat(document.getElementById("wMuac").value);
+  const oedema = document.getElementById("wOedema").value;
+
+  const model = computeAll(sex, age, w, h, mu, oedema);
+  renderResult(model, "wRes");
+
+  window.__lastWizardModel = model;
+}
+
+function printFromWizard() {
+  if (window.__lastWizardModel && window.__lastWizardModel.ok) {
+    printReport(window.__lastWizardModel);
+  }
+}
+
 
     function runWizard() {
       const sex = document.getElementById("wSex").value;
