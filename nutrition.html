@@ -137,34 +137,59 @@ fetch('bmi_girls_5_19.json')
 function calculateBMIforAge() {
 
   let sex = document.getElementById("sex").value;
-  let years = parseInt(document.getElementById("ageYears").value); let months = parseInt(document.getElementById("ageMonths").value) || 0;  if (!years) {   document.getElementById("bmiResult").innerHTML = "Enter age in years.";   return; } 
-  // ✅ convert to months let age = (years * 12) + months;
-  age = Math.round(age);
-  
-// ✅ ✅ PUT VALIDATION RIGHT HERE
-if (age < 61 || age > 228) {
-  document.getElementById("bmiResult").innerHTML =
-    "Age must be between 5 and 19 years.";
-  return;
-}
+
+  // ✅ GET YEARS + MONTHS
+  let years = parseInt(document.getElementById("ageYears").value);
+  let months = parseInt(document.getElementById("ageMonths").value) || 0;
 
   let w = parseFloat(document.getElementById("weight").value);
   let h = parseFloat(document.getElementById("height").value);
 
-  if (!age || !w || !h) {
-    document.getElementById("bmiResult").innerHTML = "Fill all fields.";
+  // ✅ DEBUG (you will SEE values now)
+  console.log("Years:", years);
+  console.log("Months:", months);
+
+  // ✅ CHECK AGE ENTERED
+  if (isNaN(years)) {
+    document.getElementById("bmiResult").innerHTML = "Enter age in years.";
     return;
   }
 
-  let bmi = w / ((h/100)*(h/100));
+  // ✅ CONVERT TO MONTHS
+  let age = (years * 12) + months;
 
+  console.log("Total months:", age); // ✅ IMPORTANT DEBUG
+
+  // ✅ VALIDATION
+  if (age < 61 || age > 228) {
+    document.getElementById("bmiResult").innerHTML =
+      "Age must be between 5 and 19 years.";
+    return;
+  }
+
+  // ✅ CHECK OTHER INPUTS
+  if (isNaN(w) || isNaN(h)) {
+    document.getElementById("bmiResult").innerHTML = "Enter weight and height.";
+    return;
+  }
+
+  // ✅ BMI CALCULATION
+  let bmi = w / ((h / 100) * (h / 100));
+
+  console.log("BMI:", bmi);
+
+  // ✅ GET REFERENCE
   let ref = (sex === "boy") ? boysData[age] : girlsData[age];
 
+  console.log("Reference:", ref);
+
   if (!ref) {
-    document.getElementById("bmiResult").innerHTML = "Age not found.";
+    document.getElementById("bmiResult").innerHTML =
+      "Age not found in reference table.";
     return;
   }
 
+  // ✅ CLASSIFICATION
   let category = "";
 
   if (bmi < ref.m3) category = "Severe Thinness";
@@ -173,7 +198,9 @@ if (age < 61 || age > 228) {
   else if (bmi < ref.p2) category = "Overweight";
   else category = "Obese";
 
+  // ✅ SHOW RESULT (WITH AGE DISPLAY)
   document.getElementById("bmiResult").innerHTML =
+    "<b>Total Age (months):</b> " + age + "<br>" +   // ✅ NOW VISIBLE
     "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
     "<b>Status:</b> " + category;
 }
