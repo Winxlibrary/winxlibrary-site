@@ -78,7 +78,7 @@ input, select {
 
 <h2>Nutrition Assessment Tools</h2>
 
-<!-- ✅ BMI FOR AGE -->
+<!-- ✅ BMI -->
 <div class="card">
 <h3>BMI-for-Age (5–19 years)</h3>
 
@@ -106,9 +106,9 @@ input, select {
 </div>
 
 
-<!-- ✅ UNDER 5 Z-SCORE -->
+<!-- ✅ UNDER 5 WHZ -->
 <div class="card">
-<h3>Weight-for-Length / Height Z-Score (0–59 months)</h3>
+<h3>Weight-for-Length / Height (0–59 months)</h3>
 
 <label>Sex</label>
 <select id="u5Sex">
@@ -130,11 +130,33 @@ input, select {
 <div id="u5Result" class="result"></div>
 </div>
 
+
+<!-- ✅ ✅ WFA (NEW) -->
+<div class="card">
+<h3>Weight-for-Age (0–59 months)</h3>
+
+<label>Sex</label>
+<select id="wfaSex">
+  <option value="boy">Boy</option>
+  <option value="girl">Girl</option>
+</select>
+
+<label>Age (months)</label>
+<input id="wfaAge">
+
+<label>Weight (kg)</label>
+<input id="wfaWeight">
+
+<button class="button" onclick="calculateWFA()">Calculate</button>
+
+<div id="wfaResult" class="result"></div>
+</div>
+
 </div>
 
 <script>
 
-// ================== LOAD FILES ==================
+// ================= LOAD FILES =================
 let boysData = {};
 let girlsData = {};
 
@@ -148,7 +170,13 @@ fetch('wfl_girls_0_2_lms.json').then(r=>r.json()).then(d=>wflGirls=d);
 fetch('wfh_boys_2_5_lms.json').then(r=>r.json()).then(d=>wfhBoys=d);
 fetch('wfh_girls_2_5_lms.json').then(r=>r.json()).then(d=>wfhGirls=d);
 
-// ================== BMI FOR AGE ==================
+// ✅ WFA FILES
+let wfaBoys=[], wfaGirls=[];
+fetch('wfa_boys_0_5_lms.json').then(r=>r.json()).then(d=>wfaBoys=d);
+fetch('wfa_girls_0_5_lms.json').then(r=>r.json()).then(d=>wfaGirls=d);
+
+
+// ================= BMI =================
 function computeZ(bmi, ref) {
   if (bmi <= ref.m3) return -3;
   if (bmi <= ref.m2) return -3 + (bmi-ref.m3)/(ref.m2-ref.m3);
@@ -159,7 +187,7 @@ function computeZ(bmi, ref) {
 
 function calculateBMI(){
 
-  let sex = document.getElementById("sex").value;
+  let sex = sexElement = document.getElementById("sex").value;
   let y = parseInt(ageYears.value);
   let m = parseInt(ageMonths.value)||0;
   let w = parseFloat(weight.value);
@@ -190,7 +218,8 @@ function calculateBMI(){
   "<b>Status:</b> "+cat;
 }
 
-// ================== LMS FUNCTIONS ==================
+
+// ================= LMS =================
 function computeLMS(x, ref){
   if(ref.L===0) return Math.log(x/ref.M)/ref.S;
   return (Math.pow(x/ref.M,ref.L)-1)/(ref.L*ref.S);
@@ -204,7 +233,8 @@ function findClosest(data, h){
   });
 }
 
-// ================== UNDER 5 ==================
+
+// ================= UNDER 5 =================
 function calculateUnder5(){
 
   let sex=u5Sex.value;
@@ -236,6 +266,52 @@ function calculateUnder5(){
   else cat="Overweight";
 
   u5Result.innerHTML=
+  "<b>Z-score:</b> "+z.toFixed(2)+"<br>"+
+  "<b>Status:</b> "+cat;
+}
+
+
+// ================= ✅ WFA =================
+function findClosestWFA(data, ageMonths){
+
+  // ✅ CRITICAL FIX
+  let ageYears = ageMonths / 12;
+
+  return data.reduce((a,b)=>{
+    return Math.abs(b.Age-ageYears) < Math.abs(a.Age-ageYears) ? b : a;
+  });
+}
+
+function calculateWFA(){
+
+  let sex = wfaSex.value;
+  let age = parseFloat(wfaAge.value);
+  let weight = parseFloat(wfaWeight.value);
+
+  if(isNaN(age)||isNaN(weight)){
+    wfaResult.innerHTML="Fill all fields"; return;
+  }
+
+  if(age<0||age>59){
+    wfaResult.innerHTML="0–59 months only"; return;
+  }
+
+  let dataset=(sex==="boy")?wfaBoys:wfaGirls;
+
+  if(dataset.length===0){
+    wfaResult.innerHTML="Data loading..."; return;
+  }
+
+  let ref=findClosestWFA(dataset,age);
+  let z=computeLMS(weight,ref);
+
+  let cat="";
+  if(z<-3)cat="Severe Underweight";
+  else if(z<-2)cat="Underweight";
+  else if(z<=2)cat="Normal";
+  else cat="Possible Overweight";
+
+  wfaResult.innerHTML=
   "<b>Z-score:</b> "+z.toFixed(2)+"<br>"+
   "<b>Status:</b> "+cat;
 }
