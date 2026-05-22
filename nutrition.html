@@ -845,57 +845,13 @@ function shouldShowAppetite(muac, oedema, z) {
 }
 
 function calculateWizard() {
-  alert("✅ Button is working!");
-
-  const out = document.getElementById("wizResult");
-
-  if (!out) {
-    alert("❌ wizResult not found");
-    return;
-  }
-
-  out.innerHTML = "✅ Calculation triggered successfully!";
-}
-
-    const sex = document.getElementById("wizSex")?.value;
-    const age = parseFloat(document.getElementById("wizAge")?.value);
-    const w = parseFloat(document.getElementById("wizWeight")?.value);
-    const h = parseFloat(document.getElementById("wizHeight")?.value);
-    const mu = parseFloat(document.getElementById("wizMuac")?.value);
-    const oedema = document.getElementById("wOedema")?.value;
-
-    const z = window.__lastWHZ ? window.__lastWHZ.z : null;
-
-    if (isNaN(age) || isNaN(w) || isNaN(h)) {
-      out.innerHTML = "Fill Age, Weight, Height";
+  try {
+    console.log("Result not found");    console.log("✅ Wizard running");
       return;
     }
 
-    if (age < 0 || age > 59) {
-      out.innerHTML = "0–59 months only";
-      return;
-    }
-
-    if (typeof computeWizardModel !== "function") {
-      out.innerHTML = "System error";
-      console.error("❌ Missing computeWizardModel");
-      return;
-    }
-
-    const model = computeWizardModel(sex, age, w, h, mu, oedema);
-    window.__lastWizard = model;
-
-    if (typeof renderWizard === "function") {
-      renderWizard(model);
-    } else {
-      console.error("❌ renderWizard missing");
-    }
-
-  } catch (err) {
-    console.error("🔥 ERROR:", err);
-    alert("Error: " + err.message);
-  }
-}
+    const out = document.getElementById("wizResult");
+    if (!out) {
 
 
 
