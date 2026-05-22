@@ -1,87 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Nutrition Assessment - Winxlibrary</title>
-
-<style>
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #f4f6f8;
-}
-
-.topbar {
-  background: #2c3e50;
-  color: white;
-  padding: 15px;
-}
-
-.nav a {
-  color: white;
-  margin: 0 10px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.container {
-  padding: 20px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  margin: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.button {
-  padding: 8px 15px;
-  background: #3498db;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.result {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 6px;
-  background: #eef3f7;
-}
-</style>
-</head>
-
-<body>
-
-<div class="topbar">
-  <div class="nav">
-    <a href="index.html">Home</a>
-    <a href="downloads.html">Downloads</a>
-    <a href="support.html">Support</a>
-    <a href="about.html">About</a>
-  </div>
-</div>
-
-<div class="container">
-
-<h2>Nutrition Assessment Tools</h2>
-<p>Use these tools for quick nutrition screening and calculations.</p>
-
-<!-- ✅ BMI CALCULATOR -->
+<!-- ✅ BMI FOR AGE (5–19y) -->
 <div class="card">
-  <h3>BMI Calculator</h3>
+  <h3>BMI-for-Age (5–19 years)</h3>
+
+  <label>Sex</label>
+  <select id="sex">
+    <option value="boy">Boy</option>
+    <option value="girl">Girl</option>
+  </select>
+
+  <label>Age (months)</label>
+  <input id="age" type="number">
 
   <label>Weight (kg)</label>
   <input id="weight">
@@ -89,47 +17,7 @@ input {
   <label>Height (cm)</label>
   <input id="height">
 
-  <button class="button" onclick="calculateBMI()">Calculate BMI</button>
+  <button class="button" onclick="calculateBMIforAge()">Calculate</button>
 
   <div id="bmiResult" class="result"></div>
 </div>
-
-<!-- ✅ Z-SCORE PLACEHOLDER (Next step) -->
-<div class="card">
-  <h3>Z-Score Calculator (Coming next)</h3>
-  <p>
-    WHZ, WFA, and HFA tools will be added here using WHO reference data.
-  </p>
-</div>
-
-</div>
-
-<script>
-// ✅ BMI CALCULATION
-function calculateBMI() {
-  let w = parseFloat(document.getElementById("weight").value);
-  let h = parseFloat(document.getElementById("height").value);
-
-  if (!w || !h || w <= 0 || h <= 0) {
-    document.getElementById("bmiResult").innerHTML = "Please enter valid values.";
-    return;
-  }
-
-  let heightM = h / 100;
-  let bmi = w / (heightM * heightM);
-
-  let category = "";
-
-  if (bmi < 18.5) category = "Underweight";
-  else if (bmi < 25) category = "Normal";
-  else if (bmi < 30) category = "Overweight";
-  else category = "Obese";
-
-  document.getElementById("bmiResult").innerHTML =
-    "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
-    "<b>Category:</b> " + category;
-}
-</script>
-
-</body>
-</html>
