@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +45,7 @@ body {
   cursor: pointer;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 8px;
   margin-top: 5px;
@@ -77,11 +76,9 @@ input {
 
 <div class="container">
 
-<h2>Nutrition Assessment reference Tools</h2>
+<h2>Nutrition Assessment Reference Tools</h2>
 <p>Use these tools for quick nutrition screening and calculations.</p>
 
-<!-- ✅ BMI CALCULATOR -->
-<!-- ✅ BMI FOR AGE (5–19y) -->
 <div class="card">
   <h3>BMI-for-Age (5–19 years)</h3>
 
@@ -91,12 +88,11 @@ input {
     <option value="girl">Girl</option>
   </select>
 
-<label>Age</label>
-
-<div style="display:flex; gap:10px;">
-  <input id="ageYears" type="number" placeholder="Years" min="5" max="19">
-  <input id="ageMonths" type="number" placeholder="Months" min="0" max="11">
- </div>
+  <label>Age</label>
+  <div style="display:flex; gap:10px;">
+    <input id="ageYears" type="number" placeholder="Years">
+    <input id="ageMonths" type="number" placeholder="Months">
+  </div>
 
   <label>Weight (kg)</label>
   <input id="weight">
@@ -107,14 +103,6 @@ input {
   <button class="button" onclick="calculateBMIforAge()">Calculate</button>
 
   <div id="bmiResult" class="result"></div>
-</div>
-
-<!-- ✅ Z-SCORE PLACEHOLDER (Next step) -->
-<div class="card">
-  <h3>Z-Score Calculator (Coming next)</h3>
-  <p>
-    WHZ, WFA, and HFA tools will be added here using WHO reference data.
-  </p>
 </div>
 
 </div>
@@ -133,7 +121,31 @@ fetch('bmi_girls_5_19.json')
   .then(res => res.json())
   .then(data => girlsData = data);
 
-// ✅ BMI function
+// ✅ Z-score calculation
+function computeZScore(bmi, ref) {
+
+  if (bmi <= ref.m3) return -3;
+
+  if (bmi <= ref.m2) {
+    return -3 + (bmi - ref.m3) / (ref.m2 - ref.m3);
+  }
+
+  if (bmi <= ref.median) {
+    return -2 + (bmi - ref.m2) / (ref.median - ref.m2);
+  }
+
+  if (bmi <= ref.p2) {
+    return (bmi - ref.median) / (ref.p2 - ref.median) * 2;
+  }
+
+  if (bmi <= ref.p3) {
+    return 2 + (bmi - ref.p2) / (ref.p3 - ref.p2);
+  }
+
+  return 3;
+}
+
+// ✅ MAIN FUNCTION
 function calculateBMIforAge() {
 
   let sex = document.getElementById("sex").value;
@@ -144,7 +156,6 @@ function calculateBMIforAge() {
   let weight = parseFloat(document.getElementById("weight").value);
   let height = parseFloat(document.getElementById("height").value);
 
-  // ✅ CHECK INPUTS FIRST
   if (isNaN(years)) {
     document.getElementById("bmiResult").innerHTML = "Enter age in years.";
     return;
@@ -155,30 +166,27 @@ function calculateBMIforAge() {
     return;
   }
 
-  // ✅ CONVERT AGE
   let age = (years * 12) + months;
-  
 
-  // ✅ VALIDATE RANGE
   if (age < 61 || age > 228) {
     document.getElementById("bmiResult").innerHTML =
       "Age must be between 5 and 19 years.";
-    return;  // ✅ THIS STOPS EVERYTHING
+    return;
   }
 
-  // ✅ BMI
   let bmi = weight / ((height / 100) * (height / 100));
 
-  // ✅ GET REFERENCE
   let ref = (sex === "boy") ? boysData[age] : girlsData[age];
 
   if (!ref) {
     document.getElementById("bmiResult").innerHTML =
-      "Age not in reference table.";
+      "Age not found in reference.";
     return;
   }
 
-  // ✅ CLASSIFICATION
+  // ✅ NOW compute Z-score AFTER ref exists
+  let z = computeZScore(bmi, ref);
+
   let category = "";
 
   if (bmi < ref.m3) category = "Severe Thinness";
@@ -186,40 +194,37 @@ function calculateBMIforAge() {
   else if (bmi < ref.p1) category = "Normal";
   else if (bmi < ref.p2) category = "Overweight";
   else category = "Obese";
+
   let advice = "";
 
-if (category.includes("Severe Thinness")) {
-  advice = "Refer urgently for medical assessment and nutritional rehabilitation.";
-}
-else if (category.includes("Thinness")) {
-  advice = "Child is undernourished. Provide nutrition counselling and follow-up.";
-}
-else if (category === "Normal") {
-  advice = "Growth is within normal range. Continue regular monitoring.";
-}
-else if (category.includes("Overweight")) {
-  advice = "Monitor weight. Provide dietary counselling.";
-}
-else if (category.includes("Obese")) {
-  advice = "Risk of obesity. Refer for further evaluation and management.";
-}
+  if (category.includes("Severe")) {
+    advice = "Urgent referral required.";
+  } else if (category.includes("Thinness")) {
+    advice = "Provide nutrition support and follow-up.";
+  } else if (category === "Normal") {
+    advice = "Growth is normal.";
+  } else if (category.includes("Overweight")) {
+    advice = "Monitor diet and growth.";
+  } else {
+    advice = "Refer for further evaluation.";
+  }
 
-  // ✅ OUTPUT
-let color = "#ccc";
+  let color = "#ccc";
 
-// ✅ color coding
-if (category.includes("Severe")) color = "#ff4d4d";       // red
-else if (category.includes("Thinness")) color = "#ffc107"; // yellow
-else if (category === "Normal") color = "#28a745";        // green
-else if (category.includes("Overweight")) color = "#fd7e14"; // orange
-else if (category.includes("Obese")) color = "#dc3545";   // dark red
+  if (category.includes("Severe")) color = "#ff4d4d";
+  else if (category.includes("Thinness")) color = "#ffc107";
+  else if (category === "Normal") color = "#28a745";
+  else if (category.includes("Overweight")) color = "#fd7e14";
+  else if (category.includes("Obese")) color = "#dc3545";
 
-document.getElementById("bmiResult").innerHTML =
-  "<div style='border-left:6px solid " + color + "; padding:10px;'>" +
-  "<b>Age:</b> " + years + "y " + months + "m (" + age + " months)<br>" +
-  "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
-  "<b>Status:</b> <span style='color:" + color + "; font-weight:bold'>" + category + "</span>" + "<br><b>Advice:</b> " + advice
-  "</div>";
+  document.getElementById("bmiResult").innerHTML =
+    "<div style='border-left:6px solid " + color + "; padding:10px;'>" +
+    "<b>Age:</b> " + years + "y " + months + "m (" + age + " months)<br>" +
+    "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
+    "<b>Z-score:</b> " + z.toFixed(2) + "<br>" +
+    "<b>Status:</b> <span style='color:" + color + "; font-weight:bold'>" + category + "</span><br>" +
+    "<b>Advice:</b> " + advice +
+    "</div>";
 }
 
 </script>
