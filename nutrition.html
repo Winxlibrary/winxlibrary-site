@@ -76,155 +76,168 @@ input, select {
 
 <div class="container">
 
-<h2>Nutrition Assessment Reference Tools</h2>
-<p>Use these tools for quick nutrition screening and calculations.</p>
+<h2>Nutrition Assessment Tools</h2>
 
+<!-- ✅ BMI FOR AGE -->
 <div class="card">
-  <h3>BMI-for-Age (5–19 years)</h3>
+<h3>BMI-for-Age (5–19 years)</h3>
 
-  <label>Sex</label>
-  <select id="sex">
-    <option value="boy">Boy</option>
-    <option value="girl">Girl</option>
-  </select>
+<label>Sex</label>
+<select id="sex">
+  <option value="boy">Boy</option>
+  <option value="girl">Girl</option>
+</select>
 
-  <label>Age</label>
-  <div style="display:flex; gap:10px;">
-    <input id="ageYears" type="number" placeholder="Years">
-    <input id="ageMonths" type="number" placeholder="Months">
-  </div>
+<label>Age</label>
+<div style="display:flex; gap:10px;">
+  <input id="ageYears" placeholder="Years">
+  <input id="ageMonths" placeholder="Months">
+</div>
 
-  <label>Weight (kg)</label>
-  <input id="weight">
+<label>Weight (kg)</label>
+<input id="weight">
 
-  <label>Height (cm)</label>
-  <input id="height">
+<label>Height (cm)</label>
+<input id="height">
 
-  <button class="button" onclick="calculateBMIforAge()">Calculate</button>
+<button class="button" onclick="calculateBMI()">Calculate</button>
 
-  <div id="bmiResult" class="result"></div>
+<div id="bmiResult" class="result"></div>
+</div>
+
+
+<!-- ✅ UNDER 5 Z-SCORE -->
+<div class="card">
+<h3>Weight-for-Length / Height Z-Score (0–59 months)</h3>
+
+<label>Sex</label>
+<select id="u5Sex">
+  <option value="boy">Boy</option>
+  <option value="girl">Girl</option>
+</select>
+
+<label>Age (months)</label>
+<input id="u5Age">
+
+<label>Length/Height (cm)</label>
+<input id="u5Height">
+
+<label>Weight (kg)</label>
+<input id="u5Weight">
+
+<button class="button" onclick="calculateUnder5()">Calculate</button>
+
+<div id="u5Result" class="result"></div>
 </div>
 
 </div>
 
 <script>
 
+// ================== LOAD FILES ==================
 let boysData = {};
 let girlsData = {};
 
-// ✅ Load JSON files
-fetch('bmi_boys_5_19.json')
-  .then(res => res.json())
-  .then(data => boysData = data);
+fetch('bmi_boys_5_19.json').then(r=>r.json()).then(d=>boysData=d);
+fetch('bmi_girls_5_19.json').then(r=>r.json()).then(d=>girlsData=d);
 
-fetch('bmi_girls_5_19.json')
-  .then(res => res.json())
-  .then(data => girlsData = data);
+let wflBoys=[], wflGirls=[], wfhBoys=[], wfhGirls=[];
 
-// ✅ Z-score calculation
-function computeZScore(bmi, ref) {
+fetch('wfl_boys_0_2_lms.json').then(r=>r.json()).then(d=>wflBoys=d);
+fetch('wfl_girls_0_2_lms.json').then(r=>r.json()).then(d=>wflGirls=d);
+fetch('wfh_boys_2_5_lms.json').then(r=>r.json()).then(d=>wfhBoys=d);
+fetch('wfh_girls_2_5_lms.json').then(r=>r.json()).then(d=>wfhGirls=d);
 
+// ================== BMI FOR AGE ==================
+function computeZ(bmi, ref) {
   if (bmi <= ref.m3) return -3;
-
-  if (bmi <= ref.m2) {
-    return -3 + (bmi - ref.m3) / (ref.m2 - ref.m3);
-  }
-
-  if (bmi <= ref.median) {
-    return -2 + (bmi - ref.m2) / (ref.median - ref.m2);
-  }
-
-  if (bmi <= ref.p2) {
-    return (bmi - ref.median) / (ref.p2 - ref.median) * 2;
-  }
-
-  if (bmi <= ref.p3) {
-    return 2 + (bmi - ref.p2) / (ref.p3 - ref.p2);
-  }
-
-  return 3;
+  if (bmi <= ref.m2) return -3 + (bmi-ref.m3)/(ref.m2-ref.m3);
+  if (bmi <= ref.median) return -2 + (bmi-ref.m2)/(ref.median-ref.m2);
+  if (bmi <= ref.p2) return (bmi-ref.median)/(ref.p2-ref.median)*2;
+  return 2 + (bmi-ref.p2)/(ref.p3-ref.p2);
 }
 
-// ✅ MAIN FUNCTION
-function calculateBMIforAge() {
+function calculateBMI(){
 
   let sex = document.getElementById("sex").value;
+  let y = parseInt(ageYears.value);
+  let m = parseInt(ageMonths.value)||0;
+  let w = parseFloat(weight.value);
+  let h = parseFloat(height.value);
 
-  let years = parseInt(document.getElementById("ageYears").value);
-  let months = parseInt(document.getElementById("ageMonths").value) || 0;
-
-  let weight = parseFloat(document.getElementById("weight").value);
-  let height = parseFloat(document.getElementById("height").value);
-
-  if (isNaN(years)) {
-    document.getElementById("bmiResult").innerHTML = "Enter age in years.";
-    return;
+  if(isNaN(y)||isNaN(w)||isNaN(h)){
+    bmiResult.innerHTML="Fill all fields"; return;
   }
 
-  if (isNaN(weight) || isNaN(height)) {
-    document.getElementById("bmiResult").innerHTML = "Enter weight and height.";
-    return;
+  let age=(y*12)+m;
+  if(age<61||age>228){bmiResult.innerHTML="5–19 years only"; return;}
+
+  let bmi=w/((h/100)*(h/100));
+  let ref=(sex==="boy")?boysData[age]:girlsData[age];
+  if(!ref){bmiResult.innerHTML="No reference"; return;}
+
+  let z=computeZ(bmi,ref);
+
+  let cat="";
+  if(z<-3)cat="Severe Thinness";
+  else if(z<-2)cat="Thinness";
+  else if(z<=2)cat="Normal";
+  else cat="Overweight/Obese";
+
+  bmiResult.innerHTML=
+  "<b>BMI:</b> "+bmi.toFixed(2)+"<br>"+
+  "<b>Z-score:</b> "+z.toFixed(2)+"<br>"+
+  "<b>Status:</b> "+cat;
+}
+
+// ================== LMS FUNCTIONS ==================
+function computeLMS(x, ref){
+  if(ref.L===0) return Math.log(x/ref.M)/ref.S;
+  return (Math.pow(x/ref.M,ref.L)-1)/(ref.L*ref.S);
+}
+
+function findClosest(data, h){
+  return data.reduce((a,b)=>{
+    let ah=a.Height||a.Length;
+    let bh=b.Height||b.Length;
+    return Math.abs(bh-h)<Math.abs(ah-h)?b:a;
+  });
+}
+
+// ================== UNDER 5 ==================
+function calculateUnder5(){
+
+  let sex=u5Sex.value;
+  let age=parseFloat(u5Age.value);
+  let h=parseFloat(u5Height.value);
+  let w=parseFloat(u5Weight.value);
+
+  if(isNaN(age)||isNaN(h)||isNaN(w)){
+    u5Result.innerHTML="Fill all fields"; return;
   }
 
-  let age = (years * 12) + months;
+  if(age<0||age>59){u5Result.innerHTML="0–59 months only"; return;}
 
-  if (age < 61 || age > 228) {
-    document.getElementById("bmiResult").innerHTML =
-      "Age must be between 5 and 19 years.";
-    return;
+  let dataset;
+
+  if(age<=24){
+    dataset=(sex==="boy")?wflBoys:wflGirls;
+  }else{
+    dataset=(sex==="boy")?wfhBoys:wfhGirls;
   }
 
-  let bmi = weight / ((height / 100) * (height / 100));
+  let ref=findClosest(dataset,h);
+  let z=computeLMS(w,ref);
 
-  let ref = (sex === "boy") ? boysData[age] : girlsData[age];
+  let cat="";
+  if(z<-3)cat="SAM";
+  else if(z<-2)cat="MAM";
+  else if(z<=2)cat="Normal";
+  else cat="Overweight";
 
-  if (!ref) {
-    document.getElementById("bmiResult").innerHTML =
-      "Age not found in reference.";
-    return;
-  }
-
-  // ✅ NOW compute Z-score AFTER ref exists
-  let z = computeZScore(bmi, ref);
-
-  let category = "";
-
-  if (bmi < ref.m3) category = "Severe Thinness";
-  else if (bmi < ref.m2) category = "Thinness";
-  else if (bmi < ref.p1) category = "Normal";
-  else if (bmi < ref.p2) category = "Overweight";
-  else category = "Obese";
-
-  let advice = "";
-
-  if (category.includes("Severe")) {
-    advice = "Urgent referral required.";
-  } else if (category.includes("Thinness")) {
-    advice = "Provide nutrition support and follow-up.";
-  } else if (category === "Normal") {
-    advice = "Growth is normal.";
-  } else if (category.includes("Overweight")) {
-    advice = "Monitor diet and growth.";
-  } else {
-    advice = "Refer for further evaluation.";
-  }
-
-  let color = "#ccc";
-
-  if (category.includes("Severe")) color = "#ff4d4d";
-  else if (category.includes("Thinness")) color = "#ffc107";
-  else if (category === "Normal") color = "#28a745";
-  else if (category.includes("Overweight")) color = "#fd7e14";
-  else if (category.includes("Obese")) color = "#dc3545";
-
-  document.getElementById("bmiResult").innerHTML =
-    "<div style='border-left:6px solid " + color + "; padding:10px;'>" +
-    "<b>Age:</b> " + years + "y " + months + "m (" + age + " months)<br>" +
-    "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
-    "<b>Z-score:</b> " + z.toFixed(2) + "<br>" +
-    "<b>Status:</b> <span style='color:" + color + "; font-weight:bold'>" + category + "</span><br>" +
-    "<b>Advice:</b> " + advice +
-    "</div>";
+  u5Result.innerHTML=
+  "<b>Z-score:</b> "+z.toFixed(2)+"<br>"+
+  "<b>Status:</b> "+cat;
 }
 
 </script>
