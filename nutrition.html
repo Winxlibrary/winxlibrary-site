@@ -157,13 +157,13 @@ function calculateBMIforAge() {
 
   // ✅ CONVERT AGE
   let age = (years * 12) + months;
+  <input id="ageMonths" type="number" min="0" max="11">
 
   // ✅ VALIDATE RANGE
   if (age < 61 || age > 228) {
     document.getElementById("bmiResult").innerHTML =
       "Age must be between 5 and 19 years.";
     return;  // ✅ THIS STOPS EVERYTHING
-    <input id="ageMonths" type="number" min="0" max="11">
   }
 
   // ✅ BMI
