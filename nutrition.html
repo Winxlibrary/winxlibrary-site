@@ -1,64 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF: 20px;  <meta charset="UTF-8" />
-      margin: 15px 0;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nutrition Assessment - Winxlibrary</title>
+
+  <style>
+    body {font-family: Arial, sans-serif; margin:0; background:#f4f6f8;}
+    .topbar {background:#2c3e50; color:#fff; padding:15px;}
+    .nav a {color:#fff; margin:0 10px; text-decoration:none; font-weight:bold;}
+    .container {padding:20px; max-width:980px; margin:0 auto;}
+
+    .card{
+      background:#fff;
+      padding:20px;
+      margin:15px 0;
+      border-radius:12px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
     }
 
-    .button {
-      padding: 10px 16px;
-      background: #3498db;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
+    h2{margin-top:0;}
+    h3{margin:0 0 10px 0;}
+    h4{margin:0 0 10px 0;}
+
+    .button{
+      padding:10px 16px;
+      background:#3498db;
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+    .button.secondary{background:#6c7a89;}
+    .button:disabled{opacity:.55; cursor:not-allowed;}
+
+    input, select{
+      width:100%;
+      padding:10px;
+      margin-top:6px;
+      margin-bottom:12px;
+      border-radius:10px;
+      border:1px solid #cfd6dd;
+      outline:none;
+      box-sizing:border-box;
     }
 
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: 1px solid #cfd6dd;
-      outline: none;
+    .result{
+      margin-top:12px;
+      padding:12px;
+      border-radius:12px;
+      background:#eef3f7;
     }
 
-    .result {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 10px;
-      background: #eef3f7;
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    .rows{display:grid; gap:10px; margin-top:10px;}
+
+    .row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:14px;
+      background:#fff;
+      border:1px solid #e4eaef;
     }
+    .row-left{display:flex; flex-direction:column; gap:3px;}
+    .row-title{font-weight:bold; font-size:14px;}
+    .row-sub{font-size:12px; color:#6b7b8a;}
 
-    .grid2 {display: grid;grid-template-columns: 1fr 1fr;gap: 10px;}
-
-    .rows {display: grid;gap: 10px;margin-top: 10px;}
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: #ffffff;
-      border: 1px solid #e4eaef;
-    }
-
-    .row-left {display:flex;flex-direction:column;gap:3px;}
-    .row-title {font-weight: bold;font-size: 14px;}
-    .row-sub {font-size: 12px;color: #6b7b8a;}
-
-    .badge {
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-weight: bold;
-      font-size: 12px;
-      white-space: nowrap;
-      border: 1px solid transparent;
+    .badge{
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:bold;
+      font-size:12px;
+      white-space:nowrap;
+      border:1px solid transparent;
     }
 
     /* IMAM-style colors */
@@ -68,37 +85,35 @@
     .bg-purple { background:#efe6ff; border-color:#d7c7ff; color:#5b2cc6; }
     .bg-gray   { background:#eef3f7; border-color:#dde6ee; color:#2c3e50; }
 
-    .finalBox {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 1px solid #e4eaef;
-      background: #ffffff;
+    .finalBox{
+      margin-top:12px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid #e4eaef;
+      background:#fff;
     }
-
-    .finalTitle {font-weight: bold;margin-bottom: 6px;}
-    .loading {font-size: 13px;color: #5d6d7e;}
-    .btnRow {display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
-    .button.secondary {background:#6c7a89;}
+    .finalTitle{font-weight:bold; margin-bottom:6px;}
+    .loading{font-size:13px; color:#5d6d7e;}
+    .btnRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .muted{color:#5d6d7e; font-size:13px;}
+    .stepBox{border:1px dashed #d9e2ea; padding:12px; border-radius:12px; background:#fbfdff;}
   </style>
 </head>
 
 <body>
   <div class="topbar">
- 
-<div class="topbar">
-  <div class="nav">
-    <a href="index.html">Home</a>
-    <a href="downloads.html">Downloads</a>
-    <a href="support.html">Support</a>
-    <a href="about.html">About</a>
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="support.html">Support</a>
+      <a href="about.html">About</a>
+    </div>
   </div>
-</div>
 
   <div class="container">
     <h2>Nutrition Assessment Tools</h2>
 
-    <!-- ✅ BMI FOR AGE (KEEP SEPARATE) -->
+    <!-- ✅ BMI FOR AGE (5–19 years) -->
     <div class="card">
       <h3>BMI-for-Age (5–19 years)</h3>
 
@@ -121,10 +136,10 @@
       <input id="bmiHeight" type="number" step="0.1" />
 
       <button class="button" onclick="calculateBMI()">Calculate</button>
-      <div id="bmiResult" class="result"></div>
+      <div id="bmiResult" class="result"><span class="loading">Waiting for input…</span></div>
     </div>
 
-    <!-- ✅ MAIN (MANUAL) Z-SCORE TOOL -->
+    <!-- ✅ MANUAL Z-SCORE TOOL (0–59 months) -->
     <div class="card">
       <h3>Child Z-Score (Manual) (0–59 months)</h3>
 
@@ -154,78 +169,96 @@
       <div id="mResult" class="result"><span class="loading">Waiting for input…</span></div>
     </div>
 
-    <!-- ✅ WIZARD (INDEPENDENT — DOES NOT TOUCH MANUAL FIELDS) -->
-<div class="card"><div classChild Assessment Wizard (IMAM)</h3>
+    <!-- ✅ WIZARD (FULLY INDEPENDENT) -->
+    <div class="card">
+      <h3>Child Assessment Wizard (IMAM)</h3>
+      <div class="muted">Steps: Sex → Age → Weight → Height → MUAC → Oedema → Result</div>
 
-<!-- STEP 1 -->
-<div id="w1">
-<h4>Step 1: Sex</h4>
-<select id="wSex">
-<option value="boy">Boy</option>
-<option value="girl">Girl</option>
-</select>
-<button onclick="next(2)">Next</button>
-</div>
+      <!-- STEP 1 -->
+      <div id="w1" class="stepBox">
+        <h4>Step 1: Sex</h4>
+        <select id="wSex">
+          <option value="boy">Boy</option>
+          <option value="girl">Girl</option>
+        </select>
+        <div class="btnRow">
+          <button class="button" onclick="wizNext(2)">Next</button>
+        </div>
+      </div>
 
-<!-- STEP 2 -->
-<div id="w2" style="display:none;">
-<h4>Step 2: Age (months)</h4>
-<input id="wAge" type="number">
-<button onclick="next(3)">Next</button>
-<button onclick="next(1)">Back</button>
-</div>
+      <!-- STEP 2 -->
+      <div id="w2" class="stepBox" style="display:none;">
+        <h4>Step 2: Age (months)</h4>
+        <input id="wAge" type="number" min="0" max="59" placeholder="0–59" />
+        <div class="btnRow">
+          <button class="button secondary" onclick="wizNext(1)">Back</button>
+          <button class="button" onclick="wizNext(3)">Next</button>
+        </div>
+      </div>
 
-<!-- STEP 3 -->
-<div id="w3" style="display:none;">
-<h4>Step 3: Weight (kg)</h4>
-<input id="wWt" type="number">
-<button onclick="next(4)">Next</button>
-<button onclick="next(2)">Back</button>
-</div>
+      <!-- STEP 3 -->
+      <div id="w3" class="stepBox" style="display:none;">
+        <h4>Step 3: Weight (kg)</h4>
+        <input id="wWt" type="number" step="0.1" placeholder="e.g. 8.5" />
+        <div class="btnRow">
+          <button class="button secondary" onclick="wizNext(2)">Back</button>
+          <button class="button" onclick="wizNext(4)">Next</button>
+        </div>
+      </div>
 
-<!-- STEP 4 -->
-<div id="w4" style="display:none;">
-<h4>Step 4: Height/Length (cm)</h4>
-<input id="wHt" type="number">
-<button onclick="next(5)">Next</button>
-<button onclick="next(3)">Back</button>
-</div>
+      <!-- STEP 4 -->
+      <div id="w4" class="stepBox" style="display:none;">
+        <h4>Step 4: Height/Length (cm)</h4>
+        <input id="wHt" type="number" step="0.1" placeholder="e.g. 72.0" />
+        <div class="btnRow">
+          <button class="button secondary" onclick="wizNext(3)">Back</button>
+          <button class="button" onclick="wizNext(5)">Next</button>
+        </div>
+      </div>
 
-<!-- STEP 5 -->
-<div id="w5" style="display:none;">
-<h4>Step 5: MUAC (cm)</h4>
-<input id="wMuac" type="number">
-<button onclick="next(6)">Next</button>
-<button onclick="next(4)">Back</button>
-</div>
+      <!-- STEP 5 -->
+      <div id="w5" class="stepBox" style="display:none;">
+        <h4>Step 5: MUAC (cm)</h4>
+        <input id="wMuac" type="number" step="0.1" placeholder="e.g. 12.0" />
+        <div class="btnRow">
+          <button class="button secondary" onclick="wizNext(4)">Back</button>
+          <button class="button" onclick="wizNext(6)">Next</button>
+        </div>
+      </div>
 
-<!-- STEP 6 -->
-<div id="w6" style="display:none;">
-<h4>Step 6: Oedema</h4>
-<select id="wOedema">
-<option value="no">No</option>
-<option value="yes">Yes</option>
-</select>
-<button onclick="next(7)">Next</button>
-<button onclick="next(5)">Back</button>
-</div>
+      <!-- STEP 6 -->
+      <div id="w6" class="stepBox" style="display:none;">
+        <h4>Step 6: Oedema</h4>
+        <select id="wOedema">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+        <div class="btnRow">
+          <button class="button secondary" onclick="wizNext(5)">Back</button>
+          <button class="button" onclick="wizNext(7)">Next</button>
+        </div>
+      </div>
 
-<!-- STEP 7 RESULT -->
-<div id="w7" style="display:none;">
-<h4>Step 7: Result</h4>
-<div id="wRes" class="result"></div>
-<button onclick="runWizard()">Calculate</button>
-<button onclick="next(1)">Restart</button>
-</div>
+      <!-- STEP 7 RESULT -->
+      <div id="w7" class="stepBox" style="display:none;">
+        <h4>Step 7: Result</h4>
 
-</div>
+        <div class="btnRow">
+          <button class="button" onclick="runWizard()">Calculate</button>
+          <button class="button secondary" onclick="printFromWizard()">Print Report</button>
+          <button class="button secondary" onclick="wizReset()">Restart</button>
+        </div>
 
+        <div id="wRes" class="result"><span class="loading">Click “Calculate” to generate results…</span></div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    // ================== LOAD FILES ==================
-    let boysData = {};
-    let girlsData = {};
-
+    // =========================================================
+    // LOAD REFERENCE FILES
+    // =========================================================
+    let boysData = {}, girlsData = {};
     fetch('bmi_boys_5_19.json').then(r => r.json()).then(d => boysData = d);
     fetch('bmi_girls_5_19.json').then(r => r.json()).then(d => girlsData = d);
 
@@ -246,7 +279,9 @@
     fetch('hfa_boys_0_5_lms.json').then(r => r.json()).then(d => hfaBoys = d);
     fetch('hfa_girls_0_5_lms.json').then(r => r.json()).then(d => hfaGirls = d);
 
-    // ================== BMI FOR AGE ==================
+    // =========================================================
+    // BMI-for-age helpers
+    // =========================================================
     function computeZ_BMI(bmi, ref) {
       if (bmi <= ref.m3) return -3;
       if (bmi <= ref.m2) return -3 + (bmi - ref.m3) / (ref.m2 - ref.m3);
@@ -262,48 +297,51 @@
       const w = parseFloat(document.getElementById("bmiWeight").value);
       const h = parseFloat(document.getElementById("bmiHeight").value);
 
+      const out = document.getElementById("bmiResult");
+
       if (isNaN(y) || isNaN(w) || isNaN(h)) {
-        document.getElementById("bmiResult").innerHTML = "Fill all fields";
+        out.innerHTML = "Fill all fields";
         return;
       }
 
       const age = (y * 12) + m;
       if (age < 61 || age > 228) {
-        document.getElementById("bmiResult").innerHTML = "5–19 years only";
+        out.innerHTML = "5–19 years only";
         return;
       }
 
       const bmi = w / ((h / 100) * (h / 100));
       const ref = (sex === "boy") ? boysData[age] : girlsData[age];
       if (!ref) {
-        document.getElementById("bmiResult").innerHTML = "No reference for this age";
+        out.innerHTML = "No reference for this age";
         return;
       }
 
       const z = computeZ_BMI(bmi, ref);
-
       let cat = "";
       if (z < -3) cat = "Severe Thinness";
       else if (z < -2) cat = "Thinness";
       else if (z <= 2) cat = "Normal";
       else cat = "Overweight/Obese";
 
-      document.getElementById("bmiResult").innerHTML =
+      out.innerHTML =
         "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
         "<b>Z-score:</b> " + z.toFixed(2) + "<br>" +
         "<b>Status:</b> " + cat;
     }
 
-    // ================== LMS HELPERS ==================
+    // =========================================================
+    // LMS helpers
+    // =========================================================
     function lmsZ(value, L, M, S) {
+      if (!isFinite(value) || !isFinite(L) || !isFinite(M) || !isFinite(S) || M <= 0 || S <= 0) return NaN;
       if (L === 0) return Math.log(value / M) / S;
       return (Math.pow(value / M, L) - 1) / (L * S);
     }
-
     function lerp(a, b, t) { return a + (b - a) * t; }
 
     function interpLMS(table, x, keyName) {
-      if (!table || table.length === 0) return null;
+      if (!table || table.length === 0 || !isFinite(x)) return null;
       const t = table.slice().sort((a, b) => (a[keyName] ?? 0) - (b[keyName] ?? 0));
 
       if (x <= t[0][keyName]) return { L: t[0].L, M: t[0].M, S: t[0].S };
@@ -328,12 +366,14 @@
     function detectLenHeiKey(table) {
       if (!table || table.length === 0) return null;
       const row = table[0];
-      if (row.hasOwnProperty("Length")) return "Length";
-      if (row.hasOwnProperty("Height")) return "Height";
+      if (Object.prototype.hasOwnProperty.call(row, "Length")) return "Length";
+      if (Object.prototype.hasOwnProperty.call(row, "Height")) return "Height";
       return null;
     }
 
-    // ================== IMAM COLORS + MUAC ==================
+    // =========================================================
+    // IMAM colors + MUAC + decision
+    // =========================================================
     function badgeForZ(z, labelSevere, labelModerate) {
       if (!isFinite(z)) return { text: "Invalid", cls: "bg-gray" };
       if (z < -3) return { text: labelSevere, cls: "bg-red" };
@@ -349,8 +389,10 @@
       return { text: "Normal", cls: "bg-green" };
     }
 
-    // Admission decision (simple IMAM-style rules, no oedema included)
-    function admissionDecision(zWhz, mu) {
+    function admissionDecision(zWhz, mu, oedema) {
+      // Oedema overrides
+      if (oedema === "yes") return { label: "ADMIT: INPATIENT (SAM - OEDEMA)", cls: "bg-red" };
+
       if ((isFinite(zWhz) && zWhz < -3) || (isFinite(mu) && mu < 11.5)) {
         return { label: "ADMIT: INPATIENT (SAM)", cls: "bg-red" };
       }
@@ -360,13 +402,13 @@
       return { label: "NORMAL", cls: "bg-green" };
     }
 
-    // Hide normal rows: show only indicators in "bad zones"
     function isBadZ(z) { return isFinite(z) && z < -2; }
     function isBadMuac(mu) { return isFinite(mu) && mu < 12.5; }
 
-    // ================== CORE COMPUTE (USED BY BOTH MANUAL + WIZARD) ==================
-    function computeAll(sex, ageMonths, weightKg, heightCm, muacCm) {
-      // Ensure data loaded
+    // =========================================================
+    // CORE COMPUTE (shared, but outputs are rendered separately)
+    // =========================================================
+    function computeAll(sex, ageMonths, weightKg, heightCm, muacCm, oedema="no") {
       const wfl = (sex === "boy") ? wflBoys : wflGirls;
       const wfh = (sex === "boy") ? wfhBoys : wfhGirls;
       const wfa = (sex === "boy") ? wfaBoys : wfaGirls;
@@ -376,10 +418,20 @@
         return { ok:false, error:"Reference data still loading…" };
       }
 
-      // WHZ
+      if (!isFinite(ageMonths) || ageMonths < 0 || ageMonths > 59) {
+        return { ok:false, error:"Age must be 0–59 months." };
+      }
+      if (!isFinite(weightKg) || weightKg <= 0) {
+        return { ok:false, error:"Enter a valid weight (kg)." };
+      }
+      if (!isFinite(heightCm) || heightCm <= 0) {
+        return { ok:false, error:"Enter a valid height/length (cm)." };
+      }
+
+      // WHZ: WFL for 0–24m, WFH for 25–59m
       const whzTable = (ageMonths <= 24) ? wfl : wfh;
       const key = detectLenHeiKey(whzTable);
-      if (!key) return { ok:false, error:"WHZ reference key not found (Length/Height)" };
+      if (!key) return { ok:false, error:"WHZ reference key not found (Length/Height)." };
 
       const whzRef = interpLMS(whzTable, heightCm, key);
       const zWhz = whzRef ? lmsZ(weightKg, whzRef.L, whzRef.M, whzRef.S) : NaN;
@@ -392,43 +444,54 @@
       const hfaRef = interpLMS(hfa, ageMonths, "Age");
       const zHfa = hfaRef ? lmsZ(heightCm, hfaRef.L, hfaRef.M, hfaRef.S) : NaN;
 
-      // MUAC
-      const muBadge = badgeForMuac(muacCm);
-
       // Badges
+      const muBadge  = badgeForMuac(muacCm);
       const whzBadge = badgeForZ(zWhz, "SAM", "MAM");
       const wfaBadge = badgeForZ(zWfa, "Severe Underweight", "Underweight");
       const hfaBadge = badgeForZ(zHfa, "Severe Stunting", "Stunted");
 
-      // Decision
-      const decision = admissionDecision(zWhz, muacCm);
+      // Decision (includes oedema override)
+      const decision = admissionDecision(zWhz, muacCm, oedema);
 
       return {
         ok: true,
-        input: { sex, ageMonths, weightKg, heightCm, muacCm },
+        input: { sex, ageMonths, weightKg, heightCm, muacCm, oedema },
         z: { whz: zWhz, wfa: zWfa, hfa: zHfa },
         badges: { whz: whzBadge, wfa: wfaBadge, hfa: hfaBadge, muac: muBadge },
         decision
       };
     }
 
-    // ================== RENDER (USED BY BOTH MANUAL + WIZARD) ==================
+    // =========================================================
+    // RENDER (targetId decides where it shows)
+    // =========================================================
     function renderResult(model, targetId) {
       const out = document.getElementById(targetId);
-      if (!model.ok) {
-        out.innerHTML = "<span class='loading'>" + model.error + "</span>";
+
+      if (!model || !model.ok) {
+        out.innerHTML = "<span class='loading'>" + (model?.error || "Waiting for input…") + "</span>";
         return;
       }
 
       const { input, z, badges, decision } = model;
 
-      // Hide normal rows
-      const showWHZ = isBadZ(z.whz);
-      const showWFA = isBadZ(z.wfa);
-      const showHFA = isBadZ(z.hfa);
+      const showWHZ  = isBadZ(z.whz) || input.oedema === "yes"; // show WHZ if oedema too
+      const showWFA  = isBadZ(z.wfa);
+      const showHFA  = isBadZ(z.hfa);
       const showMUAC = isBadMuac(input.muacCm);
 
       let rowsHtml = "";
+
+      if (input.oedema === "yes") {
+        rowsHtml += `
+          <div class="row">
+            <div class="row-left">
+              <div class="row-title">Oedema</div>
+              <div class="row-sub">Bilateral pitting oedema</div>
+            </div>
+            <span class="badge bg-red">YES (SAM)</span>
+          </div>`;
+      }
 
       if (showWHZ) rowsHtml += `
         <div class="row">
@@ -437,7 +500,7 @@
             <div class="row-sub">Weight-for-Length/Height Z-score</div>
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <div><b>${z.whz.toFixed(2)}</b></div>
+            <div><b>${isFinite(z.whz) ? z.whz.toFixed(2) : "N/A"}</b></div>
             <span class="badge ${badges.whz.cls}">${badges.whz.text}</span>
           </div>
         </div>`;
@@ -449,7 +512,7 @@
             <div class="row-sub">Weight-for-Age Z-score</div>
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <div><b>${z.wfa.toFixed(2)}</b></div>
+            <div><b>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</b></div>
             <span class="badge ${badges.wfa.cls}">${badges.wfa.text}</span>
           </div>
         </div>`;
@@ -461,7 +524,7 @@
             <div class="row-sub">Height-for-Age Z-score</div>
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <div><b>${z.hfa.toFixed(2)}</b></div>
+            <div><b>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</b></div>
             <span class="badge ${badges.hfa.cls}">${badges.hfa.text}</span>
           </div>
         </div>`;
@@ -479,13 +542,14 @@
         </div>`;
 
       if (!rowsHtml) {
-        rowsHtml = `<div class="row">
-          <div class="row-left">
-            <div class="row-title">No abnormal findings</div>
-            <div class="row-sub">All indicators are within normal range</div>
-          </div>
-          <span class="badge bg-green">Normal</span>
-        </div>`;
+        rowsHtml = `
+          <div class="row">
+            <div class="row-left">
+              <div class="row-title">No abnormal findings</div>
+              <div class="row-sub">All indicators are within normal range</div>
+            </div>
+            <span class="badge bg-green">Normal</span>
+          </div>`;
       }
 
       out.innerHTML = `
@@ -504,63 +568,71 @@
       `;
     }
 
-    // ================== MANUAL ACTIONS ==================
+    // =========================================================
+    // MANUAL actions (separate model)
+    // =========================================================
     function calcAndRenderManual() {
       const sex = document.getElementById("mSex").value;
       const age = parseFloat(document.getElementById("mAge").value);
-      const w = parseFloat(document.getElementById("mWeight").value);
-      const h = parseFloat(document.getElementById("mHeight").value);
-      const mu = parseFloat(document.getElementById("mMuac").value);
+      const w   = parseFloat(document.getElementById("mWeight").value);
+      const h   = parseFloat(document.getElementById("mHeight").value);
+      const mu  = parseFloat(document.getElementById("mMuac").value);
 
-      const model = computeAll(sex, age, w, h, mu);
+      const model = computeAll(sex, age, w, h, mu, "no");
       renderResult(model, "mResult");
 
-      window.__lastManualModel = model; // for printing
+      window.__lastManualModel = model;
     }
 
     function printFromManual() {
-      if (!window.__lastManualModel || !window.__lastManualModel.ok) return;
-      printReport(window.__lastManualModel);
+      if (window.__lastManualModel?.ok) printReport(window.__lastManualModel);
     }
 
-    // ================== WIZARD ACTIONS (INDEPENDENT) ==================
-    function wizGo(step) {
-      for (let i = 1; i <= 5; i++) {
-        const el = document.getElementById("wizStep" + i);
+    // =========================================================
+    // WIZARD navigation + actions (fully independent)
+    // =========================================================
+    function wizNext(step) {
+      for (let i = 1; i <= 7; i++) {
+        const el = document.getElementById("w" + i);
         if (el) el.style.display = "none";
       }
-      document.getElementById("wizStep" + step).style.display = "block";
+      const target = document.getElementById("w" + step);
+      if (target) target.style.display = "block";
     }
 
     function wizReset() {
       document.getElementById("wSex").value = "boy";
       document.getElementById("wAge").value = "";
-      document.getElementById("wWeight").value = "";
-      document.getElementById("wHeight").value = "";
+      document.getElementById("wWt").value = "";
+      document.getElementById("wHt").value = "";
       document.getElementById("wMuac").value = "";
-      document.getElementById("wResult").innerHTML = "";
-      wizGo(1);
+      document.getElementById("wOedema").value = "no";
+      document.getElementById("wRes").innerHTML = "<span class='loading'>Click “Calculate” to generate results…</span>";
+      window.__lastWizardModel = null;
+      wizNext(1);
     }
 
-    function calcAndRenderWizard() {
-      const sex = document.getElementById("wSex").value;
-      const age = parseFloat(document.getElementById("wAge").value);
-      const w = parseFloat(document.getElementById("wWeight").value);
-      const h = parseFloat(document.getElementById("wHeight").value);
-      const mu = parseFloat(document.getElementById("wMuac").value);
+    function runWizard() {
+      const sex    = document.getElementById("wSex").value;
+      const age    = parseFloat(document.getElementById("wAge").value);
+      const w      = parseFloat(document.getElementById("wWt").value);
+      const h      = parseFloat(document.getElementById("wHt").value);
+      const mu     = parseFloat(document.getElementById("wMuac").value);
+      const oedema = document.getElementById("wOedema").value;
 
-      const model = computeAll(sex, age, w, h, mu);
-      renderResult(model, "wResult");
+      const model = computeAll(sex, age, w, h, mu, oedema);
+      renderResult(model, "wRes");
 
-      window.__lastWizardModel = model; // for printing
+      window.__lastWizardModel = model;
     }
 
     function printFromWizard() {
-      if (!window.__lastWizardModel || !window.__lastWizardModel.ok) return;
-      printReport(window.__lastWizardModel);
+      if (window.__lastWizardModel?.ok) printReport(window.__lastWizardModel);
     }
 
-    // ================== PRINT REPORT ==================
+    // =========================================================
+    // PRINT REPORT (works for Manual + Wizard without mixing)
+    // =========================================================
     function printReport(model) {
       const { input, z, badges, decision } = model;
       const now = new Date();
@@ -596,7 +668,8 @@
             <tr><td>Age</td><td>${input.ageMonths} months</td></tr>
             <tr><td>Weight</td><td>${input.weightKg} kg</td></tr>
             <tr><td>Height/Length</td><td>${input.heightCm} cm</td></tr>
-            <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm + " cm" : "N/A"}</td></tr>
+            <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) + " cm" : "N/A"}</td></tr>
+            <tr><td>Oedema</td><td>${input.oedema === "yes" ? "Yes" : "No"}</td></tr>
           </table>
         </div>
 
@@ -612,7 +685,9 @@
 
         <div class="box">
           <b>Admission Decision</b><br>
-          <span class="tag ${decision.cls.replace("bg-","")}">${decision.label}</span>
+          <span class="tag ${decision.cls.includes("red") ? "red" : decision.cls.includes("yellow") ? "yellow" : decision.cls.includes("green") ? "green" : "gray"}">
+            ${decision.label}
+          </span>
           <div class="muted" style="margin-top:10px;">
             Below-normal zones: Z &lt; -3 (Severe), -3 ≤ Z &lt; -2 (Moderate)
           </div>
@@ -628,16 +703,9 @@
       w.document.write(html);
       w.document.close();
     }
+
+    // Initialize wizard to step 1
+    wizReset();
   </script>
 </body>
 </html>
-  <title>Nutrition Assessment - Winxlibrary</title>
-
-  <style>
-    body {font-family: Arial;margin: 0;background: #f4f6f8;}
-    .topbar {background: #2c3e50;color: white;padding: 15px;}
-    .nav a {color: white;margin: 0 10px;text-decoration: none;font-weight: bold;}
-    .container {padding: 20px;}
-
-    .card {
-      background: white;
