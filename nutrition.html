@@ -158,10 +158,7 @@
       <label>Height/Length (cm)</label>
       <input id="mHeight" type="number" step="0.1" />
 
-      <label>MUAC (cm)</label>
-      <input id="mMuac" type="number" step="0.1" placeholder="e.g. 12.0" />
-
-      <div class="btnRow">
+          <div class="btnRow">
         <button class="button" onclick="calcAndRenderManual()">Calculate</button>
         <button class="button secondary" onclick="printFromManual()">Print Report</button>
       </div>
@@ -478,7 +475,7 @@
       const showWHZ  = isBadZ(z.whz) || input.oedema === "yes"; // show WHZ if oedema too
       const showWFA  = isBadZ(z.wfa);
       const showHFA  = isBadZ(z.hfa);
-      const showMUAC = isBadMuac(input.muacCm);
+      const showMUAC = isBadMuac(input.muacCm) && isFinite(input.muacCm);
 
       let rowsHtml = "";
 
@@ -571,18 +568,19 @@
     // =========================================================
     // MANUAL actions (separate model)
     // =========================================================
-    function calcAndRenderManual() {
-      const sex = document.getElementById("mSex").value;
-      const age = parseFloat(document.getElementById("mAge").value);
-      const w   = parseFloat(document.getElementById("mWeight").value);
-      const h   = parseFloat(document.getElementById("mHeight").value);
-      const mu  = parseFloat(document.getElementById("mMuac").value);
+function calcAndRenderManual() {
+  const sex = document.getElementById("mSex").value;
+  const age = parseFloat(document.getElementById("mAge").value);
+  const w   = parseFloat(document.getElementById("mWeight").value);
+  const h   = parseFloat(document.getElementById("mHeight").value);
 
-      const model = computeAll(sex, age, w, h, mu, "no");
-      renderResult(model, "mResult");
+  // ✅ NO MUAC in manual → pass NaN
+  const model = computeAll(sex, age, w, h, NaN, "no");
 
-      window.__lastManualModel = model;
-    }
+  renderResult(model, "mResult");
+  window.__lastManualModel = model;
+}
+
 
     function printFromManual() {
       if (window.__lastManualModel?.ok) printReport(window.__lastManualModel);
@@ -591,14 +589,19 @@
     // =========================================================
     // WIZARD navigation + actions (fully independent)
     // =========================================================
-    function wizNext(step) {
-      for (let i = 1; i <= 7; i++) {
-        const el = document.getElementById("w" + i);
-        if (el) el.style.display = "none";
-      }
-      const target = document.getElementById("w" + step);
-      if (target) target.style.display = "block";
-    }
+function wizNext(step) {
+  for (let i = 1; i <= 7; i++) {
+    const el = document.getElementById("w" + i);
+    if (el) el.style.display = "none";
+  }
+
+  const next = document.getElementById("w" + step);
+  if (next) {
+    next.style.display = "block";
+  } else {
+    console.error("Step not found:", step);
+  }
+}
 
     function wizReset() {
       document.getElementById("wSex").value = "boy";
@@ -612,19 +615,20 @@
       wizNext(1);
     }
 
-    function runWizard() {
-      const sex    = document.getElementById("wSex").value;
-      const age    = parseFloat(document.getElementById("wAge").value);
-      const w      = parseFloat(document.getElementById("wWt").value);
-      const h      = parseFloat(document.getElementById("wHt").value);
-      const mu     = parseFloat(document.getElementById("wMuac").value);
-      const oedema = document.getElementById("wOedema").value;
+function runWizard() {
+  const sex    = document.getElementById("wSex").value;
+  const age    = parseFloat(document.getElementById("wAge").value);
+  const w      = parseFloat(document.getElementById("wWt").value);
+  const h      = parseFloat(document.getElementById("wHt").value);
+  const mu     = parseFloat(document.getElementById("wMuac").value);
+  const oedema = document.getElementById("wOedema").value;
 
-      const model = computeAll(sex, age, w, h, mu, oedema);
-      renderResult(model, "wRes");
+  const model = computeAll(sex, age, w, h, mu, oedema);
+  renderResult(model, "wRes");
 
-      window.__lastWizardModel = model;
-    }
+  window.__lastWizardModel = model;
+}
+
 
     function printFromWizard() {
       if (window.__lastWizardModel?.ok) printReport(window.__lastWizardModel);
@@ -706,6 +710,9 @@
 
     // Initialize wizard to step 1
     wizReset();
+window.onload = function () {
+  wizReset();
+};
   </script>
 </body>
 </html>
