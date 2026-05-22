@@ -186,12 +186,40 @@ function calculateBMIforAge() {
   else if (bmi < ref.p1) category = "Normal";
   else if (bmi < ref.p2) category = "Overweight";
   else category = "Obese";
+  let advice = "";
+
+if (category.includes("Severe Thinness")) {
+  advice = "Refer urgently for medical assessment and nutritional rehabilitation.";
+}
+else if (category.includes("Thinness")) {
+  advice = "Child is undernourished. Provide nutrition counselling and follow-up.";
+}
+else if (category === "Normal") {
+  advice = "Growth is within normal range. Continue regular monitoring.";
+}
+else if (category.includes("Overweight")) {
+  advice = "Monitor weight. Provide dietary counselling.";
+}
+else if (category.includes("Obese")) {
+  advice = "Risk of obesity. Refer for further evaluation and management.";
+}
 
   // ✅ OUTPUT
-  document.getElementById("bmiResult").innerHTML =
-    "<b>Total Age (months):</b> " + age + "<br>" +
-    "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
-    "<b>Status:</b> " + category;
+let color = "#ccc";
+
+// ✅ color coding
+if (category.includes("Severe")) color = "#ff4d4d";       // red
+else if (category.includes("Thinness")) color = "#ffc107"; // yellow
+else if (category === "Normal") color = "#28a745";        // green
+else if (category.includes("Overweight")) color = "#fd7e14"; // orange
+else if (category.includes("Obese")) color = "#dc3545";   // dark red
+
+document.getElementById("bmiResult").innerHTML =
+  "<div style='border-left:6px solid " + color + "; padding:10px;'>" +
+  "<b>Age:</b> " + years + "y " + months + "m (" + age + " months)<br>" +
+  "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
+  "<b>Status:</b> <span style='color:" + color + "; font-weight:bold'>" + category + "</span>" + "<br><b>Advice:</b> " + advice
+  "</div>";
 }
 
 </script>
