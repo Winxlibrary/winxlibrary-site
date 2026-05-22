@@ -1,79 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Nutrition Assessment - Winxlibrary</title>
 
 <style>
-body {font-family: Arial;margin: 0;background: #f4f6f8;}
-.topbar {background: #2c3e50;color: white;padding: 15px;}
-.nav a {color: white;margin: 0 10px;text-decoration: none;font-weight: bold;}
-.container {padding: 20px;}
+body {font-family: Arial;margin:0;background:#f4f6f8;}
+.topbar {background:#2c3e50;color:white;padding:15px;}
+.nav a {color:white;margin:0 10px;text-decoration:none;font-weight:bold;}
+.container {padding:20px;}
 
 .card {
-background: white;
-padding: 20px;
-margin: 15px 0;
-border-radius: 10px;
-box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+background:white;
+padding:20px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 6px rgba(0,0,0,0.08);
 }
 
 .button {
-padding: 10px 16px;
-background: #3498db;
-color: white;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-weight: bold;
+padding:10px;
+background:#3498db;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
 }
 
 input, select {
-width: 100%;
-padding: 10px;
-margin-top: 6px;
-margin-bottom: 12px;
-border-radius: 8px;
-border: 1px solid #cfd6dd;
+width:100%;
+padding:10px;margin:6px 0;
+border-radius:8px;border:1px solid #ccc;
 }
 
 .result {
-margin-top: 12px;
-padding: 12px;
-border-radius: 10px;
-background: #eef3f7;
+margin-top:12px;padding:12px;border-radius:10px;background:#eef3f7;
 }
 
-.grid2 {display: grid;grid-template-columns: 1fr 1fr;gap: 10px;}
+.row {display:flex;justify-content:space-between;margin:6px 0;}
+.badge {padding:5px 10px;border-radius:15px;font-weight:bold;}
 
-.rows {display: grid;gap: 10px;}
-
-.row {
-display: flex;
-justify-content: space-between;
-padding: 10px;
-border-radius: 10px;
-background: white;
-}
-
-.badge {
-padding: 6px 10px;
-border-radius: 20px;
-font-weight: bold;
-font-size: 12px;
-}
-
-.bg-red {background:#fdecea;color:#b02a37;}
-.bg-yellow {background:#fff4d6;color:#8a6d00;}
-.bg-green {background:#e7f7ee;color:#1f7a3a;}
-.bg-purple {background:#efe6ff;color:#5b2cc6;}
-
-.finalBox {
-margin-top:10px;
-padding:10px;
-border-radius:10px;
-background:white;
-}
+.bg-red{background:#fdecea;color:#b02a37;}
+.bg-yellow{background:#fff4d6;color:#8a6d00;}
+.bg-green{background:#e7f7ee;color:#1f7a3a;}
 </style>
 </head>
 
@@ -88,156 +57,67 @@ background:white;
 </div>
 </div>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8" />
-<title>Nutrition Assessment - Winxlibrary</title>
-
-<style>
-body { font-family: Arial; margin: 0; background: #f4f6f8; }
-
-.topbar { background: #2c3e50; color: white; padding: 15px; }
-
-.nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: bold; }
-
-.container { padding: 20px; }
-
-.card {
-  background: white;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.button {
-  padding: 10px 16px;
-  background: #3498db;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 6px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.result {
-  margin-top: 12px;
-  padding: 12px;
-  border-radius: 10px;
-  background: #eef3f7;
-}
-
-.rows { display: grid; gap: 10px; }
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  border-radius: 10px;
-  background: white;
-}
-
-.badge {
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-weight: bold;
-}
-
-.bg-red { background:#fdecea;color:#b02a37; }
-.bg-yellow { background:#fff4d6;color:#8a6d00; }
-.bg-green { background:#e7f7ee;color:#1f7a3a; }
-</style>
-</head>
-
-<body>
-
-
-  
 <div class="container">
 
 <h2>Nutrition Assessment Tools</h2>
 
-<!-- ✅ BMI -->
+<!-- BMI -->
 <div class="card">
-<h3>BMI-for-Age</h3>
+<h3>BMI</h3>
+<input id="weight" placeholder="Weight kg">
+<input id="height" placeholder="Height cm">
+<button onclick="calcBMI()">Calculate</button>
+<div id="bmiResult"></div>
+</div>
+
+<!-- MAIN -->
+<div class="card">
+<h3>Child Z-Score</h3>
 
 <select id="sex">
 <option value="boy">Boy</option>
 <option value="girl">Girl</option>
 </select>
 
-<input id="ageYears" placeholder="Years">
-<input id="ageMonths" placeholder="Months">
+<input id="age" placeholder="Age months">
+<input id="wt" placeholder="Weight">
+<input id="ht" placeholder="Height">
+<input id="muac" placeholder="MUAC (cm)">
 
-<input id="weight" placeholder="Weight kg">
-<input id="height" placeholder="Height cm">
-
-<button onclick="calculateBMI()">Calculate</button>
-<div id="bmiResult"></div>
+<button onclick="calculate()">Calculate</button>
+<div id="result" class="result"></div>
 </div>
 
-<!-- ✅ Z SCORE -->
+<!-- WIZARD -->
 <div class="card">
-<h3>Child Z-Score</h3>
-
-<select id="childSex">
-<option value="boy">Boy</option>
-<option value="girl">Girl</option>
-</select>
-
-<input id="childAge" placeholder="Age months">
-<input id="childWeight" placeholder="Weight">
-<input id="childHeight" placeholder="Height">
-
-<button onclick="calculateZScores()">Calculate</button>
-
-<div id="zResult" class="result"></div>
-</div>
-
-<!-- ✅ WIZARD -->
-<div class="card">
-<h3>Z-Score Wizard</h3>
+<h3>Wizard</h3>
 
 <div id="w1">
-<label>Sex</label>
 <select id="wSex">
 <option value="boy">Boy</option>
 <option value="girl">Girl</option>
 </select>
-<button onclick="wNext(2)">Next</button>
+<button onclick="next(2)">Next</button>
 </div>
 
 <div id="w2" style="display:none;">
-<label>Age</label>
-<input id="wAge">
-<button onclick="wNext(3)">Next</button>
-<button onclick="wNext(1)">Back</button>
+<input id="wAge" placeholder="Age">
+<button onclick="next(3)">Next</button>
 </div>
 
 <div id="w3" style="display:none;">
-<label>Weight</label>
-<input id="wWeight">
-<button onclick="wNext(4)">Next</button>
-<button onclick="wNext(2)">Back</button>
+<input id="wWt" placeholder="Weight">
+<button onclick="next(4)">Next</button>
 </div>
 
 <div id="w4" style="display:none;">
-<label>Height</label>
-<input id="wHeight">
-<button onclick="runWizard()">Finish</button>
-<button onclick="wNext(3)">Back</button>
+<input id="wHt" placeholder="Height">
+<input id="wMuac" placeholder="MUAC">
+<button onclick="run()">Finish</button>
 </div>
 
 <div id="w5" style="display:none;">
-<div id="wizardResult" class="result"></div>
+<div id="wRes" class="result"></div>
 </div>
 
 </div>
@@ -246,82 +126,121 @@ input, select {
 
 <script>
 
-// ✅ BMI
-function calculateBMI(){
-let w=weight.value;
-let h=height.value/100;
-if(!w||!h)return;
-let bmi=w/(h*h);
-bmiResult.innerHTML="BMI: "+bmi.toFixed(2);
-}
+/* ===== LMS JSON LOAD ===== */
+let wfaBoys=[],wfaGirls=[],hfaBoys=[],hfaGirls=[];
+fetch('wfa_boys_0_5_lms.json').then(r=>r.json()).then(d=>wfaBoys=d);
+fetch('wfa_girls_0_5_lms.json').then(r=>r.json()).then(d=>wfaGirls=d);
+fetch('hfa_boys_0_5_lms.json').then(r=>r.json()).then(d=>hfaBoys=d);
+fetch('hfa_girls_0_5_lms.json').then(r=>r.json()).then(d=>hfaGirls=d);
 
-// ✅ LMS
+/* ===== LMS ===== */
 function lmsZ(v,L,M,S){
-if(L===0)return Math.log(v/M)/S;
+if(L==0)return Math.log(v/M)/S;
 return (Math.pow(v/M,L)-1)/(L*S);
 }
 
-// ✅ CLASSIFICATION
+/* ===== INTERPOLATION ===== */
+function interp(data,x){
+data.sort((a,b)=>a.Age-b.Age);
+let a=data[0],b=data[data.length-1];
+for(let i=1;i<data.length;i++){
+if(data[i].Age>=x){
+a=data[i-1];b=data[i];break;
+}
+}
+let r=(x-a.Age)/(b.Age-a.Age);
+return{
+L:a.L+(b.L-a.L)*r,
+M:a.M+(b.M-a.M)*r,
+S:a.S+(b.S-a.S)*r
+};
+}
+
+/* ===== CLASSIFY ===== */
 function classify(z){
 if(z<-3)return["Severe","bg-red"];
 if(z<-2)return["Moderate","bg-yellow"];
 return["Normal","bg-green"];
 }
 
-// ✅ Z CALC
-function calculateZScores(){
-
-let w=parseFloat(childWeight.value);
-let h=parseFloat(childHeight.value);
-let a=parseFloat(childAge.value);
-
-if(!w||!h||!a)return;
-
-let whz=lmsZ(w,1,h/10,0.1);
-let wfa=lmsZ(w,1,a/5,0.1);
-let hfa=lmsZ(h,1,a+60,0.1);
-
-let r1=classify(whz);
-let r2=classify(wfa);
-let r3=classify(hfa);
-
-zResult.innerHTML=
-
-"<div class='rows'>"
-
-+"<div class='row'>WHZ "+whz.toFixed(2)+" <span class='badge "+r1[1]+"'>"+r1[0]+"</span></div>"
-
-+"<div class='row'>WFA "+wfa.toFixed(2)+" <span class='badge "+r2[1]+"'>"+r2[0]+"</span></div>"
-
-+"<div class='row'>HFA "+hfa.toFixed(2)+" <span class='badge "+r3[1]+"'>"+r3[0]+"</span></div>"
-
-+"</div>"
-
-+"<br><b>Below-normal zones:</b><br>"
-+"• <span class='badge bg-red'>Z < -3</span> Severe<br>"
-+"• <span class='badge bg-yellow'>-3 ≤ Z < -2</span> Moderate";
-
+/* ===== MUAC ===== */
+function muac(mu){
+if(mu<11.5)return["SAM","bg-red"];
+if(mu<12.5)return["MAM","bg-yellow"];
+return["Normal","bg-green"];
 }
 
-// ✅ WIZARD
-function wNext(n){
+/* ===== RENDER ===== */
+function render(w,h,a,mu,z1,z2){
+
+let out="";
+
+if(z1<-2) out+=`<div class='row'>WHZ ${z1.toFixed(2)} <span class='badge ${classify(z1)[1]}'>${classify(z1)[0]}</span></div>`;
+if(z2<-2) out+=`<div class='row'>WFA ${z2.toFixed(2)} <span class='badge ${classify(z2)[1]}'>${classify(z2)[0]}</span></div>`;
+
+let muC=muac(mu);
+if(muC[0]!="Normal")
+out+=`<div class='row'>MUAC ${mu} <span class='badge ${muC[1]}'>${muC[0]}</span></div>`;
+
+if(out=="") out="<div class='row'>Normal</div>";
+
+out+="<br><b>Below-normal:</b><br>";
+out+="• <span class='badge bg-red'>Z < -3</span><br>";
+out+="• <span class='badge bg-yellow'>-3 to < -2</span>";
+
+return out;
+}
+
+/* ===== MAIN ===== */
+function calculate(){
+let sex=document.getElementById("sex").value;
+let a=parseFloat(age.value);
+let w=parseFloat(wt.value);
+let h=parseFloat(ht.value);
+let mu=parseFloat(muac.value);
+
+let wfa=(sex=="boy")?wfaBoys:wfaGirls;
+let r=interp(wfa,a);
+
+let zW=lmsZ(w,r.L,r.M,r.S);
+
+let zWHZ=(w-(h/10))/2;
+
+result.innerHTML=render(w,h,a,mu,zWHZ,zW);
+}
+
+/* ===== WIZARD ===== */
+function next(n){
 for(let i=1;i<=5;i++){
-document.getElementById("w"+i).style.display="none";
+let el=document.getElementById("w"+i);
+if(el)el.style.display="none";
 }
 document.getElementById("w"+n).style.display="block";
 }
 
-function runWizard(){
-childSex.value=wSex.value;
-childAge.value=wAge.value;
-childWeight.value=wWeight.value;
-childHeight.value=wHeight.value;
+function run(){
+let sex=wSex.value;
+let a=parseFloat(wAge.value);
+let w=parseFloat(wWt.value);
+let h=parseFloat(wHt.value);
+let mu=parseFloat(wMuac.value);
 
-calculateZScores();
+let wfa=(sex=="boy")?wfaBoys:wfaGirls;
+let r=interp(wfa,a);
+let zW=lmsZ(w,r.L,r.M,r.S);
+let zWHZ=(w-(h/10))/2;
 
-wizardResult.innerHTML=zResult.innerHTML;
+wRes.innerHTML=render(w,h,a,mu,zWHZ,zW);
 
-wNext(5);
+next(5);
+}
+
+/* ===== BMI ===== */
+function calcBMI(){
+let w=parseFloat(weight.value);
+let h=parseFloat(height.value)/100;
+if(!w||!h)return;
+bmiResult.innerHTML="BMI "+(w/(h*h)).toFixed(2);
 }
 
 </script>
