@@ -393,84 +393,70 @@
   </div>
 
   <!-- ✅ Version tracking script -->
-  <script>
-    /**
-     * VERSION TRACKING SETUP
-     * 1) Update CURRENT_VERSION when you release a new build.
-     * 2) Update DEFAULT_DOWNLOAD_URL to your actual installer/zip path.
-     * 3) Optional: Host "version.json" with:
-     *    { "latestVersion":"v1.1.2", "downloadUrl":"downloads/IYCF_Analyse_v1.1.2.zip", "releaseNotesUrl":"downloads.html" }
-     */
+<script>
+  const CURRENT_VERSION = "v1.1.1";
 
-    const CURRENT_VERSION = "v1.1.1";
+  const VERSION_JSON_URL =
+    "https://winxlibrary.github.io/iycf-analyse/version.json";
 
-    // ✅ Set this to the real file path you want users to download:
-    const DEFAULT_DOWNLOAD_URL = "https://github.com/Winxlibrary/iycf-analyse/releases/download/v1.1.1/Winxli_IYCF_analyse.exe";
+  const currentVersionEl = document.getElementById("currentVersion");
+  const latestVersionEl = document.getElementById("latestVersion");
+  const releaseNotesEl = document.getElementById("releaseNotes");
+  const badge = document.getElementById("statusBadge");
 
-    // ✅ Optional JSON endpoint (same folder as iycf.html unless you change it)
-    const VERSION_JSON_URL = "https://winxlibrary.github.io/iycf-analyse/version.json";
+  function setBadge(text, type) {
+    if (!badge) return;
+    badge.textContent = text;
+    badge.className = "badge " + (type || "");
+  }
 
-    const currentVersionEl = document.getElementById("currentVersion");
-    const latestVersionEl = document.getElementById("latestVersion");
-    const downloadBtn = document.getElementById("downloadBtn");
-    const releaseNotesEl = document.getElementById("releaseNotes");
-    const badge = document.getElementById("statusBadge");
+  function compareVersions(a, b) {
+    const pa = (a || "").replace(/^v/i, "").split(".").map(n => parseInt(n, 10) || 0);
+    const pb = (b || "").replace(/^v/i, "").split(".").map(n => parseInt(n, 10) || 0);
 
-    function setBadge(text, type){
-      badge.textContent = text;
-      badge.className = "badge " + (type || "");
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+      const da = pa[i] || 0;
+      const db = pb[i] || 0;
+
+      if (da > db) return 1;
+      if (da < db) return -1;
     }
+    return 0;
+  }
 
-    function compareVersions(a, b){
-      // Basic semver-ish compare: "v1.2.10" vs "v1.2.3"
-      // Returns: 1 if a>b, -1 if a<b, 0 if equal
-      const pa = (a || "").replace(/^v/i,"").split(".").map(n => parseInt(n,10) || 0);
-      const pb = (b || "").replace(/^v/i,"").split(".").map(n => parseInt(n,10) || 0);
-      const len = Math.max(pa.length, pb.length);
-      for(let i=0;i<len;i++){
-        const da = pa[i] || 0, db = pb[i] || 0;
-        if(da > db) return 1;
-        if(da < db) return -1;
-      }
-      return 0;
-    }
+  async function initVersionTracking() {
+    if (currentVersionEl) currentVersionEl.textContent = CURRENT_VERSION;
 
-    async function initVersionTracking(){
-      currentVersionEl.textContent = CURRENT_VERSION;
+    try {
+      const url = VERSION_JSON_URL + "?t=" + Date.now(); // 🔥 avoids GitHub cache
+      const res = await fetch(url, { cache: "no-store" });
 
-      // default download
-      downloadBtn.href = DEFAULT_DOWNLOAD_URL;
+      if (!res.ok) throw new Error("No version.json found");
 
-      // Attempt to fetch latest version info
-      try {
-        const url = VERSION_JSON_URL + "?t=" + Date.now();
-         const res = await fetch(url, { cache: "no-store" });
-        if(!res.ok) throw new Error("No version.json found");
+      const data = await res.json();
 
-        const data = await res.json();
+      const latest = data.latestVersion || CURRENT_VERSION;
+      const notes = data.releaseNotesUrl || "downloads.html";
 
-        const latest = data.latestVersion || CURRENT_VERSION;
-        const dl = data.downloadUrl || DEFAULT_DOWNLOAD_URL;
-        const notes = data.releaseNotesUrl || "downloads.html";
+      if (latestVersionEl) latestVersionEl.textContent = latest;
+      if (releaseNotesEl) releaseNotesEl.href = notes;
 
-        latestVersionEl.textContent = latest;
-        downloadBtn.href = dl;
-        releaseNotesEl.href = notes;
+      const cmp = compareVersions(latest, CURRENT_VERSION);
 
-        const cmp = compareVersions(latest, CURRENT_VERSION);
-        if(cmp > 0){
-          setBadge("Update available", "warn");
-        } else {
-          setBadge("Up to date", "ok");
-        }
-      } catch (e){
-        // fallback if no version.json
-        latestVersionEl.textContent = CURRENT_VERSION;
+      if (cmp > 0) {
+        setBadge("Update available", "warn");
+      } else {
         setBadge("Up to date", "ok");
       }
-    }
 
-    initVersionTracking();
-  </script>
+    } catch (e) {
+      if (latestVersionEl) latestVersionEl.textContent = CURRENT_VERSION;
+      setBadge("Unable to check", "warn");
+    }
+  }
+
+  initVersionTracking();
+</script>
+``
 </body>
 </html>
