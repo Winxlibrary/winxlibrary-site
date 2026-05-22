@@ -186,7 +186,7 @@
     <!-- ===================================================== -->
     <div class="card">
       <h3>WFA (Weight-for-Age) Z-Score (0–59 months)</h3>
-      <div class="muted">Age is in months in your WFA LMS files.</div>
+      <div class="muted">Age is in months in the  WFA reference tables.</div>
 
       <label>Sex</label>
       <select id="wfaSex">
@@ -213,7 +213,7 @@
     <!-- ===================================================== -->
     <div class="card">
       <h3>HFA (Height-for-Age) Z-Score (0–59 months)</h3>
-      <div class="muted">Uses HFA LMS references; age is in months.</div>
+      <div class="muted">Uses HFA reference Tables; age is in months.</div>
 
       <label>Sex</label>
       <select id="hfaSex">
@@ -844,10 +844,13 @@ function shouldShowAppetite(muac, oedema, z) {
   return muacLt115 || oedemaPlus12 || samByZ;
 }
 
+function calculateWizard() {
+  const out = document.get if (!out) return;  const out = document.getElementById("wizResult");
 
-function calculateWizard(){
-  const out = document.getElementById("wizResult");
-  if (!DATA_READY){ out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
+  if (!DATA_READY){
+    out.innerHTML = "<span class='loading'>Reference data still loading…</span>";
+    return;
+  }
 
   const sex = document.getElementById("wizSex").value;
   const age = parseFloat(document.getElementById("wizAge").value);
@@ -855,33 +858,44 @@ function calculateWizard(){
   const h = parseFloat(document.getElementById("wizHeight").value);
   const mu = parseFloat(document.getElementById("wizMuac").value);
   const oedema = document.getElementById("wOedema").value;
-  // refresh again after everything
-shouldShowAppetite(mu, oedema, z);
+
+  // ✅ FIX: define z BEFORE use
+  const z = window.__lastWHZ ? window.__lastWHZ.z : null;
 
   // ✅ CONTROL APPETITE VISIBILITY
-const appetiteBox = document.getElementById("wAppetite");
-const appetiteHint = document.getElementById("wAppetiteHint");
+  const appetiteBox = document.getElementById("wAppetite");
+  const appetiteHint = document.getElementById("wAppetiteHint");
 
-const z = window.__lastWHZ ? window.__lastWHZ.z : null;
+  if (appetiteBox && appetiteHint) {
+    if (shouldShowAppetite(mu, oedema, z)) {
+      appetiteBox.style.display = "block";
+      appetiteHint.textContent = "Appetite test is REQUIRED (SAM assessment).";
+    } else {
+      appetiteBox.style.display = "none";
+      appetiteHint.textContent =
+        oedema === "plus3"
+          ? "Appetite test NOT required for oedema +++."
+          : "Appetite test not required.";
+    }
+  }
 
-if (shouldShowAppetite(mu, oedema, z)) {
-  appetiteBox.style.display = "block";
-  appetiteHint.textContent = "Appetite test is REQUIRED (SAM assessment).";
-} else {
-  appetiteBox.style.display = "none";
-  appetiteHint.textContent =
-    oedema === "plus3"
-      ? "Appetite test NOT required for oedema +++."
-      : "Appetite test not required.";
-}
+  if (isNaN(age) || isNaN(w) || isNaN(h)) {
+    out.innerHTML = "Fill Age, Weight, Height";
+    return;
+  }
 
-  if (isNaN(age) || isNaN(w) || isNaN(h)) { out.innerHTML = "Fill Age, Weight, Height"; return; }
-  if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
+  if (age < 0 || age > 59) {
+    out.innerHTML = "0–59 months only";
+    return;
+  }
 
   const model = computeWizardModel(sex, age, w, h, mu, oedema);
   window.__lastWizard = model;
+
   renderWizard(model);
 }
+
+
 
 function printWizard(){
   if (!window.__lastWizard || !window.__lastWizard.ok) return;
