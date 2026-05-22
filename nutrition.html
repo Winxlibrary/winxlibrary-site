@@ -297,13 +297,38 @@
       <!-- Step 6 -->
       <div id="w6" class="stepBox" style="display:none;">
         <h4>Step 6: Oedema</h4>
-        <select id="wizOedema">
-          <option value="no">No</option>
-          <option value="yes">Yes</option>
-        </select>
+      <select id="wOedema">
+  <option value="none">None</option>
+  <option value="plus1">+ (mild)</option>
+  <option value="plus2">++ (moderate)</option>
+  <option value="plus3">+++ (severe)</option>
+</select>
+        
+        <label><input type="checkbox" id="wDanger"> Danger/Emergency signs present?</label>
+<label><input type="checkbox" id="wStabilized" checked> Child stabilized?</label>
+
+<hr>
+
+<label>Appetite test (shown only if required)</label>
+<select id="wAppetite" style="display:none;">
+  <option value="pass">Pass</option>
+  <option value="fail">Fail</option>
+</select>
+<div id="wAppetiteHint" class="muted" style="display:none;"></div>
+
+<hr>
+
+<label><input type="checkbox" id="wIMCI"> IMCI medical problems?</label>
+<label><input type="checkbox" id="wInDepth"> Need in-depth assessment?</label>
+
+<label class="muted" style="margin-top:8px;">Risk factors (MAM band)</label>
+<label><input type="checkbox" id="wRelapse"> Failed/Relapsed previous MAM?</label>
+<label><input type="checkbox" id="wPrevSAM"> Previous SAM?</label>
+<label><input type="checkbox" id="wSocial"> Severe social factors?</label>
+        
         <div class="btnRow">
           <button class="button secondary" type="button" onclick="wizGo(5)">Back</button>
-          <button class="button" type="button" onclick="wizGo(7)">Next</button>
+          <button class="button" type="but   ton" onclick="wizGo(7)">Next</button>
         </div>
       </div>
 
@@ -804,6 +829,22 @@ function wizReset(){
   wizGo(1);
 }
 
+function shouldShowAppetite(muac, oedema, z) {
+
+  // ✅ oedema +++ → appetite NOT required
+  if (oedema === "plus3") return false;
+
+  const muacLt115 = muac > 0 && muac < 11.5;
+
+  const oedemaPlus12 = (oedema === "plus1" || oedema === "plus2");
+
+  const samByZ = (z !== null && z < -3);
+
+  // ✅ show appetite ONLY in SAM pathway
+  return muacLt115 || oedemaPlus12 || samByZ;
+}
+
+
 function calculateWizard(){
   const out = document.getElementById("wizResult");
   if (!DATA_READY){ out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
@@ -813,7 +854,26 @@ function calculateWizard(){
   const w = parseFloat(document.getElementById("wizWeight").value);
   const h = parseFloat(document.getElementById("wizHeight").value);
   const mu = parseFloat(document.getElementById("wizMuac").value);
-  const oedema = document.getElementById("wizOedema").value;
+  const oedema = document.getElementById("wOedema").value;
+  // refresh again after everything
+shouldShowAppetite(mu, oedema, z);
+
+  // ✅ CONTROL APPETITE VISIBILITY
+const appetiteBox = document.getElementById("wAppetite");
+const appetiteHint = document.getElementById("wAppetiteHint");
+
+const z = window.__lastWHZ ? window.__lastWHZ.z : null;
+
+if (shouldShowAppetite(mu, oedema, z)) {
+  appetiteBox.style.display = "block";
+  appetiteHint.textContent = "Appetite test is REQUIRED (SAM assessment).";
+} else {
+  appetiteBox.style.display = "none";
+  appetiteHint.textContent =
+    oedema === "plus3"
+      ? "Appetite test NOT required for oedema +++."
+      : "Appetite test not required.";
+}
 
   if (isNaN(age) || isNaN(w) || isNaN(h)) { out.innerHTML = "Fill Age, Weight, Height"; return; }
   if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
