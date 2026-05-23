@@ -2,11 +2,74 @@
 <html>
 <head>
 <title>About</title>
+
 <style>
-body{font-family:Arial;background:#f4f6f8;}
-.nav{background:#2c3e50;padding:10px;}
-.nav a{color:white;margin:10px;text-decoration:none;}
-.container{padding:20px;}
+body{
+    font-family:Arial;
+    background:#f4f6f8;
+    margin:0;
+}
+
+.nav{
+    background:#2c3e50;
+    padding:12px;
+}
+.nav a{
+    color:white;
+    margin:10px;
+    text-decoration:none;
+    font-weight:bold;
+}
+.nav a:hover{
+    text-decoration:underline;
+}
+
+.container{
+    padding:30px;
+    max-width:900px;
+    margin:auto;
+}
+
+/* ✅ Title */
+h1{
+    color:#2c3e50;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+/* ✅ Tagline */
+.tagline{
+    font-size:16px;
+    color:#3498db;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+/* ✅ Card */
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* ✅ Text */
+p{
+    line-height:1.6;
+    color:#333;
+}
+
+/* ✅ List */
+ul{
+    margin-top:10px;
+}
+li{
+    margin-bottom:10px;
+}
+
+strong{
+    color:#2c3e50;
+}
 </style>
 </head>
 
@@ -20,16 +83,62 @@ body{font-family:Arial;background:#f4f6f8;}
 </div>
 
 <div class="container">
-<img src="logo.png" alt="WinxLibrary Logo" width="150">
+
+<!-- ✅ Centered Logo (your exact line) -->
+<div style="text-align:center; margin-top:10px;">
+  <img src="logo.png" alt="WinxLibrary Logo" width="120">
+</div>
+
 <h1>About Winxlibrary</h1>
 
-<p>
-Winxlibrary develops professional software tools for data analysis,
-nutrition programs, and field survey workflows.
+<p class="tagline">
+<strong>Empowering data-driven decisions across desktop, mobile, and web platforms.</strong>
 </p>
+
+<div class="card">
+
+<p>
+Winxlibrary is a software development initiative focused on creating practical, reliable, and 
+high-quality digital tools for data analysis, nutrition programs, and field survey workflows.
+</p>
+
+<p>
+Our mission is to simplify complex data processes for researchers, analysts, and program teams—especially 
+in public health, nutrition, and development sectors. We build solutions that support data collection, 
+validation, analysis, and reporting across different environments.
+</p>
+
+<p>
+Winxlibrary develops cross-platform tools to meet real-world needs:
+</p>
+
+<ul>
+<li><strong>Desktop Applications:</strong> Tools like <strong>IYCF Analyse</strong> for advanced survey data validation, indicator computation, and reporting aligned with WHO, UNICEF, DHS, and SMART standards.</li>
+
+<li><strong>Mobile Applications (APK):</strong> Field-friendly apps such as <strong>NutDiag</strong>, designed for on-device data collection, screening, and quick assessments.</li>
+
+<li><strong>Web-Based Modules:</strong> Online platforms like the <strong>Nutrition Module</strong>, enabling centralized data management, access, and reporting across teams.</li>
+</ul>
+
+<p>
+By combining desktop, mobile, and web technologies, Winxlibrary ensures flexibility and efficiency 
+for both field operations and centralized analysis workflows.
+</p>
+
+<p>
+We prioritize usability, reliability, and real-world impact. Our tools are designed to work effectively 
+in challenging environments and support evidence-based decision-making for organizations working to 
+improve nutrition and health outcomes.
+</p>
+
+<p>
+Winxlibrary continues to evolve by integrating user feedback and adapting to the growing needs of 
+nutrition and public health programs worldwide.
+</p>
+
+</div>
 
 </div>
 
 </body>
 </html>
-``
