@@ -1,7 +1,11 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>About</title>
+
+<!-- ✅ REQUIRED for mobile responsiveness -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
@@ -10,24 +14,35 @@ body{
     margin:0;
 }
 
+/* ✅ Navigation */
 .nav{
     background:#2c3e50;
     padding:12px;
+    text-align:center;
 }
 .nav a{
     color:white;
-    margin:10px;
+    margin:8px;
     text-decoration:none;
     font-weight:bold;
+    display:inline-block;
 }
 .nav a:hover{
     text-decoration:underline;
 }
 
+/* ✅ Container */
 .container{
-    padding:30px;
+    padding:20px;
     max-width:900px;
     margin:auto;
+}
+
+/* ✅ Responsive logo */
+.logo img{
+    width:120px;
+    max-width:100%;
+    height:auto;
 }
 
 /* ✅ Title */
@@ -35,6 +50,7 @@ h1{
     color:#2c3e50;
     margin-bottom:10px;
     text-align:center;
+    font-size:28px;
 }
 
 /* ✅ Tagline */
@@ -48,7 +64,7 @@ h1{
 /* ✅ Card */
 .card{
     background:white;
-    padding:25px;
+    padding:20px;
     border-radius:10px;
     box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
@@ -57,18 +73,34 @@ h1{
 p{
     line-height:1.6;
     color:#333;
+    font-size:15px;
 }
 
 /* ✅ List */
 ul{
-    margin-top:10px;
+    padding-left:20px;
 }
 li{
     margin-bottom:10px;
 }
 
-strong{
-    color:#2c3e50;
+/* ✅ Mobile adjustments */
+@media (max-width:600px){
+    h1{
+        font-size:22px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .tagline{
+        font-size:14px;
+    }
+
+    p{
+        font-size:14px;
+    }
 }
 </style>
 </head>
@@ -84,9 +116,9 @@ strong{
 
 <div class="container">
 
-<!-- ✅ Centered Logo (your exact line) -->
-<div style="text-align:center; margin-top:10px;">
-  <img src="logo.png" alt="WinxLibrary Logo" width="120">
+<!-- ✅ Centered Logo -->
+<div class="logo" style="text-align:center; margin-top:10px;">
+  <img src="logo.png" alt="WinxLibrary Logo">
 </div>
 
 <h1>About Winxlibrary</h1>
@@ -113,11 +145,11 @@ Winxlibrary develops cross-platform tools to meet real-world needs:
 </p>
 
 <ul>
-<li><strong>Desktop Applications:</strong> Tools like <strong>IYCF Analyse</strong> for advanced survey data validation, indicator computation, and reporting aligned with WHO, UNICEF, DHS, and SMART standards.</li>
+<li><strong>Desktop Applications:</strong> Tools like <strong>IYCF Analyse</strong> for advanced survey data validation and reporting.</li>
 
-<li><strong>Mobile Applications (APK):</strong> Field-friendly apps such as <strong>NutDiag</strong>, designed for on-device data collection, screening, and quick assessments.</li>
+<li><strong>Mobile Applications (APK):</strong> Field-friendly apps such as <strong>NutDiag</strong>, designed for on-device data collection and screening.</li>
 
-<li><strong>Web-Based Modules:</strong> Online platforms like the <strong>Nutrition Module</strong>, enabling centralized data management, access, and reporting across teams.</li>
+<li><strong>Web-Based Modules:</strong> Platforms like the <strong>Nutrition Module</strong>, enabling centralized access and reporting.</li>
 </ul>
 
 <p>
@@ -126,14 +158,8 @@ for both field operations and centralized analysis workflows.
 </p>
 
 <p>
-We prioritize usability, reliability, and real-world impact. Our tools are designed to work effectively 
-in challenging environments and support evidence-based decision-making for organizations working to 
-improve nutrition and health outcomes.
-</p>
-
-<p>
-Winxlibrary continues to evolve by integrating user feedback and adapting to the growing needs of 
-nutrition and public health programs worldwide.
+We prioritize usability, reliability, and real-world impact, supporting evidence-based decision-making 
+for organizations working to improve nutrition and health outcomes.
 </p>
 
 </div>
