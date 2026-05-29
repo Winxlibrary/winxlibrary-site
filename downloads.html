@@ -40,10 +40,25 @@ body {
   border-radius: 6px;
   font-weight: bold;
 }
+.button:hover {
+  background: #2f86c3;
+}
 .note {
   font-size: 12px;
   color: gray;
   margin-top: 10px;
+}
+.old-list li {
+  margin-bottom: 8px;
+}
+.badge {
+  background: #eaf7ee;
+  color: #1f6b37;
+  border: 1px solid #c7ebd2;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-left: 5px;
 }
 </style>
 </head>
@@ -58,27 +73,59 @@ body {
 </div>
 
 <div class="container">
+
 <img src="logo.png" alt="WinxLibrary Logo" width="150">
 <h1>Downloads</h1>
 
+<!-- ✅ Latest Version -->
 <div class="card">
   <h3>IYCF Analyse</h3>
-  <p><strong>Latest Version:</strong> v1.1.1</p>
+  <p>
+    <strong>Latest Version:</strong> v1.2.0 
+    <span class="badge">Recommended</span>
+  </p>
 
   <p>
     Download the latest version of the IYCF Analyse desktop application.
     Access requires a short form to help us understand usage and improve the tool.
   </p>
 
-  <!-- ✅ This is your Google Form link -->
-<a href="https://forms.gle/T4kExwYP69VGXW7FA" class="button" target="_blank">
-  Start Download Process
-</a>
+  <a href="https://forms.gle/T4kExwYP69VGXW7FA" class="button" target="_blank">
+    Start Download Process
+  </a>
 
+  <p class="note">
+    You will be redirected to a short form. After submission, your download will start automatically.
+  </p>
+</div>
 
- <p class="note">
-  You will be redirected to a short form. After submission, your download will start automatically.
-</p>
+<!-- ✅ Previous Versions -->
+<div class="card">
+  <h3>Previous Versions</h3>
+
+  <p>
+    Earlier releases are available for reference and compatibility.
+  </p>
+
+  <ul class="old-list">
+    <li>
+      <strong>v1.1.1</strong> –
+      <a href="https://github.com/Winxlibrary/iycf-analyse/releases/tag/v1.1.1" target="_blank">
+        View Release
+      </a>
+    </li>
+
+    <li>
+      <strong>v1.1.0</strong> –
+      <a href="https://github.com/Winxlibrary/iycf-analyse/releases/tag/v1.1.0" target="_blank">
+        View Release
+      </a>
+    </li>
+  </ul>
+
+  <p class="note">
+    Older versions are kept for transparency, debugging, and reproducibility.
+  </p>
 </div>
 
 </div>
