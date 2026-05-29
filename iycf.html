@@ -505,7 +505,7 @@
       const data = await res.json();
 
       const latest = data.latestVersion || CURRENT_VERSION;
-      const notes = data.releaseNotesUrl || "downloads.html";
+      const notes = "#releaseNotesSection";
 
       if (latestVersionEl) latestVersionEl.textContent = latest;
       if (releaseNotesEl) releaseNotesEl.href = notes;
