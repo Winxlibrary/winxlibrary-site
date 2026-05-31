@@ -40,6 +40,8 @@
     }
     .button.secondary{background:#6c7a89;}
     .button.danger{background:#c0392b;}
+    .button.success{background:#1f7a3a;}
+    .button.warning{background:#8a6d00;}
     .btnRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
 
     input, select{
@@ -101,7 +103,6 @@
     }
     .finalTitle{font-weight:bold; margin-bottom:6px;}
     .loading{font-size:13px; color:#5d6d7e;}
-
     .stepBox{border:1px dashed #d9e2ea; padding:12px; border-radius:12px; background:#fbfdff;}
     .checkline { font-weight:normal; display:block; margin:6px 0; }
     .pathList{margin:8px 0 0 18px; padding:0;}
@@ -117,6 +118,15 @@
       font-size:13px;
     }
     .hidden { display:none; }
+
+    .savedPanel{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:#f8fbfd;
+      border:1px solid #dbe7ef;
+      font-size:13px;
+    }
   </style>
 </head>
 
@@ -133,7 +143,7 @@
 
   <div class="container">
     <div style="text-align:center; margin-top:10px;">
-      <img src="logo.png" width="90"><br>
+      <img src="logo.png" alt="Winxlibrary Logo" width="90"><br>
     </div>
     <div style="text-align:center; margin-top:10px;">
       <h2>Nutrition Assessment Reference Tools</h2>
@@ -277,7 +287,7 @@
     <!-- ===================================================== -->
     <div class="card">
       <div style="text-align:center; margin-top:8px;">
-        <h3>Child  Assessment  Care  Desicion  Making  Wizard (for IMAM care) THE WINX WIZARD  Based On Uganda IMAM Guildelines 2025</h3>
+        <h3>Child Assessment Care Desicion Making Wizard (for IMAM care) THE WINX WIZARD Based On Uganda IMAM Guidelines 2025</h3>
       </div>
       <div style="text-align:center; margin-top:8px;">
         <div class="muted">Workflow: Triage → Basic Info → MUAC/Oedema → WHZ (only if MUAC is yellow and no oedema) → Clinical Assessment → Result</div>
@@ -286,27 +296,24 @@
       <!-- Step 1: TRIAGE -->
       <div id="w1" class="stepBox">
         <h4>Step 1: Triage / IMCI Danger Signs</h4>
-
         <label class="checkline"><input type="checkbox" id="wDanger"> Danger signs present</label>
         <label class="checkline"><input type="checkbox" id="wStabilized" checked> Child stabilized</label>
-
         <div id="w1Hint" class="warnBox hidden"></div>
-
         <div class="btnRow">
           <button class="button" type="button" onclick="wizNextFromTriage()">Next</button>
         </div>
       </div>
 
       <!-- Step 2: BASIC INFO -->
-
-      <label>Patient ID</label>
-     <input id="wizPatientId" placeholder="e.g. OPD-2026-001">
-
-          
       <div id="w2" class="stepBox" style="display:none;">
         <h4>Step 2: Basic Info</h4>
+
+        <label>Patient ID</label>
+        <input id="wizPatientId" placeholder="e.g. OPD-2026-001">
+
         <label>Facility Name</label>
-       <input id="wizFacility" placeholder="e.g. Magezi Hospital">
+        <input id="wizFacility" placeholder="e.g. Magezi Hospital">
+
         <label>Sex</label>
         <select id="wizSex">
           <option value="boy">Boy</option>
@@ -397,9 +404,18 @@
         <h4>Step 6: Result</h4>
         <div class="btnRow">
           <button class="button" type="button" onclick="calculateWizard()">Calculate</button>
+          <button class="button success" type="button" onclick="saveCurrentRecord()">Save Record</button>
           <button class="button secondary" type="button" onclick="printWizard()">Print Report</button>
+          <button class="button warning" type="button" onclick="downloadExcel()">Download Excel (CSV)</button>
+          <button class="button danger" type="button" onclick="clearSavedData()">Clear Saved Data</button>
           <button class="button danger" type="button" onclick="wizReset()">Restart</button>
         </div>
+
+        <div class="savedPanel">
+          <div><b>Saved records:</b> <span id="savedCount">0</span></div>
+          <div class="muted">Records are stored in this browser until you clear them.</div>
+        </div>
+
         <div id="wizResult" class="result"><span class="loading">Click “Calculate” to generate results…</span></div>
       </div>
     </div>
@@ -407,6 +423,134 @@
 
 <script>
   console.log("JS WORKING ✅");
+
+  /* =========================================================
+     PERSISTENT STORAGE
+  ========================================================= */
+  const STORAGE_KEY = "winxlibrary_imam_records_v1";
+  let patientRecords = [];
+
+  function loadSavedRecords(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      patientRecords = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(patientRecords)) patientRecords = [];
+    } catch (e) {
+      patientRecords = [];
+    }
+    updateSavedCount();
+  }
+
+  function saveRecordsToStorage(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(patientRecords));
+    updateSavedCount();
+  }
+
+  function updateSavedCount(){
+    const el = document.getElementById("savedCount");
+    if (el) el.textContent = patientRecords.length;
+  }
+
+  function escapeCSV(value){
+    const v = value == null ? "" : String(value);
+    if (/[",\n]/.test(v)) {
+      return '"' + v.replace(/"/g, '""') + '"';
+    }
+    return v;
+  }
+
+  function saveCurrentRecord(){
+    if (!window.__lastWizard || !window.__lastWizard.ok) {
+      alert("Calculate a result before saving.");
+      return;
+    }
+
+    const model = window.__lastWizard;
+    const { input, z, decision, pathway } = model;
+
+    const record = {
+      savedAt: new Date().toLocaleString(),
+      patientId: input.patientId || "",
+      facility: input.facility || "",
+      sex: input.sex || "",
+      ageMonths: input.ageMonths ?? "",
+      muacCm: isFinite(input.muacCm) ? input.muacCm : "",
+      oedema: input.oedema || "",
+      weightKg: isFinite(input.weightKg) ? input.weightKg : "",
+      heightCm: isFinite(input.heightCm) ? input.heightCm : "",
+      whz: isFinite(z.whz) ? Number(z.whz.toFixed(2)) : "",
+      wfa: isFinite(z.wfa) ? Number(z.wfa.toFixed(2)) : "",
+      hfa: isFinite(z.hfa) ? Number(z.hfa.toFixed(2)) : "",
+      pathway: pathway || "",
+      decision: decision.label || ""
+    };
+
+    patientRecords.push(record);
+    saveRecordsToStorage();
+    alert("Record saved locally.");
+  }
+
+  function downloadExcel(){
+    if (!patientRecords.length) {
+      alert("No saved records to export.");
+      return;
+    }
+
+    const headers = [
+      "Saved At",
+      "Patient ID",
+      "Facility",
+      "Sex",
+      "Age (months)",
+      "MUAC (cm)",
+      "Oedema",
+      "Weight (kg)",
+      "Height/Length (cm)",
+      "WHZ",
+      "WFA",
+      "HFA",
+      "Pathway",
+      "Decision"
+    ];
+
+    const rows = patientRecords.map(r => [
+      r.savedAt,
+      r.patientId,
+      r.facility,
+      r.sex,
+      r.ageMonths,
+      r.muacCm,
+      r.oedema,
+      r.weightKg,
+      r.heightCm,
+      r.whz,
+      r.wfa,
+      r.hfa,
+      r.pathway,
+      r.decision
+    ]);
+
+    const csv = [headers, ...rows]
+      .map(row => row.map(escapeCSV).join(","))
+      .join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Winxlibrary_IMAM_Records.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function clearSavedData(){
+    if (!confirm("Clear all saved patient records from this browser?")) return;
+    patientRecords = [];
+    saveRecordsToStorage();
+    alert("Saved data cleared.");
+  }
 
   /* =========================================================
      DATA LOADING
@@ -431,6 +575,7 @@
   }
 
   (async function boot(){
+    loadSavedRecords();
     try{
       const [
         bmiB, bmiG,
@@ -789,6 +934,8 @@
   }
 
   function wizReset(){
+    document.getElementById("wizPatientId").value = "";
+    document.getElementById("wizFacility").value = "";
     document.getElementById("wizSex").value = "boy";
     document.getElementById("wizAge").value = "";
     document.getElementById("wizMuac").value = "";
@@ -807,11 +954,11 @@
 
     window.__lastWizard = null;
     wizGo(1);
+    updateSavedCount();
   }
 
   function wizNextFromTriage(){
     showHint("w1Hint", "");
-
     const danger = document.getElementById("wDanger").checked;
     const stabilized = document.getElementById("wStabilized").checked;
 
@@ -819,7 +966,6 @@
       showHint("w1Hint", "Child requires emergency / inpatient care. Continue only after stabilization.");
       return;
     }
-
     wizGo(2);
   }
 
@@ -834,7 +980,6 @@
       alert("Wizard supports children aged 0–59 months only.");
       return;
     }
-
     wizGo(3);
   }
 
@@ -846,7 +991,6 @@
 
   function wizNextFromMuac(){
     showHint("w3Hint", "");
-
     const muacCm = parseFloat(document.getElementById("wizMuac").value);
     const oedema = document.getElementById("wOedema").value;
 
@@ -871,7 +1015,6 @@
   function wizBackFromClinical(){
     const muacCm = parseFloat(document.getElementById("wizMuac").value);
     const oedema = document.getElementById("wOedema").value;
-
     if (wizardNeedsWHZ(muacCm, oedema)) wizGo(4);
     else wizGo(3);
   }
@@ -952,22 +1095,22 @@
     const bWHZ = classifyZ(zWhz, "SAM", "MAM");
     const bWFA = classifyZ(zWfa, "Severe Underweight", "Underweight");
     const bHFA = classifyZ(zHfa, "Severe Stunting", "Stunted");
-    const bMU  = classifyMuac(muacCm);
+    const bMU = classifyMuac(muacCm);
 
     const appetiteRequired = isSAM && oedema !== "plus3";
 
     return {
       ok: true,
- input: {
-  sex,
-  ageMonths: age,
-  weightKg,
-  heightCm,
-  muacCm,
-  oedema,
-  patientId: data.patientId,
-  facility: data.facility
-},
+      input: {
+        sex,
+        ageMonths: age,
+        weightKg,
+        heightCm,
+        muacCm,
+        oedema,
+        patientId: data.patientId,
+        facility: data.facility
+      },
       z: { whz: zWhz, wfa: zWfa, hfa: zHfa },
       badges: { whz: bWHZ, wfa: bWFA, hfa: bHFA, muac: bMU },
       hasOedema,
@@ -978,136 +1121,135 @@
     };
   }
 
-function buildWizardDecision(model, flags){
-  const path = [];
+  function buildWizardDecision(model, flags){
+    const path = [];
 
-  // 1) TRIAGE FIRST
-  if (flags.danger || !flags.stabilized) {
-    if (flags.danger) path.push("Danger/emergency signs present");
-    if (!flags.stabilized) path.push("Child not stabilized");
-    return {
-      decision: { label: "EMERGENCY / INPATIENT CARE", cls: "bg-red" },
-      pathway: "Emergency",
-      path
-    };
-  }
-
-  // 2) SAM PATHWAY
-  if (model.isSAM) {
-    // --- NEW FIX: Oedema +++ must go directly to inpatient / in-depth assessment ---
-    if (model.input.oedema === "plus3") {
-      path.push("Bilateral oedema +++");
-      path.push("Needs in-depth assessment");
-      path.push("Appetite test not required for oedema +++");
+    // 1) TRIAGE FIRST
+    if (flags.danger || !flags.stabilized) {
+      if (flags.danger) path.push("Danger/emergency signs present");
+      if (!flags.stabilized) path.push("Child not stabilized");
       return {
-        decision: { label: "INPATIENT ADMISSION DECISION", cls: "bg-red" },
-        pathway: "SAM",
+        decision: { label: "EMERGENCY / INPATIENT CARE", cls: "bg-red" },
+        pathway: "Emergency",
         path
       };
     }
 
-    // Oedema + or ++
-    if (model.hasOedema) {
-      path.push("Bilateral oedema present");
-    }
-
-    if (isFinite(model.input.muacCm) && model.input.muacCm < 11.5) {
-      path.push("MUAC < 11.5 cm");
-    }
-
-    if (
-      !model.hasOedema &&
-      !(model.input.muacCm < 11.5) &&
-      model.usedWHZ &&
-      isFinite(model.z.whz) &&
-      model.z.whz < -3
-    ) {
-      path.push("WHZ < -3 (fallback classification)");
-    }
-
-    // For SAM (except oedema +++), appetite test still matters
-    if (model.appetiteRequired) {
-      if (flags.appetite === "fail") {
-        path.push("Appetite test failed");
+    // 2) SAM PATHWAY
+    if (model.isSAM) {
+      // Oedema +++ direct inpatient decision
+      if (model.input.oedema === "plus3") {
+        path.push("Bilateral oedema +++");
+        path.push("Needs in-depth assessment");
+        path.push("Appetite test not required for oedema +++");
         return {
-          decision: { label: "ADMIT: INPATIENT (SAM - FAILED APPETITE TEST)", cls: "bg-red" },
+          decision: { label: "INPATIENT ADMISSION DECISION", cls: "bg-red" },
           pathway: "SAM",
           path
         };
       }
-      path.push("Appetite test passed");
-    }
 
-    if (flags.imci) {
-      path.push("IMCI medical problems present");
+      if (model.hasOedema) {
+        path.push("Bilateral oedema present");
+      }
+
+      if (isFinite(model.input.muacCm) && model.input.muacCm < 11.5) {
+        path.push("MUAC < 11.5 cm");
+      }
+
+      if (
+        !model.hasOedema &&
+        !(model.input.muacCm < 11.5) &&
+        model.usedWHZ &&
+        isFinite(model.z.whz) &&
+        model.z.whz < -3
+      ) {
+        path.push("WHZ < -3 (fallback classification)");
+      }
+
+      // For SAM (except oedema +++), appetite still matters
+      if (model.appetiteRequired) {
+        if (flags.appetite === "fail") {
+          path.push("Appetite test failed");
+          return {
+            decision: { label: "ADMIT: INPATIENT (SAM - FAILED APPETITE TEST)", cls: "bg-red" },
+            pathway: "SAM",
+            path
+          };
+        }
+        path.push("Appetite test passed");
+      }
+
+      if (flags.imci) {
+        path.push("IMCI medical problems present");
+        return {
+          decision: { label: "ADMIT: INPATIENT (SAM WITH MEDICAL PROBLEMS)", cls: "bg-red" },
+          pathway: "SAM",
+          path
+        };
+      }
+
+      path.push("Stable SAM pathway for outpatient care");
       return {
-        decision: { label: "ADMIT: INPATIENT (SAM WITH MEDICAL PROBLEMS)", cls: "bg-red" },
+        decision: { label: "OUTPATIENT CARE (SAM / OTC)", cls: "bg-yellow" },
         pathway: "SAM",
         path
       };
     }
 
-    path.push("Stable SAM pathway for outpatient care");
-    return {
-      decision: { label: "OUTPATIENT CARE (SAM / OTC)", cls: "bg-yellow" },
-      pathway: "SAM",
-      path
-    };
-  }
+    // 3) MAM PATHWAY
+    if (model.isMAM) {
+      if (isFinite(model.input.muacCm) && model.input.muacCm >= 11.5 && model.input.muacCm < 12.5) {
+        path.push("MUAC 11.5 to <12.5 cm");
+      }
 
-  // 3) MAM PATHWAY
-  if (model.isMAM) {
-    if (isFinite(model.input.muacCm) && model.input.muacCm >= 11.5 && model.input.muacCm < 12.5) {
-      path.push("MUAC 11.5 to <12.5 cm");
-    }
+      if (model.usedWHZ && isFinite(model.z.whz) && model.z.whz >= -3 && model.z.whz < -2) {
+        path.push("WHZ -3 to < -2");
+      }
 
-    if (model.usedWHZ && isFinite(model.z.whz) && model.z.whz >= -3 && model.z.whz < -2) {
-      path.push("WHZ -3 to < -2");
-    }
+      const riskFlags = [];
+      if (flags.relapse) riskFlags.push("Failed/relapsed previous MAM");
+      if (flags.prevSAM) riskFlags.push("Previous SAM");
+      if (flags.social) riskFlags.push("Severe social factors");
 
-    const riskFlags = [];
-    if (flags.relapse) riskFlags.push("Failed/relapsed previous MAM");
-    if (flags.prevSAM) riskFlags.push("Previous SAM");
-    if (flags.social) riskFlags.push("Severe social factors");
+      if (flags.imci) path.push("IMCI medical problems present");
+      riskFlags.forEach(r => path.push(r));
 
-    if (flags.imci) path.push("IMCI medical problems present");
-    riskFlags.forEach(r => path.push(r));
+      if (flags.imci || riskFlags.length > 0) {
+        return {
+          decision: { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS): In-patient for Medical, Nutritional and Psychosocial Care", cls: "bg-red" },
+          pathway: "MAM",
+          path
+        };
+      }
 
-    if (flags.imci || riskFlags.length > 0) {
+      path.push("MAM without added risk factors");
       return {
-        decision: { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS): In-patient for Medical, Nutritional and Psychosocial Care", cls: "bg-red" },
+        decision: { label: "OUTPATIENT CARE (MAM): For Medical, Nutritional, Psychosocial care and other Child Health Services", cls: "bg-yellow" },
         pathway: "MAM",
         path
       };
     }
 
-    path.push("MAM without added risk factors");
+    // 4) NOT SAM / MAM
+    if (flags.imci) {
+      path.push("No SAM/MAM admission threshold met from MUAC and oedema");
+      path.push("IMCI medical problems present");
+      return {
+        decision: { label: "INPATIENT CARE (MEDICAL / IMCI)", cls: "bg-red" },
+        pathway: "Normal / Medical",
+        path
+      };
+    }
+
+    path.push("MUAC is not red or yellow");
+    path.push("No oedema");
     return {
-      decision: { label: "OUTPATIENT CARE (MAM): For Medical, Nutritional, Psychosocial care and other Child Health Services", cls: "bg-yellow" },
-      pathway: "MAM",
+      decision: { label: "NORMAL / ROUTINE CARE", cls: "bg-green" },
+      pathway: "Normal",
       path
     };
   }
-
-  // 4) NOT SAM / MAM
-  if (flags.imci) {
-    path.push("No SAM/MAM admission threshold met from MUAC and oedema");
-    path.push("IMCI medical problems present");
-    return {
-      decision: { label: "INPATIENT CARE (MEDICAL / IMCI)", cls: "bg-red" },
-      pathway: "Normal / Medical",
-      path
-    };
-  }
-
-  path.push("MUAC is not red or yellow");
-  path.push("No oedema");
-  return {
-    decision: { label: "NORMAL / ROUTINE CARE", cls: "bg-green" },
-    pathway: "Normal",
-    path
-  };
-}
 
   function renderWizard(model){
     const out = document.getElementById("wizResult");
@@ -1126,6 +1268,26 @@ function buildWizardDecision(model, flags){
           <div class="row-sub">IMAM care decision track</div>
         </div>
         <span class="badge bg-gray">${pathway}</span>
+      </div>
+    `);
+
+    rows.push(`
+      <div class="row">
+        <div class="row-left">
+          <div class="row-title">Patient ID</div>
+          <div class="row-sub">Identifier</div>
+        </div>
+        <span class="badge bg-gray">${input.patientId || "-"}</span>
+      </div>
+    `);
+
+    rows.push(`
+      <div class="row">
+        <div class="row-left">
+          <div class="row-title">Facility</div>
+          <div class="row-sub">Point of care</div>
+        </div>
+        <span class="badge bg-gray">${input.facility || "-"}</span>
       </div>
     `);
 
@@ -1290,6 +1452,7 @@ function buildWizardDecision(model, flags){
 
       window.__lastWizard = model;
       renderWizard(model);
+      updateSavedCount();
 
     } catch (err) {
       console.error(err);
@@ -1304,12 +1467,11 @@ function buildWizardDecision(model, flags){
     const { input, z, badges, decision, path, pathway, flags, usedWHZ } = model;
     const now = new Date();
 
-const html = `
+    const html = `
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Report Based on Uganda IMAM Guidelines 2025</title>
-
+<title>Winxlibrary IMAM Report</title>
 <style>
 body{font-family:Arial;padding:20px;}
 .muted{color:#5d6d7e;}
@@ -1322,73 +1484,67 @@ td{padding:6px;border-bottom:1px solid #eee;}
 .green{background:#e7f7ee;color:#1f7a3a;}
 .gray{background:#eef3f7;color:#2c3e50;}
 </style>
-
 </head>
-
 <body>
 
-<!-- ✅ LOGO + HEADER -->
 <div style="text-align:center;">
-  <img src="${window.location.origin + '/logo.png'}" width="90"><br>
+  <img src="logo.png" width="90"><br>
   <h2>Winxlibrary IMAM Assessment Report</h2>
-  <div>${model.input.facility || ""}</div>
-  <div class="muted">${new Date().toLocaleString()}</div>
+  <div>${input.facility || ""}</div>
+  <div class="muted">${now.toLocaleString()}</div>
 </div>
 
-      <div class="box">
-        <b>Inputs</b>
-        <table>
-          <tr><td>Patient ID</td><td>${input.patientId || "-"}</td></tr>
-          <tr><td>Facility</td><td>${input.facility || "-"}</td></tr>
-          <tr><td>Sex</td><td>${input.sex}</td></tr>
-          <tr><td>Age</td><td>${input.ageMonths} months</td></tr>
-          <tr><td>Weight</td><td>${isFinite(input.weightKg) ? input.weightKg + " kg" : "Not entered"}</td></tr>
-          <tr><td>Height/Length</td><td>${isFinite(input.heightCm) ? input.heightCm + " cm" : "Not entered"}</td></tr>
-          <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) + " cm" : "N/A"}</td></tr>
-          <tr><td>Oedema</td><td>${input.oedema}</td></tr>
-          <tr><td>Danger signs</td><td>${flags.danger ? "Yes" : "No"}</td></tr>
-          <tr><td>Stabilized</td><td>${flags.stabilized ? "Yes" : "No"}</td></tr>
-          <tr><td>Appetite result</td><td>${model.appetiteRequired ? flags.appetite : "Not required"}</td></tr>
-          <tr><td>IMCI medical problems</td><td>${flags.imci ? "Yes" : "No"}</td></tr>
-          <tr><td>Failed/Relapsed previous MAM</td><td>${flags.relapse ? "Yes" : "No"}</td></tr>
-          <tr><td>Previous SAM</td><td>${flags.prevSAM ? "Yes" : "No"}</td></tr>
-          <tr><td>Severe social factors</td><td>${flags.social ? "Yes" : "No"}</td></tr>
-        </table>
-      </div>
+<div class="box">
+  <b>Inputs</b>
+  <table>
+    <tr><td>Patient ID</td><td>${input.patientId || "-"}</td></tr>
+    <tr><td>Facility</td><td>${input.facility || "-"}</td></tr>
+    <tr><td>Sex</td><td>${input.sex}</td></tr>
+    <tr><td>Age</td><td>${input.ageMonths} months</td></tr>
+    <tr><td>Weight</td><td>${isFinite(input.weightKg) ? input.weightKg + " kg" : "Not entered"}</td></tr>
+    <tr><td>Height/Length</td><td>${isFinite(input.heightCm) ? input.heightCm + " cm" : "Not entered"}</td></tr>
+    <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) + " cm" : "N/A"}</td></tr>
+    <tr><td>Oedema</td><td>${input.oedema}</td></tr>
+    <tr><td>Danger signs</td><td>${flags.danger ? "Yes" : "No"}</td></tr>
+    <tr><td>Stabilized</td><td>${flags.stabilized ? "Yes" : "No"}</td></tr>
+    <tr><td>Appetite result</td><td>${model.appetiteRequired ? flags.appetite : "Not required"}</td></tr>
+    <tr><td>IMCI medical problems</td><td>${flags.imci ? "Yes" : "No"}</td></tr>
+    <tr><td>Failed/Relapsed previous MAM</td><td>${flags.relapse ? "Yes" : "No"}</td></tr>
+    <tr><td>Previous SAM</td><td>${flags.prevSAM ? "Yes" : "No"}</td></tr>
+    <tr><td>Severe social factors</td><td>${flags.social ? "Yes" : "No"}</td></tr>
+  </table>
+</div>
 
-      <div class="box">
-        <b>Z-scores & Classification</b>
-        <table>
-          <tr><td>Pathway</td><td colspan="2">${pathway}</td></tr>
-          <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"}</td><td>${badges.muac.text}</td></tr>
-          <tr><td>Oedema</td><td colspan="2">${input.oedema}</td></tr>
-          <tr><td>WHZ</td><td>${usedWHZ && isFinite(z.whz) ? z.whz.toFixed(2) : "Not used"}</td><td>${usedWHZ ? badges.whz.text : ""}</td></tr>
-          <tr><td>WFA</td><td>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</td><td>${isFinite(z.wfa) ? badges.wfa.text : ""}</td></tr>
-          <tr><td>HFA</td><td>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</td><td>${isFinite(z.hfa) ? badges.hfa.text : ""}</td></tr>
-        </table>
-      </div>
+<div class="box">
+  <b>Z-scores & Classification</b>
+  <table>
+    <tr><td>Pathway</td><td colspan="2">${pathway}</td></tr>
+    <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"}</td><td>${badges.muac.text}</td></tr>
+    <tr><td>Oedema</td><td colspan="2">${input.oedema}</td></tr>
+    <tr><td>WHZ</td><td>${usedWHZ && isFinite(z.whz) ? z.whz.toFixed(2) : "Not used"}</td><td>${usedWHZ ? badges.whz.text : ""}</td></tr>
+    <tr><td>WFA</td><td>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</td><td>${isFinite(z.wfa) ? badges.wfa.text : ""}</td></tr>
+    <tr><td>HFA</td><td>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</td><td>${isFinite(z.hfa) ? badges.hfa.text : ""}</td></tr>
+  </table>
+</div>
 
-      <div class="box">
-        <b>Admission Decision</b><br>
-        <span class="tag ${decision.cls.includes("red") ? "red" : decision.cls.includes("yellow") ? "yellow" : decision.cls.includes("green") ? "green" : "gray"}">${decision.label}</span>
-        <div class="muted" style="margin-top:10px;"><b>Decision path</b></div>
-        <ul>
-          ${(path || []).map(item => `<li>${item}</li>`).join("")}
-        </ul>
-        <div class="muted" style="margin-top:10px;">
-          Below-normal zones: Z &lt; -3 (Severe), -3 ≤ Z &lt; -2 (Moderate)
-        </div>
-      </div>
-      
- 
-      <!-- FOOTER -->
-     <div style="margin-top:30px; text-align:center; font-size:12px; color:#7f8c8d; border-top:1px solid #eee; padding-top:10px;">
-     © Winxlibrary.com | IMAM Clinical Decision Support Tool
-     </div>
+<div class="box">
+  <b>Admission Decision</b><br>
+  <span class="tag ${decision.cls.includes("red") ? "red" : decision.cls.includes("yellow") ? "yellow" : decision.cls.includes("green") ? "green" : "gray"}">${decision.label}</span>
+  <div class="muted" style="margin-top:10px;"><b>Decision path</b></div>
+  <ul>
+    ${(path || []).map(item => `<li>${item}</li>`).join("")}
+  </ul>
+  <div class="muted" style="margin-top:10px;">
+    Below-normal zones: Z &lt; -3 (Severe), -3 ≤ Z &lt; -2 (Moderate)
+  </div>
+</div>
 
+<div style="margin-top:30px; text-align:center; font-size:12px; color:#7f8c8d; border-top:1px solid #eee; padding-top:10px;">
+  © Winxlibrary.com | IMAM Clinical Decision Support Tool
+</div>
 
-
-    </body></html>`;
+</body>
+</html>`;
 
     const w = window.open("", "_blank");
     w.document.open();
