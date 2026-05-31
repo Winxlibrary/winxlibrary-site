@@ -277,7 +277,7 @@
     <!-- ===================================================== -->
     <div class="card">
       <div style="text-align:center; margin-top:8px;">
-        <h3>Child Assessment Care Desicion Making Wizard (for IMAM care)</h3>
+        <h3>Child Assessment Care Desicion Making Winxlib-Wizard (for IMAM care Based On Uganda IMAM Guidelines 2025)</h3>
       </div>
       <div style="text-align:center; margin-top:8px;">
         <div class="muted">MUAC and oedema decide first. WHZ is only used when MUAC is yellow and there is no oedema.</div>
@@ -1017,7 +1017,7 @@
 
       if (flags.imci || riskFlags.length > 0) {
         return {
-          decision: { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS)", cls: "bg-red" },
+          decision: { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS): In-patient for Medical, Nutritional and Psychosocial Care", cls: "bg-red" },
           pathway: "MAM",
           path
         };
@@ -1025,7 +1025,7 @@
 
       path.push("MAM without added risk factors");
       return {
-        decision: { label: "OUTPATIENT CARE (MAM)", cls: "bg-yellow" },
+        decision: { label: "OUTPATIENT CARE (MAM): For Medical, Nutritional, Psychosocial care and other Child Health Services", cls: "bg-yellow" },
         pathway: "MAM",
         path
       };
