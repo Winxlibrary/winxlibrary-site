@@ -271,121 +271,110 @@
       <div id="bmiResult" class="result"><span class="loading">Waiting for input…</span></div>
     </div>
 
-    <!-- ===================================================== -->
-    <!-- ✅ IMAM WIZARD -->
-    <!-- ===================================================== -->
-    <div class="card">
-      <div style="text-align:center; margin-top:8px;">
-        <h3>Child Assessment Care Desicion Making Wizard (for IMAM care)</h3>
-      </div>
-      <div style="text-align:center; margin-top:8px;">
-        <div class="muted">Steps: Sex → Age → Weight → Height → MUAC → Oedema → Result</div>
-      </div>
+<!-- ===================================================== -->
+<!-- ✅ IMAM WIZARD -->
+<!-- ===================================================== -->
+<div class="card">
+  <div style="text-align:center; margin-top:8px;">
+    <h3>Child Assessment Care Desicion Making Wizard (for IMAM care)</h3>
+  </div>
 
-      <!-- Step 1 -->
-      <div id="w1" class="stepBox">
-        <h4>Step 1: Sex</h4>
-        <select id="wizSex">
-          <option value="boy">Boy</option>
-          <option value="girl">Girl</option>
-        </select>
-        <div class="btnRow">
-          <button class="button" type="button" onclick="wizGo(2)">Next</button>
-        </div>
-      </div>
+  <!-- Step 1 -->
+  <div id="w1" class="stepBox">
+    <h4>Step 1: Basic Info</h4>
+    <label>Sex</label>
+    <select id="wizSex">
+      <option value="boy">Boy</option>
+      <option value="girl">Girl</option>
+    </select>
 
-      <!-- Step 2 -->
-      <div id="w2" class="stepBox" style="display:none;">
-        <h4>Step 2: Age (months)</h4>
-        <input id="wizAge" type="number" min="0" max="59" placeholder="0–59" />
-        <div class="btnRow">
-          <button class="button secondary" type="button" onclick="wizGo(1)">Back</button>
-          <button class="button" type="button" onclick="wizGo(3)">Next</button>
-        </div>
-      </div>
+    <label>Age (months)</label>
+    <input id="wizAge" type="number" min="0" max="59">
 
-      <!-- Step 3 -->
-      <div id="w3" class="stepBox" style="display:none;">
-        <h4>Step 3: Weight (kg)</h4>
-        <input id="wizWeight" type="number" step="0.1" />
-        <div class="btnRow">
-          <button class="button secondary" type="button" onclick="wizGo(2)">Back</button>
-          <button class="button" type="button" onclick="wizGo(4)">Next</button>
-        </div>
-      </div>
-
-      <!-- Step 4 -->
-      <div id="w4" class="stepBox" style="display:none;">
-        <h4>Step 4: Height/Length (cm)</h4>
-        <input id="wizHeight" type="number" step="0.1" />
-        <div class="btnRow">
-          <button class="button secondary" type="button" onclick="wizGo(3)">Back</button>
-          <button class="button" type="button" onclick="wizGo(5)">Next</button>
-        </div>
-      </div>
-
-      <!-- Step 5 -->
-      <div id="w5" class="stepBox" style="display:none;">
-        <h4>Step 5: MUAC (cm)</h4>
-        <input id="wizMuac" type="number" step="0.1" placeholder="e.g. 12.0" />
-        <div class="btnRow">
-          <button class="button secondary" type="button" onclick="wizGo(4)">Back</button>
-          <button class="button" type="button" onclick="wizGo(6)">Next</button>
-        </div>
-      </div>
-
-      <!-- Step 6 -->
-      <div id="w6" class="stepBox" style="display:none;">
-        <h4>Step 6: Oedema</h4>
-
-        <select id="wOedema">
-          <option value="none">None</option>
-          <option value="plus1">+ (mild)</option>
-          <option value="plus2">++ (moderate)</option>
-          <option value="plus3">+++ (severe)</option>
-        </select>
-
-        <label class="checkline"><input type="checkbox" id="wDanger"> Danger/Emergency signs present?</label>
-        <label class="checkline"><input type="checkbox" id="wStabilized" checked> Child stabilized?</label>
-
-        <hr>
-
-        <label>Appetite test (shown only if required)</label>
-        <select id="wAppetite" style="display:none;">
-          <option value="pass">Pass</option>
-          <option value="fail">Fail</option>
-        </select>
-        <div id="wAppetiteHint" class="muted" style="display:none;"></div>
-
-        <hr>
-
-        <label class="checkline"><input type="checkbox" id="wIMCI"> IMCI medical problems?</label>
-        <label class="checkline"><input type="checkbox" id="wInDepth"> Need in-depth assessment?</label>
-
-        <label class="muted" style="margin-top:8px;">Risk factors (MAM band)</label>
-        <label class="checkline"><input type="checkbox" id="wRelapse"> Failed/Relapsed previous MAM?</label>
-        <label class="checkline"><input type="checkbox" id="wPrevSAM"> Previous SAM?</label>
-        <label class="checkline"><input type="checkbox" id="wSocial"> Severe social factors?</label>
-
-        <div id="wStep6Warn" class="warnBox" style="display:none;"></div>
-
-        <div class="btnRow">
-          <button class="button secondary" type="button" onclick="wizGo(5)">Back</button>
-          <button class="button" type="button" onclick="if (prepareWizardStep()) wizGo(7)">Next</button>
-        </div>
-      </div>
-
-      <!-- Step 7 -->
-      <div id="w7" class="stepBox" style="display:none;">
-        <h4>Step 7: Result</h4>
-        <div class="btnRow">
-          <button class="button" type="button" onclick="calculateWizard()">Calculate</button>
-          <button class="button secondary" type="button" onclick="printWizard()">Print Report</button>
-          <button class="button danger" type="button" onclick="wizReset()">Restart</button>
-        </div>
-        <div id="wizResult" class="result"><span class="loading">Click “Calculate” to generate results…</span></div>
-      </div>
+    <div class="btnRow">
+      <button class="button" onclick="wizGo(2)">Next</button>
     </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="w2" class="stepBox" style="display:none;">
+    <h4>Step 2: MUAC & Oedema (PRIMARY SCREEN)</h4>
+
+    <label>MUAC (cm)</label>
+    <input id="wizMuac" type="number" step="0.1">
+
+    <label>Oedema</label>
+    <select id="wOedema">
+      <option value="none">None</option>
+      <option value="plus1">+ (mild)</option>
+      <option value="plus2">++ (moderate)</option>
+      <option value="plus3">+++ (severe)</option>
+    </select>
+
+    <div class="btnRow">
+      <button class="button secondary" onclick="wizGo(1)">Back</button>
+      <button class="button" onclick="wizGo(3)">Next</button>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="w3" class="stepBox" style="display:none;">
+    <h4>Step 3: Anthropometry (for WHZ)</h4>
+
+    <label>Weight (kg)</label>
+    <input id="wizWeight" type="number">
+
+    <label>Height (cm)</label>
+    <input id="wizHeight" type="number">
+
+    <div class="btnRow">
+      <button class="button secondary" onclick="wizGo(2)">Back</button>
+      <button class="button" onclick="wizGo(4)">Next</button>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div id="w4" class="stepBox" style="display:none;">
+    <h4>Step 4: Clinical Assessment</h4>
+
+    <label><input type="checkbox" id="wDanger"> Danger signs</label>
+    <label><input type="checkbox" id="wStabilized" checked> Stabilized</label>
+
+    <label><input type="checkbox" id="wIMCI"> IMCI problems</label>
+
+    <hr>
+
+    <label>Appetite test</label>
+    <select id="wAppetite">
+      <option value="pass">Pass</option>
+      <option value="fail">Fail</option>
+    </select>
+
+    <hr>
+
+    <label>Risk factors (MAM)</label>
+    <label><input type="checkbox" id="wRelapse"> Relapse</label>
+    <label><input type="checkbox" id="wPrevSAM"> Previous SAM</label>
+    <label><input type="checkbox" id="wSocial"> Social factors</label>
+
+    <div class="btnRow">
+      <button class="button secondary" onclick="wizGo(3)">Back</button>
+      <button class="button" onclick="wizGo(5)">Next</button>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div id="w5" class="stepBox" style="display:none;">
+    <h4>Result</h4>
+
+    <div class="btnRow">
+      <button class="button" onclick="calculateWizard()">Calculate</button>
+      <button class="button danger" onclick="wizReset()">Restart</button>
+    </div>
+
+    <div id="wizResult" class="result"></div>
+  </div>
+</div>
 
   </div>
 
@@ -826,10 +815,29 @@
     const bHFA = classifyZ(zHfa, "Severe Stunting", "Stunted");
     const bMU  = classifyMuac(muacCm);
 
-    const hasOedema = (oedema === "plus1" || oedema === "plus2" || oedema === "plus3");
-    const isSAM = hasOedema || (isFinite(zWhz) && zWhz < -3) || (isFinite(muacCm) && muacCm < 11.5);
-    const isMAM = !isSAM && (((isFinite(zWhz) && zWhz >= -3 && zWhz < -2) || (isFinite(muacCm) && muacCm >= 11.5 && muacCm < 12.5)));
-    const appetiteRequired = isSAM && oedema !== "plus3";
+const hasOedema = (oedema === "plus1" || oedema === "plus2" || oedema === "plus3");
+
+// ✅ STEP 1: PRIMARY SCREEN → MUAC + OEDEMA ONLY
+const samByMuac = isFinite(muacCm) && muacCm < 11.5;
+const samByOedema = hasOedema;
+
+let isSAM = samByMuac || samByOedema;
+let isMAM = false;
+
+// ✅ STEP 2: ONLY USE WHZ IF NOT SAM
+if (!isSAM) {
+
+  const samByZ = isFinite(zWhz) && zWhz < -3;
+
+  if (samByZ) {
+    isSAM = true; // upgrade to SAM by WHZ
+  } else {
+    const mamByMuac = isFinite(muacCm) && muacCm >= 11.5 && muacCm < 12.5;
+    const mamByZ = isFinite(zWhz) && zWhz >= -3 && zWhz < -2;
+
+    isMAM = mamByMuac || mamByZ;
+  }
+}
 
     return {
       ok: true,
@@ -928,7 +936,7 @@
         else path.push("Bilateral oedema present");
       }
       if (isFinite(model.input.muacCm) && model.input.muacCm < 11.5) path.push("MUAC < 11.5 cm");
-      if (isFinite(model.z.whz) && model.z.whz < -3) path.push("WHZ < -3");
+      if (   !model.hasOedema &&   !(model.input.muacCm < 11.5) &&   isFinite(model.z.whz) &&   model.z.whz < -3 ){   path.push("WHZ < -3 (fallback classification)"); }
 
       if (model.appetiteRequired) {
         if (flags.appetite === "fail") {
@@ -1181,7 +1189,7 @@
     const now = new Date();
 
     const html = `
-    <html><head><meta charset="UTF-8"><title>IMAM Wizard Report</title>
+    <html><head><meta charset="UTF-8"><title> Report Based on Uganda IMAM Guidelines 2025 </title>
     <style>
       body{font-family:Arial;padding:20px;}
       .muted{color:#5d6d7e;}
@@ -1195,7 +1203,7 @@
       .gray{background:#eef3f7;color:#2c3e50;}
       ul{margin:8px 0 0 18px;}
     </style></head><body>
-      <h2>Nutrition Assessment Report (IMAM Wizard)</h2>
+      <h2>Nutrition Assessment Report -IMAM (WINX Wizard)</h2>
       <div class="muted">${now.toLocaleString()}</div>
 
       <div class="box">
@@ -1241,7 +1249,6 @@
         </div>
       </div>
     </body></html>`;
-
     const w = window.open("", "_blank");
     w.document.open();
     w.document.write(html);
