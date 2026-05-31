@@ -277,15 +277,29 @@
     <!-- ===================================================== -->
     <div class="card">
       <div style="text-align:center; margin-top:8px;">
-        <h3>Child Assessment Care Desicion Making Winxlib-Wizard (for IMAM care Based On Uganda IMAM Guidelines 2025)</h3>
+        <h3>Child Assessment Care Desicion Making Wizard (for IMAM care)</h3>
       </div>
       <div style="text-align:center; margin-top:8px;">
-        <div class="muted">MUAC and oedema decide first. WHZ is only used when MUAC is yellow and there is no oedema.</div>
+        <div class="muted">Workflow: Triage → Basic Info → MUAC/Oedema → WHZ (only if MUAC is yellow and no oedema) → Clinical Assessment → Result</div>
       </div>
 
-      <!-- Step 1 -->
+      <!-- Step 1: TRIAGE -->
       <div id="w1" class="stepBox">
-        <h4>Step 1: Basic Info</h4>
+        <h4>Step 1: Triage / IMCI Danger Signs</h4>
+
+        <label class="checkline"><input type="checkbox" id="wDanger"> Danger signs present</label>
+        <label class="checkline"><input type="checkbox" id="wStabilized" checked> Child stabilized</label>
+
+        <div id="w1Hint" class="warnBox hidden"></div>
+
+        <div class="btnRow">
+          <button class="button" type="button" onclick="wizNextFromTriage()">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 2: BASIC INFO -->
+      <div id="w2" class="stepBox" style="display:none;">
+        <h4>Step 2: Basic Info</h4>
 
         <label>Sex</label>
         <select id="wizSex">
@@ -297,13 +311,14 @@
         <input id="wizAge" type="number" min="0" max="59" placeholder="0–59" />
 
         <div class="btnRow">
-          <button class="button" type="button" onclick="wizNextFromStep1()">Next</button>
+          <button class="button secondary" type="button" onclick="wizGo(1)">Back</button>
+          <button class="button" type="button" onclick="wizNextFromBasic()">Next</button>
         </div>
       </div>
 
-      <!-- Step 2 -->
-      <div id="w2" class="stepBox" style="display:none;">
-        <h4>Step 2: MUAC & Oedema (Primary Screen)</h4>
+      <!-- Step 3: MUAC + OEDEMA -->
+      <div id="w3" class="stepBox" style="display:none;">
+        <h4>Step 3: MUAC & Oedema (Primary Screening)</h4>
 
         <label>MUAC (cm)</label>
         <input id="wizMuac" type="number" step="0.1" placeholder="e.g. 11.8" />
@@ -316,39 +331,37 @@
           <option value="plus3">+++ (severe)</option>
         </select>
 
-        <div id="w2Hint" class="warnBox hidden"></div>
-
-        <div class="btnRow">
-          <button class="button secondary" type="button" onclick="wizGo(1)">Back</button>
-          <button class="button" type="button" onclick="wizNextFromStep2()">Next</button>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div id="w3" class="stepBox" style="display:none;">
-        <h4>Step 3: WHZ Anthropometry</h4>
-        <div class="muted">This step is only needed when MUAC is yellow (11.5 to &lt;12.5) and there is no oedema.</div>
-
-        <label>Weight (kg)</label>
-        <input id="wizWeight" type="number" step="0.1" />
-
-        <label>Height/Length (cm)</label>
-        <input id="wizHeight" type="number" step="0.1" />
-
         <div id="w3Hint" class="warnBox hidden"></div>
 
         <div class="btnRow">
           <button class="button secondary" type="button" onclick="wizGo(2)">Back</button>
-          <button class="button" type="button" onclick="wizGo(4)">Next</button>
+          <button class="button" type="button" onclick="wizNextFromMuac()">Next</button>
         </div>
       </div>
 
-      <!-- Step 4 -->
+      <!-- Step 4: WHZ IF NEEDED -->
       <div id="w4" class="stepBox" style="display:none;">
-        <h4>Step 4: Clinical Assessment</h4>
+        <h4>Step 4: WHZ Anthropometry</h4>
+        <div class="muted">Only required when MUAC is yellow (11.5 to &lt;12.5 cm) and there is no oedema.</div>
 
-        <label class="checkline"><input type="checkbox" id="wDanger"> Danger signs present</label>
-        <label class="checkline"><input type="checkbox" id="wStabilized" checked> Child stabilized</label>
+        <label>Weight (kg)</label>
+        <input id="wizWeight" type="number" step="0.1" />
+
+        <label>Height / Length (cm)</label>
+        <input id="wizHeight" type="number" step="0.1" />
+
+        <div id="w4Hint" class="warnBox hidden"></div>
+
+        <div class="btnRow">
+          <button class="button secondary" type="button" onclick="wizGo(3)">Back</button>
+          <button class="button" type="button" onclick="wizGo(5)">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 5: CLINICAL ASSESSMENT -->
+      <div id="w5" class="stepBox" style="display:none;">
+        <h4>Step 5: Clinical Assessment</h4>
+
         <label class="checkline"><input type="checkbox" id="wIMCI"> IMCI medical problems</label>
 
         <hr>
@@ -358,31 +371,29 @@
           <option value="pass">Pass</option>
           <option value="fail">Fail</option>
         </select>
-        <div class="muted">Used only if the child is in a SAM pathway.</div>
+        <div class="muted">Appetite test is used only in the SAM pathway.</div>
 
         <hr>
 
-        <label>Risk factors (used for MAM pathway)</label>
+        <label>Risk factors (for MAM pathway)</label>
         <label class="checkline"><input type="checkbox" id="wRelapse"> Failed/Relapsed previous MAM</label>
         <label class="checkline"><input type="checkbox" id="wPrevSAM"> Previous SAM</label>
         <label class="checkline"><input type="checkbox" id="wSocial"> Severe social factors</label>
 
         <div class="btnRow">
-          <button class="button secondary" type="button" onclick="wizBackFromStep4()">Back</button>
-          <button class="button" type="button" onclick="wizGo(5)">Next</button>
+          <button class="button secondary" type="button" onclick="wizBackFromClinical()">Back</button>
+          <button class="button" type="button" onclick="wizGo(6)">Next</button>
         </div>
       </div>
 
-      <!-- Step 5 -->
-      <div id="w5" class="stepBox" style="display:none;">
-        <h4>Step 5: Result</h4>
-
+      <!-- Step 6: RESULT -->
+      <div id="w6" class="stepBox" style="display:none;">
+        <h4>Step 6: Result</h4>
         <div class="btnRow">
           <button class="button" type="button" onclick="calculateWizard()">Calculate</button>
           <button class="button secondary" type="button" onclick="printWizard()">Print Report</button>
           <button class="button danger" type="button" onclick="wizReset()">Restart</button>
         </div>
-
         <div id="wizResult" class="result"><span class="loading">Click “Calculate” to generate results…</span></div>
       </div>
     </div>
@@ -741,7 +752,7 @@
      IMAM WIZARD
   ========================================================= */
   function wizGo(step){
-    for (let i = 1; i <= 5; i++){
+    for (let i = 1; i <= 6; i++){
       const el = document.getElementById("w" + i);
       if (el) el.style.display = "none";
     }
@@ -781,8 +792,9 @@
     document.getElementById("wAppetite").value = "pass";
 
     clearWizardFlags();
-    showHint("w2Hint", "");
+    showHint("w1Hint", "");
     showHint("w3Hint", "");
+    showHint("w4Hint", "");
 
     const out = document.getElementById("wizResult");
     if (out) out.innerHTML = "<span class='loading'>Click “Calculate” to generate results…</span>";
@@ -791,8 +803,23 @@
     wizGo(1);
   }
 
-  function wizNextFromStep1(){
+  function wizNextFromTriage(){
+    showHint("w1Hint", "");
+
+    const danger = document.getElementById("wDanger").checked;
+    const stabilized = document.getElementById("wStabilized").checked;
+
+    if (danger || !stabilized) {
+      showHint("w1Hint", "Child requires emergency / inpatient care. Continue only after stabilization.");
+      return;
+    }
+
+    wizGo(2);
+  }
+
+  function wizNextFromBasic(){
     const age = parseFloat(document.getElementById("wizAge").value);
+
     if (isNaN(age)) {
       alert("Please enter age in months.");
       return;
@@ -801,7 +828,8 @@
       alert("Wizard supports children aged 0–59 months only.");
       return;
     }
-    wizGo(2);
+
+    wizGo(3);
   }
 
   function wizardNeedsWHZ(muacCm, oedema){
@@ -810,34 +838,36 @@
     return !hasOedema && muacYellow;
   }
 
-  function wizNextFromStep2(){
-    showHint("w2Hint", "");
+  function wizNextFromMuac(){
+    showHint("w3Hint", "");
+
     const muacCm = parseFloat(document.getElementById("wizMuac").value);
     const oedema = document.getElementById("wOedema").value;
 
     if (isNaN(muacCm)) {
-      showHint("w2Hint", "Please enter MUAC before continuing.");
+      showHint("w3Hint", "Please enter MUAC before continuing.");
       return;
     }
 
     if (wizardNeedsWHZ(muacCm, oedema)) {
-      showHint("w2Hint", "MUAC is yellow and there is no oedema, so WHZ is required.");
-      wizGo(3);
+      showHint("w3Hint", "MUAC is yellow and there is no oedema, so WHZ is required.");
+      wizGo(4);
     } else {
       if (muacCm < 11.5 || oedema !== "none") {
-        showHint("w2Hint", "MUAC/oedema already decide the acute malnutrition pathway, so WHZ is not required.");
+        showHint("w3Hint", "MUAC/oedema already determine the acute malnutrition pathway, so WHZ is not required.");
       } else {
-        showHint("w2Hint", "MUAC is not yellow, so WHZ is not required.");
+        showHint("w3Hint", "WHZ is not required for this MUAC/oedema result.");
       }
-      wizGo(4);
+      wizGo(5);
     }
   }
 
-  function wizBackFromStep4(){
+  function wizBackFromClinical(){
     const muacCm = parseFloat(document.getElementById("wizMuac").value);
     const oedema = document.getElementById("wOedema").value;
-    if (wizardNeedsWHZ(muacCm, oedema)) wizGo(3);
-    else wizGo(2);
+
+    if (wizardNeedsWHZ(muacCm, oedema)) wizGo(4);
+    else wizGo(3);
   }
 
   function getWizardInputs(){
@@ -859,9 +889,7 @@
   }
 
   function computeWizardModel(data){
-    const {
-      sex, age, muacCm, oedema, weightKg, heightCm
-    } = data;
+    const { sex, age, muacCm, oedema, weightKg, heightCm } = data;
 
     let zWhz = NaN;
     let zWfa = NaN;
@@ -1160,19 +1188,6 @@
   }
 
   function calculateWizard() {
-    // 🔴 TRIAGE FIRST
-if (data.danger || !data.stabilized) {
-  WizResult.innerHTML = `
-    <div class="badge bg-red">EMERGENCY / INPATIENT CARE</div>
-    <ul>
-      ${data.danger ? "<li>Danger signs present</li>" : ""}
-      ${!data.stabilized ? "<li>Child not stabilized</li>" : ""}
-      <li>Immediate referral required</li>
-    </ul>
-  `;
-  return;  // ✅ STOP EVERYTHING
-}
-    
     try {
       const out = document.getElementById("wizResult");
       if (!out) return;
@@ -1183,6 +1198,19 @@ if (data.danger || !data.stabilized) {
       }
 
       const data = getWizardInputs();
+
+      // TRIAGE FIRST
+      if (data.danger || !data.stabilized) {
+        out.innerHTML = `
+          <div class="badge bg-red">EMERGENCY / INPATIENT CARE</div>
+          <ul>
+            ${data.danger ? "<li>Danger signs present</li>" : ""}
+            ${!data.stabilized ? "<li>Child not stabilized</li>" : ""}
+            <li>Immediate referral required</li>
+          </ul>
+        `;
+        return;
+      }
 
       if (isNaN(data.age) || isNaN(data.muacCm)) {
         out.innerHTML = "Fill Age and MUAC";
