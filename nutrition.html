@@ -968,115 +968,136 @@
     };
   }
 
-  function buildWizardDecision(model, flags){
-    const path = [];
+function buildWizardDecision(model, flags){
+  const path = [];
 
-    if (flags.danger || !flags.stabilized) {
-      if (flags.danger) path.push("Danger/emergency signs present");
-      if (!flags.stabilized) path.push("Child not stabilized");
+  // 1) TRIAGE FIRST
+  if (flags.danger || !flags.stabilized) {
+    if (flags.danger) path.push("Danger/emergency signs present");
+    if (!flags.stabilized) path.push("Child not stabilized");
+    return {
+      decision: { label: "EMERGENCY / INPATIENT CARE", cls: "bg-red" },
+      pathway: "Emergency",
+      path
+    };
+  }
+
+  // 2) SAM PATHWAY
+  if (model.isSAM) {
+    // --- NEW FIX: Oedema +++ must go directly to inpatient / in-depth assessment ---
+    if (model.input.oedema === "plus3") {
+      path.push("Bilateral oedema +++");
+      path.push("Needs in-depth assessment");
+      path.push("Appetite test not required for oedema +++");
       return {
-        decision: { label: "EMERGENCY / INPATIENT CARE", cls: "bg-red" },
-        pathway: "Emergency",
-        path
-      };
-    }
-
-    if (model.isSAM) {
-      if (model.hasOedema) {
-        if (model.input.oedema === "plus3") path.push("Bilateral oedema +++");
-        else path.push("Bilateral oedema present");
-      }
-
-      if (isFinite(model.input.muacCm) && model.input.muacCm < 11.5) {
-        path.push("MUAC < 11.5 cm");
-      }
-
-      if (!model.hasOedema && !(model.input.muacCm < 11.5) && model.usedWHZ && isFinite(model.z.whz) && model.z.whz < -3) {
-        path.push("WHZ < -3 (fallback classification)");
-      }
-
-      if (model.appetiteRequired) {
-        if (flags.appetite === "fail") {
-          path.push("Appetite test failed");
-          return {
-            decision: { label: "ADMIT: INPATIENT (SAM - FAILED APPETITE TEST)", cls: "bg-red" },
-            pathway: "SAM",
-            path
-          };
-        }
-        path.push("Appetite test passed");
-      } else if (model.input.oedema === "plus3") {
-        path.push("Appetite test not required for oedema +++");
-      }
-
-      if (flags.imci) {
-        path.push("IMCI medical problems present");
-        return {
-          decision: { label: "ADMIT: INPATIENT (SAM WITH MEDICAL PROBLEMS)", cls: "bg-red" },
-          pathway: "SAM",
-          path
-        };
-      }
-
-      path.push("Stable SAM pathway for outpatient care");
-      return {
-        decision: { label: "OUTPATIENT CARE (SAM / OTC)", cls: "bg-yellow" },
+        decision: { label: "INPATIENT ADMISSION DECISION", cls: "bg-red" },
         pathway: "SAM",
         path
       };
     }
 
-    if (model.isMAM) {
-      if (isFinite(model.input.muacCm) && model.input.muacCm >= 11.5 && model.input.muacCm < 12.5) {
-        path.push("MUAC 11.5 to <12.5 cm");
-      }
+    // Oedema + or ++
+    if (model.hasOedema) {
+      path.push("Bilateral oedema present");
+    }
 
-      if (model.usedWHZ && isFinite(model.z.whz) && model.z.whz >= -3 && model.z.whz < -2) {
-        path.push("WHZ -3 to < -2");
-      }
+    if (isFinite(model.input.muacCm) && model.input.muacCm < 11.5) {
+      path.push("MUAC < 11.5 cm");
+    }
 
-      const riskFlags = [];
-      if (flags.relapse) riskFlags.push("Failed/relapsed previous MAM");
-      if (flags.prevSAM) riskFlags.push("Previous SAM");
-      if (flags.social) riskFlags.push("Severe social factors");
+    if (
+      !model.hasOedema &&
+      !(model.input.muacCm < 11.5) &&
+      model.usedWHZ &&
+      isFinite(model.z.whz) &&
+      model.z.whz < -3
+    ) {
+      path.push("WHZ < -3 (fallback classification)");
+    }
 
-      if (flags.imci) path.push("IMCI medical problems present");
-      riskFlags.forEach(r => path.push(r));
-
-      if (flags.imci || riskFlags.length > 0) {
+    // For SAM (except oedema +++), appetite test still matters
+    if (model.appetiteRequired) {
+      if (flags.appetite === "fail") {
+        path.push("Appetite test failed");
         return {
-          decision: { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS): In-patient for Medical, Nutritional and Psychosocial Care", cls: "bg-red" },
-          pathway: "MAM",
+          decision: { label: "ADMIT: INPATIENT (SAM - FAILED APPETITE TEST)", cls: "bg-red" },
+          pathway: "SAM",
           path
         };
       }
+      path.push("Appetite test passed");
+    }
 
-      path.push("MAM without added risk factors");
+    if (flags.imci) {
+      path.push("IMCI medical problems present");
       return {
-        decision: { label: "OUTPATIENT CARE (MAM): For Medical, Nutritional, Psychosocial care and other Child Health Services", cls: "bg-yellow" },
+        decision: { label: "ADMIT: INPATIENT (SAM WITH MEDICAL PROBLEMS)", cls: "bg-red" },
+        pathway: "SAM",
+        path
+      };
+    }
+
+    path.push("Stable SAM pathway for outpatient care");
+    return {
+      decision: { label: "OUTPATIENT CARE (SAM / OTC)", cls: "bg-yellow" },
+      pathway: "SAM",
+      path
+    };
+  }
+
+  // 3) MAM PATHWAY
+  if (model.isMAM) {
+    if (isFinite(model.input.muacCm) && model.input.muacCm >= 11.5 && model.input.muacCm < 12.5) {
+      path.push("MUAC 11.5 to <12.5 cm");
+    }
+
+    if (model.usedWHZ && isFinite(model.z.whz) && model.z.whz >= -3 && model.z.whz < -2) {
+      path.push("WHZ -3 to < -2");
+    }
+
+    const riskFlags = [];
+    if (flags.relapse) riskFlags.push("Failed/relapsed previous MAM");
+    if (flags.prevSAM) riskFlags.push("Previous SAM");
+    if (flags.social) riskFlags.push("Severe social factors");
+
+    if (flags.imci) path.push("IMCI medical problems present");
+    riskFlags.forEach(r => path.push(r));
+
+    if (flags.imci || riskFlags.length > 0) {
+      return {
+        decision: { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS): In-patient for Medical, Nutritional and Psychosocial Care", cls: "bg-red" },
         pathway: "MAM",
         path
       };
     }
 
-    if (flags.imci) {
-      path.push("No SAM/MAM admission threshold met from MUAC and oedema");
-      path.push("IMCI medical problems present");
-      return {
-        decision: { label: "INPATIENT CARE (MEDICAL / IMCI)", cls: "bg-red" },
-        pathway: "Normal / Medical",
-        path
-      };
-    }
-
-    path.push("MUAC is not red or yellow");
-    path.push("No oedema");
+    path.push("MAM without added risk factors");
     return {
-      decision: { label: "NORMAL / ROUTINE CARE", cls: "bg-green" },
-      pathway: "Normal",
+      decision: { label: "OUTPATIENT CARE (MAM): For Medical, Nutritional, Psychosocial care and other Child Health Services", cls: "bg-yellow" },
+      pathway: "MAM",
       path
     };
   }
+
+  // 4) NOT SAM / MAM
+  if (flags.imci) {
+    path.push("No SAM/MAM admission threshold met from MUAC and oedema");
+    path.push("IMCI medical problems present");
+    return {
+      decision: { label: "INPATIENT CARE (MEDICAL / IMCI)", cls: "bg-red" },
+      pathway: "Normal / Medical",
+      path
+    };
+  }
+
+  path.push("MUAC is not red or yellow");
+  path.push("No oedema");
+  return {
+    decision: { label: "NORMAL / ROUTINE CARE", cls: "bg-green" },
+    pathway: "Normal",
+    path
+  };
+}
 
   function renderWizard(model){
     const out = document.getElementById("wizResult");
