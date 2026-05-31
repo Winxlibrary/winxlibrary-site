@@ -70,6 +70,7 @@
       border-radius:14px;
       background:#fff;
       border:1px solid #e4eaef;
+      gap:12px;
     }
     .row-left{display:flex; flex-direction:column; gap:3px;}
     .row-title{font-weight:bold; font-size:14px;}
@@ -83,6 +84,7 @@
       white-space:nowrap;
       border:1px solid transparent;
     }
+
     /* IMAM-style colors */
     .bg-red    { background:#fdecea; border-color:#f5c6cb; color:#b02a37; }
     .bg-yellow { background:#fff4d6; border-color:#ffe0a3; color:#8a6d00; }
@@ -101,6 +103,19 @@
     .loading{font-size:13px; color:#5d6d7e;}
 
     .stepBox{border:1px dashed #d9e2ea; padding:12px; border-radius:12px; background:#fbfdff;}
+    .checkline { font-weight:normal; display:block; margin:6px 0; }
+    .pathList{margin:8px 0 0 18px; padding:0;}
+    .pathList li{margin:4px 0;}
+    hr{border:none; border-top:1px solid #e4eaef; margin:14px 0;}
+    .warnBox{
+      background:#fff4d6;
+      border:1px solid #ffe0a3;
+      color:#8a6d00;
+      border-radius:10px;
+      padding:10px 12px;
+      margin-top:8px;
+      font-size:13px;
+    }
   </style>
 </head>
 
@@ -116,16 +131,23 @@
   </div>
 
   <div class="container">
-    <div style="text-align:center; margin-top:10px;">   <img src="logo.png" alt="WinxLibrary Logo" width="120"> </div>
-   <div style="text-align:center; margin-top:10px;">  <h2>Nutrition Assessment Reference  Tools</h2> </div>
-
+    <div style="text-align:center; margin-top:10px;">
+      <img src="logo.png" alt="WinxLibrary Logo" width="120">
+    </div>
+    <div style="text-align:center; margin-top:10px;">
+      <h2>Nutrition Assessment Reference Tools</h2>
+    </div>
 
     <!-- ===================================================== -->
     <!-- ✅ WHZ CARD (0–59 months) -->
     <!-- ===================================================== -->
     <div class="card">
-       <div style="text-align:center; margin-top:8px;"> <h3>WHZ (Weight-for-Length/Height) Z-Score (0–59 months)</h3> </div>
-       <div style="text-align:center; margin-top:8px;"> <div class="muted">Uses WFL (0–24m) and WFH (25–59m) reference Tables.</div> </div>
+      <div style="text-align:center; margin-top:8px;">
+        <h3>WHZ (Weight-for-Length/Height) Z-Score (0–59 months)</h3>
+      </div>
+      <div style="text-align:center; margin-top:8px;">
+        <div class="muted">Uses WFL (0–24m) and WFH (25–59m) reference Tables.</div>
+      </div>
 
       <label>Sex</label>
       <select id="whzSex">
@@ -154,8 +176,12 @@
     <!-- ✅ WFA CARD (0–59 months) -->
     <!-- ===================================================== -->
     <div class="card">
-     <div style="text-align:center; margin-top:8px;"> <h3>WFA (Weight-for-Age) Z-Score (0–59 months)</h3> </div>
-      <div style="text-align:center; margin-top:8px;"> <div class="muted">Age is in months in the  WFA reference tables.</div> </div>
+      <div style="text-align:center; margin-top:8px;">
+        <h3>WFA (Weight-for-Age) Z-Score (0–59 months)</h3>
+      </div>
+      <div style="text-align:center; margin-top:8px;">
+        <div class="muted">Age is in months in the WFA reference tables.</div>
+      </div>
 
       <label>Sex</label>
       <select id="wfaSex">
@@ -181,8 +207,12 @@
     <!-- ✅ HFA CARD (0–59 months) -->
     <!-- ===================================================== -->
     <div class="card">
-     <div style="text-align:center; margin-top:8px;">  <h3>HFA (Height-for-Age) Z-Score (0–59 months)</h3> </div>
-     <div style="text-align:center; margin-top:8px;"> <div class="muted">Uses HFA reference Tables; age is in months.</div> </div>
+      <div style="text-align:center; margin-top:8px;">
+        <h3>HFA (Height-for-Age) Z-Score (0–59 months)</h3>
+      </div>
+      <div style="text-align:center; margin-top:8px;">
+        <div class="muted">Uses HFA reference Tables; age is in months.</div>
+      </div>
 
       <label>Sex</label>
       <select id="hfaSex">
@@ -204,12 +234,16 @@
       <div id="hfaResult" class="result"><span class="loading">Waiting for input…</span></div>
     </div>
 
-        <!-- ===================================================== -->
+    <!-- ===================================================== -->
     <!-- ✅ BMI CARD (5–19 years) -->
     <!-- ===================================================== -->
     <div class="card">
-      <div style="text-align:center; margin-top:8px;">  <h3>BMI-for-Age (5–19 years)</h3> </div>
-      <div style="text-align:center; margin-top:8px;">  <div class="muted">Uses WHO BMI-for-age reference Tables.</div> </div>
+      <div style="text-align:center; margin-top:8px;">
+        <h3>BMI-for-Age (5–19 years)</h3>
+      </div>
+      <div style="text-align:center; margin-top:8px;">
+        <div class="muted">Uses WHO BMI-for-age reference Tables.</div>
+      </div>
 
       <label>Sex</label>
       <select id="bmiSex">
@@ -241,8 +275,12 @@
     <!-- ✅ IMAM WIZARD -->
     <!-- ===================================================== -->
     <div class="card">
-      <div style="text-align:center; margin-top:8px;"> <h3>Child Assessment Care Desicion Making Wizard (for IMAM care)</h3> </div>
-      <div style="text-align:center; margin-top:8px;"> <div class="muted">Steps: Sex → Age → Weight → Height → MUAC → Oedema → Result</div> </div>
+      <div style="text-align:center; margin-top:8px;">
+        <h3>Child Assessment Care Desicion Making Wizard (for IMAM care)</h3>
+      </div>
+      <div style="text-align:center; margin-top:8px;">
+        <div class="muted">Steps: Sex → Age → Weight → Height → MUAC → Oedema → Result</div>
+      </div>
 
       <!-- Step 1 -->
       <div id="w1" class="stepBox">
@@ -299,38 +337,41 @@
       <!-- Step 6 -->
       <div id="w6" class="stepBox" style="display:none;">
         <h4>Step 6: Oedema</h4>
-      <select id="wOedema">
-  <option value="none">None</option>
-  <option value="plus1">+ (mild)</option>
-  <option value="plus2">++ (moderate)</option>
-  <option value="plus3">+++ (severe)</option>
-</select>
-        
-        <label><input type="checkbox" id="wDanger"> Danger/Emergency signs present?</label>
-<label><input type="checkbox" id="wStabilized" checked> Child stabilized?</label>
 
-<hr>
+        <select id="wOedema">
+          <option value="none">None</option>
+          <option value="plus1">+ (mild)</option>
+          <option value="plus2">++ (moderate)</option>
+          <option value="plus3">+++ (severe)</option>
+        </select>
 
-<label>Appetite test (shown only if required)</label>
-<select id="wAppetite" style="display:none;">
-  <option value="pass">Pass</option>
-  <option value="fail">Fail</option>
-</select>
-<div id="wAppetiteHint" class="muted" style="display:none;"></div>
+        <label class="checkline"><input type="checkbox" id="wDanger"> Danger/Emergency signs present?</label>
+        <label class="checkline"><input type="checkbox" id="wStabilized" checked> Child stabilized?</label>
 
-<hr>
+        <hr>
 
-<label><input type="checkbox" id="wIMCI"> IMCI medical problems?</label>
-<label><input type="checkbox" id="wInDepth"> Need in-depth assessment?</label>
+        <label>Appetite test (shown only if required)</label>
+        <select id="wAppetite" style="display:none;">
+          <option value="pass">Pass</option>
+          <option value="fail">Fail</option>
+        </select>
+        <div id="wAppetiteHint" class="muted" style="display:none;"></div>
 
-<label class="muted" style="margin-top:8px;">Risk factors (MAM band)</label>
-<label><input type="checkbox" id="wRelapse"> Failed/Relapsed previous MAM?</label>
-<label><input type="checkbox" id="wPrevSAM"> Previous SAM?</label>
-<label><input type="checkbox" id="wSocial"> Severe social factors?</label>
-        
+        <hr>
+
+        <label class="checkline"><input type="checkbox" id="wIMCI"> IMCI medical problems?</label>
+        <label class="checkline"><input type="checkbox" id="wInDepth"> Need in-depth assessment?</label>
+
+        <label class="muted" style="margin-top:8px;">Risk factors (MAM band)</label>
+        <label class="checkline"><input type="checkbox" id="wRelapse"> Failed/Relapsed previous MAM?</label>
+        <label class="checkline"><input type="checkbox" id="wPrevSAM"> Previous SAM?</label>
+        <label class="checkline"><input type="checkbox" id="wSocial"> Severe social factors?</label>
+
+        <div id="wStep6Warn" class="warnBox" style="display:none;"></div>
+
         <div class="btnRow">
           <button class="button secondary" type="button" onclick="wizGo(5)">Back</button>
-          <button class="button" type="button" onclick="wizGo(7)">Next</button>
+          <button class="button" type="button" onclick="if (prepareWizardStep()) wizGo(7)">Next</button>
         </div>
       </div>
 
@@ -350,652 +391,862 @@
 
 <script>
   console.log("JS WORKING ✅");
-/* =========================================================
-   DATA LOADING
-========================================================= */
-let boysBMI = {}, girlsBMI = {};
-let wflBoys = [], wflGirls = [], wfhBoys = [], wfhGirls = [];
-let wfaBoys = [], wfaGirls = [];
-let hfaBoys = [], hfaGirls = [];
 
-let DATA_READY = false;
+  /* =========================================================
+     DATA LOADING
+  ========================================================= */
+  let boysBMI = {}, girlsBMI = {};
+  let wflBoys = [], wflGirls = [], wfhBoys = [], wfhGirls = [];
+  let wfaBoys = [], wfaGirls = [];
+  let hfaBoys = [], hfaGirls = [];
 
-function setStatus(ok, msg){
-  const el = document.getElementById("dataStatus");
-  el.className = "status " + (ok ? "ok" : "bad");
-  el.textContent = msg;
-}
+  let DATA_READY = false;
 
-async function loadJSON(url){
-  const r = await fetch(url);
-  if(!r.ok) throw new Error(url + " (" + r.status + ")");
-  return await r.json();
-}
-
-(async function boot(){
-  try{
-    const [
-      bmiB, bmiG,
-      wflB, wflG, wfhB, wfhG,
-      wfaB, wfaG,
-      hfaB, hfaG
-    ] = await Promise.all([
-      loadJSON('bmi_boys_5_19.json'),
-      loadJSON('bmi_girls_5_19.json'),
-      loadJSON('wfl_boys_0_2_lms.json'),
-      loadJSON('wfl_girls_0_2_lms.json'),
-      loadJSON('wfh_boys_2_5_lms.json'),
-      loadJSON('wfh_girls_2_5_lms.json'),
-      loadJSON('wfa_boys_0_5_lms.json'),
-      loadJSON('wfa_girls_0_5_lms.json'),
-      loadJSON('hfa_boys_0_5_lms.json'),
-      loadJSON('hfa_girls_0_5_lms.json')
-    ]);
-
-    boysBMI = bmiB; girlsBMI = bmiG;
-    wflBoys = wflB; wflGirls = wflG; wfhBoys = wfhB; wfhGirls = wfhG;
-    wfaBoys = wfaB; wfaGirls = wfaG;
-    hfaBoys = hfaB; hfaGirls = hfaG;
-
-    DATA_READY = true;
-    setStatus(true, "Reference data loaded ✓");
-  }catch(e){
-    DATA_READY = false;
-    setStatus(false, "Reference data failed to load: " + e.message);
-  }
-  // init wizard
-  wizReset();
-})();
-
-/* =========================================================
-   COMMON MATH (BMI + LMS)
-========================================================= */
-function computeZ_BMI(bmi, ref) {
-  if (bmi <= ref.m3) return -3;
-  if (bmi <= ref.m2) return -3 + (bmi - ref.m3) / (ref.m2 - ref.m3);
-  if (bmi <= ref.median) return -2 + (bmi - ref.m2) / (ref.median - ref.m2);
-  if (bmi <= ref.p2) return (bmi - ref.median) / (ref.p2 - ref.median) * 2;
-  return 2 + (bmi - ref.p2) / (ref.p3 - ref.p2);
-}
-
-function lmsZ(v, L, M, S) {
-  if (!isFinite(v) || !isFinite(L) || !isFinite(M) || !isFinite(S) || M <= 0 || S <= 0) return NaN;
-  if (L === 0) return Math.log(v / M) / S;
-  return (Math.pow(v / M, L) - 1) / (L * S);
-}
-function lerp(a,b,t){ return a + (b-a)*t; }
-
-function interpLMS(table, x, keyName){
-  if (!table || table.length === 0 || !isFinite(x)) return null;
-  const t = table.slice().sort((a,b)=> (a[keyName] ?? 0) - (b[keyName] ?? 0));
-
-  if (x <= t[0][keyName]) return { L:t[0].L, M:t[0].M, S:t[0].S };
-  if (x >= t[t.length-1][keyName]) {
-    const last = t[t.length-1];
-    return { L:last.L, M:last.M, S:last.S };
+  function setStatus(ok, msg){
+    const el = document.getElementById("dataStatus");
+    el.className = "status " + (ok ? "ok" : "bad");
+    el.textContent = msg;
   }
 
-  let i = 1;
-  while (i < t.length && t[i][keyName] < x) i++;
-  const a = t[i-1], b = t[i];
-  const ratio = (x - a[keyName]) / (b[keyName] - a[keyName]);
-
-  return {
-    L: lerp(a.L, b.L, ratio),
-    M: lerp(a.M, b.M, ratio),
-    S: lerp(a.S, b.S, ratio)
-  };
-}
-
-function detectLenHeiKey(table){
-  if (!table || table.length === 0) return null;
-  const row = table[0];
-  if (Object.prototype.hasOwnProperty.call(row, "Length")) return "Length";
-  if (Object.prototype.hasOwnProperty.call(row, "Height")) return "Height";
-  return null;
-}
-
-/* =========================================================
-   CLASSIFICATION HELPERS
-========================================================= */
-function classifyZ(z, severeLabel, moderateLabel){
-  if (!isFinite(z)) return {text:"Invalid", cls:"bg-gray"};
-  if (z < -3) return {text:severeLabel, cls:"bg-red"};
-  if (z < -2) return {text:moderateLabel, cls:"bg-yellow"};
-  if (z <= 2) return {text:"Normal", cls:"bg-green"};
-  return {text:"High", cls:"bg-purple"};
-}
-function classifyMuac(mu){
-  if (!isFinite(mu)) return {text:"N/A", cls:"bg-gray"};
-  if (mu < 11.5) return {text:"SAM (MUAC)", cls:"bg-red"};
-  if (mu < 12.5) return {text:"MAM (MUAC)", cls:"bg-yellow"};
-  return {text:"Normal", cls:"bg-green"};
-}
-
-/* =========================================================
-   BMI CARD
-========================================================= */
-function calculateBMI(){
-  const out = document.getElementById("bmiResult");
-  if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
-
-  const sex = document.getElementById("bmiSex").value;
-  const y = parseInt(document.getElementById("bmiAgeYears").value, 10);
-  const m = parseInt(document.getElementById("bmiAgeMonths").value, 10) || 0;
-  const w = parseFloat(document.getElementById("bmiWeight").value);
-  const h = parseFloat(document.getElementById("bmiHeight").value);
-
-  if (isNaN(y) || isNaN(w) || isNaN(h)) { out.innerHTML = "Fill all fields"; return; }
-
-  const age = (y * 12) + m;
-  if (age < 61 || age > 228) { out.innerHTML = "5–19 years only"; return; }
-
-  const bmi = w / ((h/100)*(h/100));
-  const ref = (sex === "boy") ? boysBMI[age] : girlsBMI[age];
-  if (!ref) { out.innerHTML = "No reference for this age"; return; }
-
-  const z = computeZ_BMI(bmi, ref);
-  const cat = (z < -3) ? "Severe Thinness" : (z < -2) ? "Thinness" : (z <= 2) ? "Normal" : "Overweight/Obese";
-
-  out.innerHTML =
-    "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
-    "<b>Z-score:</b> " + z.toFixed(2) + "<br>" +
-    "<b>Status:</b> " + cat;
-
-  window.__lastBMI = {sex, ageMonths:age, weightKg:w, heightCm:h, bmi, z, cat};
-}
-function printBMI(){
-  if (!window.__lastBMI) return;
-  const d = window.__lastBMI;
-  const now = new Date();
-  const html = `
-  <html><head><meta charset="UTF-8"><title>BMI Report</title>
-  <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
-  </head><body>
-    <h2>BMI-for-Age Report</h2>
-    <div class="muted">${now.toLocaleString()}</div>
-    <table>
-      <tr><td>Sex</td><td>${d.sex}</td></tr>
-      <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
-      <tr><td>Weight</td><td>${d.weightKg} kg</td></tr>
-      <tr><td>Height</td><td>${d.heightCm} cm</td></tr>
-      <tr><td>BMI</td><td>${d.bmi.toFixed(2)}</td></tr>
-      <tr><td>Z-score</td><td>${d.z.toFixed(2)}</td></tr>
-      <tr><td>Status</td><td><b>${d.cat}</b></td></tr>
-    </table>
-  </body></html>`;
-  const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
-}
-
-/* =========================================================
-   WHZ CARD
-========================================================= */
-function calculateWHZ(){
-  const out = document.getElementById("whzResult");
-  if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
-
-  const sex = document.getElementById("whzSex").value;
-  const age = parseFloat(document.getElementById("whzAge").value);
-  const h = parseFloat(document.getElementById("whzHeight").value);
-  const w = parseFloat(document.getElementById("whzWeight").value);
-
-  if (isNaN(age) || isNaN(h) || isNaN(w)) { out.innerHTML = "Fill all fields"; return; }
-  if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
-
-  const table = (age <= 24)
-    ? ((sex === "boy") ? wflBoys : wflGirls)
-    : ((sex === "boy") ? wfhBoys : wfhGirls);
-
-  const key = detectLenHeiKey(table);
-  if (!key) { out.innerHTML = "WHZ reference key not found"; return; }
-
-  const r = interpLMS(table, h, key);
-  if (!r) { out.innerHTML = "Reference not found"; return; }
-
-  const z = lmsZ(w, r.L, r.M, r.S);
-  const cls = classifyZ(z, "SAM", "MAM");
-
-  out.innerHTML =
-    "<b>WHZ Z-score:</b> " + (isFinite(z) ? z.toFixed(2) : "N/A") + "<br>" +
-    "<b>Status:</b> <span class='badge " + cls.cls + "'>" + cls.text + "</span>";
-
-  window.__lastWHZ = {sex, ageMonths:age, weightKg:w, heightCm:h, z, status:cls.text};
-}
-function printWHZ(){
-  if (!window.__lastWHZ) return;
-  const d = window.__lastWHZ;
-  const now = new Date();
-  const html = `
-  <html><head><meta charset="UTF-8"><title>WHZ Report</title>
-  <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
-  </head><body>
-    <h2>WHZ Report (0–59 months)</h2>
-    <div class="muted">${now.toLocaleString()}</div>
-    <table>
-      <tr><td>Sex</td><td>${d.sex}</td></tr>
-      <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
-      <tr><td>Weight</td><td>${d.weightKg} kg</td></tr>
-      <tr><td>Length/Height</td><td>${d.heightCm} cm</td></tr>
-      <tr><td>WHZ Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
-      <tr><td>Status</td><td><b>${d.status}</b></td></tr>
-    </table>
-  </body></html>`;
-  const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
-}
-
-/* =========================================================
-   WFA CARD
-========================================================= */
-function calculateWFA(){
-  const out = document.getElementById("wfaResult");
-  if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
-
-  const sex = document.getElementById("wfaSex").value;
-  const age = parseFloat(document.getElementById("wfaAge").value);
-  const w = parseFloat(document.getElementById("wfaWeight").value);
-
-  if (isNaN(age) || isNaN(w)) { out.innerHTML = "Fill all fields"; return; }
-  if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
-
-  const table = (sex === "boy") ? wfaBoys : wfaGirls;
-  const r = interpLMS(table, age, "Age");
-  if (!r) { out.innerHTML = "Reference not found"; return; }
-
-  const z = lmsZ(w, r.L, r.M, r.S);
-  const cls = classifyZ(z, "Severe Underweight", "Underweight");
-
-  out.innerHTML =
-    "<b>WFA Z-score:</b> " + (isFinite(z) ? z.toFixed(2) : "N/A") + "<br>" +
-    "<b>Status:</b> <span class='badge " + cls.cls + "'>" + cls.text + "</span>";
-
-  window.__lastWFA = {sex, ageMonths:age, weightKg:w, z, status:cls.text};
-}
-function printWFA(){
-  if (!window.__lastWFA) return;
-  const d = window.__lastWFA;
-  const now = new Date();
-  const html = `
-  <html><head><meta charset="UTF-8"><title>WFA Report</title>
-  <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
-  </head><body>
-    <h2>WFA Report (0–59 months)</h2>
-    <div class="muted">${now.toLocaleString()}</div>
-    <table>
-      <tr><td>Sex</td><td>${d.sex}</td></tr>
-      <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
-      <tr><td>Weight</td><td>${d.weightKg} kg</td></tr>
-      <tr><td>WFA Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
-      <tr><td>Status</td><td><b>${d.status}</b></td></tr>
-    </table>
-  </body></html>`;
-  const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
-}
-
-/* =========================================================
-   HFA CARD
-========================================================= */
-function calculateHFA(){
-  const out = document.getElementById("hfaResult");
-  if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
-
-  const sex = document.getElementById("hfaSex").value;
-  const age = parseFloat(document.getElementById("hfaAge").value);
-  const h = parseFloat(document.getElementById("hfaHeight").value);
-
-  if (isNaN(age) || isNaN(h)) { out.innerHTML = "Fill all fields"; return; }
-  if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
-
-  const table = (sex === "boy") ? hfaBoys : hfaGirls;
-  const r = interpLMS(table, age, "Age");
-  if (!r) { out.innerHTML = "Reference not found"; return; }
-
-  const z = lmsZ(h, r.L, r.M, r.S);
-  const cls = classifyZ(z, "Severe Stunting", "Stunted");
-
-  out.innerHTML =
-    "<b>HFA Z-score:</b> " + (isFinite(z) ? z.toFixed(2) : "N/A") + "<br>" +
-    "<b>Status:</b> <span class='badge " + cls.cls + "'>" + cls.text + "</span>";
-
-  window.__lastHFA = {sex, ageMonths:age, heightCm:h, z, status:cls.text};
-}
-function printHFA(){
-  if (!window.__lastHFA) return;
-  const d = window.__lastHFA;
-  const now = new Date();
-  const html = `
-  <html><head><meta charset="UTF-8"><title>HFA Report</title>
-  <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
-  </head><body>
-    <h2>HFA Report (0–59 months)</h2>
-    <div class="muted">${now.toLocaleString()}</div>
-    <table>
-      <tr><td>Sex</td><td>${d.sex}</td></tr>
-      <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
-      <tr><td>Height/Length</td><td>${d.heightCm} cm</td></tr>
-      <tr><td>HFA Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
-      <tr><td>Status</td><td><b>${d.status}</b></td></tr>
-    </table>
-  </body></html>`;
-  const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
-}
-
-/* =========================================================
-   WIZARD (IMAM) — uses combined compute + decision
-========================================================= */
-function admissionDecision(whzZ, mu, oedema){
-  if (oedema === "yes") return { label: "ADMIT: INPATIENT (SAM - OEDEMA)", cls: "bg-red" };
-  if ((isFinite(whzZ) && whzZ < -3) || (isFinite(mu) && mu < 11.5)) return { label: "ADMIT: INPATIENT (SAM)", cls: "bg-red" };
-  if ((isFinite(whzZ) && whzZ < -2) || (isFinite(mu) && mu < 12.5)) return { label: "OUTPATIENT CARE (OTC)", cls: "bg-yellow" };
-  return { label: "NORMAL", cls: "bg-green" };
-}
-
-function computeWizardModel(sex, age, weightKg, heightCm, muacCm, oedema){
-  const whzTable = (age <= 24)
-    ? ((sex === "boy") ? wflBoys : wflGirls)
-    : ((sex === "boy") ? wfhBoys : wfhGirls);
-
-  const key = detectLenHeiKey(whzTable);
-  const whzRef = key ? interpLMS(whzTable, heightCm, key) : null;
-  const zWhz = whzRef ? lmsZ(weightKg, whzRef.L, whzRef.M, whzRef.S) : NaN;
-
-  const wfaTable = (sex === "boy") ? wfaBoys : wfaGirls;
-  const wfaRef = interpLMS(wfaTable, age, "Age");
-  const zWfa = wfaRef ? lmsZ(weightKg, wfaRef.L, wfaRef.M, wfaRef.S) : NaN;
-
-  const hfaTable = (sex === "boy") ? hfaBoys : hfaGirls;
-  const hfaRef = interpLMS(hfaTable, age, "Age");
-  const zHfa = hfaRef ? lmsZ(heightCm, hfaRef.L, hfaRef.M, hfaRef.S) : NaN;
-
-  const bWHZ = classifyZ(zWhz, "SAM", "MAM");
-  const bWFA = classifyZ(zWfa, "Severe Underweight", "Underweight");
-  const bHFA = classifyZ(zHfa, "Severe Stunting", "Stunted");
-  const bMU  = classifyMuac(muacCm);
-
-  const decision = admissionDecision(zWhz, muacCm, oedema);
-
-  return {
-    ok: true,
-    input:{ sex, ageMonths:age, weightKg, heightCm, muacCm, oedema },
-    z:{ whz:zWhz, wfa:zWfa, hfa:zHfa },
-    badges:{ whz:bWHZ, wfa:bWFA, hfa:bHFA, muac:bMU },
-    decision
-  };
-}
-
-function renderWizard(model){
-  const out = document.getElementById("wizResult");
-  if (!model || !model.ok){
-    out.innerHTML = "<span class='loading'>" + (model?.error || "Invalid") + "</span>";
-    return;
+  async function loadJSON(url){
+    const r = await fetch(url);
+    if(!r.ok) throw new Error(url + " (" + r.status + ")");
+    return await r.json();
   }
 
-  const { input, z, badges, decision } = model;
-  const rows = [];
+  (async function boot(){
+    try{
+      const [
+        bmiB, bmiG,
+        wflB, wflG, wfhB, wfhG,
+        wfaB, wfaG,
+        hfaB, hfaG
+      ] = await Promise.all([
+        loadJSON('bmi_boys_5_19.json'),
+        loadJSON('bmi_girls_5_19.json'),
+        loadJSON('wfl_boys_0_2_lms.json'),
+        loadJSON('wfl_girls_0_2_lms.json'),
+        loadJSON('wfh_boys_2_5_lms.json'),
+        loadJSON('wfh_girls_2_5_lms.json'),
+        loadJSON('wfa_boys_0_5_lms.json'),
+        loadJSON('wfa_girls_0_5_lms.json'),
+        loadJSON('hfa_boys_0_5_lms.json'),
+        loadJSON('hfa_girls_0_5_lms.json')
+      ]);
 
-  if (input.oedema === "yes"){
+      boysBMI = bmiB; girlsBMI = bmiG;
+      wflBoys = wflB; wflGirls = wflG; wfhBoys = wfhB; wfhGirls = wfhG;
+      wfaBoys = wfaB; wfaGirls = wfaG;
+      hfaBoys = hfaB; hfaGirls = hfaG;
+
+      DATA_READY = true;
+      setStatus(true, "Reference data loaded ✓");
+    }catch(e){
+      DATA_READY = false;
+      setStatus(false, "Reference data failed to load: " + e.message);
+    }
+    wizReset();
+  })();
+
+  /* =========================================================
+     COMMON MATH (BMI + LMS)
+  ========================================================= */
+  function computeZ_BMI(bmi, ref) {
+    if (bmi <= ref.m3) return -3;
+    if (bmi <= ref.m2) return -3 + (bmi - ref.m3) / (ref.m2 - ref.m3);
+    if (bmi <= ref.median) return -2 + (bmi - ref.m2) / (ref.median - ref.m2);
+    if (bmi <= ref.p2) return (bmi - ref.median) / (ref.p2 - ref.median) * 2;
+    return 2 + (bmi - ref.p2) / (ref.p3 - ref.p2);
+  }
+
+  function lmsZ(v, L, M, S) {
+    if (!isFinite(v) || !isFinite(L) || !isFinite(M) || !isFinite(S) || M <= 0 || S <= 0) return NaN;
+    if (L === 0) return Math.log(v / M) / S;
+    return (Math.pow(v / M, L) - 1) / (L * S);
+  }
+
+  function lerp(a,b,t){ return a + (b-a)*t; }
+
+  function interpLMS(table, x, keyName){
+    if (!table || table.length === 0 || !isFinite(x)) return null;
+    const t = table.slice().sort((a,b)=> (a[keyName] ?? 0) - (b[keyName] ?? 0));
+
+    if (x <= t[0][keyName]) return { L:t[0].L, M:t[0].M, S:t[0].S };
+    if (x >= t[t.length-1][keyName]) {
+      const last = t[t.length-1];
+      return { L:last.L, M:last.M, S:last.S };
+    }
+
+    let i = 1;
+    while (i < t.length && t[i][keyName] < x) i++;
+    const a = t[i-1], b = t[i];
+    const ratio = (x - a[keyName]) / (b[keyName] - a[keyName]);
+
+    return {
+      L: lerp(a.L, b.L, ratio),
+      M: lerp(a.M, b.M, ratio),
+      S: lerp(a.S, b.S, ratio)
+    };
+  }
+
+  function detectLenHeiKey(table){
+    if (!table || table.length === 0) return null;
+    const row = table[0];
+    if (Object.prototype.hasOwnProperty.call(row, "Length")) return "Length";
+    if (Object.prototype.hasOwnProperty.call(row, "Height")) return "Height";
+    return null;
+  }
+
+  /* =========================================================
+     CLASSIFICATION HELPERS
+  ========================================================= */
+  function classifyZ(z, severeLabel, moderateLabel){
+    if (!isFinite(z)) return {text:"Invalid", cls:"bg-gray"};
+    if (z < -3) return {text:severeLabel, cls:"bg-red"};
+    if (z < -2) return {text:moderateLabel, cls:"bg-yellow"};
+    if (z <= 2) return {text:"Normal", cls:"bg-green"};
+    return {text:"High", cls:"bg-purple"};
+  }
+
+  function classifyMuac(mu){
+    if (!isFinite(mu)) return {text:"N/A", cls:"bg-gray"};
+    if (mu < 11.5) return {text:"SAM (MUAC)", cls:"bg-red"};
+    if (mu < 12.5) return {text:"MAM (MUAC)", cls:"bg-yellow"};
+    return {text:"Normal", cls:"bg-green"};
+  }
+
+  /* =========================================================
+     BMI CARD
+  ========================================================= */
+  function calculateBMI(){
+    const out = document.getElementById("bmiResult");
+    if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
+
+    const sex = document.getElementById("bmiSex").value;
+    const y = parseInt(document.getElementById("bmiAgeYears").value, 10);
+    const m = parseInt(document.getElementById("bmiAgeMonths").value, 10) || 0;
+    const w = parseFloat(document.getElementById("bmiWeight").value);
+    const h = parseFloat(document.getElementById("bmiHeight").value);
+
+    if (isNaN(y) || isNaN(w) || isNaN(h)) { out.innerHTML = "Fill all fields"; return; }
+
+    const age = (y * 12) + m;
+    if (age < 61 || age > 228) { out.innerHTML = "5–19 years only"; return; }
+
+    const bmi = w / ((h/100)*(h/100));
+    const ref = (sex === "boy") ? boysBMI[age] : girlsBMI[age];
+    if (!ref) { out.innerHTML = "No reference for this age"; return; }
+
+    const z = computeZ_BMI(bmi, ref);
+    const cat = (z < -3) ? "Severe Thinness" : (z < -2) ? "Thinness" : (z <= 2) ? "Normal" : "Overweight/Obese";
+
+    out.innerHTML =
+      "<b>BMI:</b> " + bmi.toFixed(2) + "<br>" +
+      "<b>Z-score:</b> " + z.toFixed(2) + "<br>" +
+      "<b>Status:</b> " + cat;
+
+    window.__lastBMI = {sex, ageMonths:age, weightKg:w, heightCm:h, bmi, z, cat};
+  }
+
+  function printBMI(){
+    if (!window.__lastBMI) return;
+    const d = window.__lastBMI;
+    const now = new Date();
+    const html = `
+    <html><head><meta charset="UTF-8"><title>BMI Report</title>
+    <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
+    </head><body>
+      <h2>BMI-for-Age Report</h2>
+      <div class="muted">${now.toLocaleString()}</div>
+      <table>
+        <tr><td>Sex</td><td>${d.sex}</td></tr>
+        <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
+        <tr><td>Weight</td><td>${d.weightKg} kg</td></tr>
+        <tr><td>Height</td><td>${d.heightCm} cm</td></tr>
+        <tr><td>BMI</td><td>${d.bmi.toFixed(2)}</td></tr>
+        <tr><td>Z-score</td><td>${d.z.toFixed(2)}</td></tr>
+        <tr><td>Status</td><td><b>${d.cat}</b></td></tr>
+      </table>
+    </body></html>`;
+    const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
+  }
+
+  /* =========================================================
+     WHZ CARD
+  ========================================================= */
+  function calculateWHZ(){
+    const out = document.getElementById("whzResult");
+    if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
+
+    const sex = document.getElementById("whzSex").value;
+    const age = parseFloat(document.getElementById("whzAge").value);
+    const h = parseFloat(document.getElementById("whzHeight").value);
+    const w = parseFloat(document.getElementById("whzWeight").value);
+
+    if (isNaN(age) || isNaN(h) || isNaN(w)) { out.innerHTML = "Fill all fields"; return; }
+    if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
+
+    const table = (age <= 24)
+      ? ((sex === "boy") ? wflBoys : wflGirls)
+      : ((sex === "boy") ? wfhBoys : wfhGirls);
+
+    const key = detectLenHeiKey(table);
+    if (!key) { out.innerHTML = "WHZ reference key not found"; return; }
+
+    const r = interpLMS(table, h, key);
+    if (!r) { out.innerHTML = "Reference not found"; return; }
+
+    const z = lmsZ(w, r.L, r.M, r.S);
+    const cls = classifyZ(z, "SAM", "MAM");
+
+    out.innerHTML =
+      "<b>WHZ Z-score:</b> " + (isFinite(z) ? z.toFixed(2) : "N/A") + "<br>" +
+      "<b>Status:</b> <span class='badge " + cls.cls + "'>" + cls.text + "</span>";
+
+    window.__lastWHZ = {sex, ageMonths:age, weightKg:w, heightCm:h, z, status:cls.text};
+  }
+
+  function printWHZ(){
+    if (!window.__lastWHZ) return;
+    const d = window.__lastWHZ;
+    const now = new Date();
+    const html = `
+    <html><head><meta charset="UTF-8"><title>WHZ Report</title>
+    <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
+    </head><body>
+      <h2>WHZ Report (0–59 months)</h2>
+      <div class="muted">${now.toLocaleString()}</div>
+      <table>
+        <tr><td>Sex</td><td>${d.sex}</td></tr>
+        <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
+        <tr><td>Weight</td><td>${d.weightKg} kg</td></tr>
+        <tr><td>Length/Height</td><td>${d.heightCm} cm</td></tr>
+        <tr><td>WHZ Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
+        <tr><td>Status</td><td><b>${d.status}</b></td></tr>
+      </table>
+    </body></html>`;
+    const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
+  }
+
+  /* =========================================================
+     WFA CARD
+  ========================================================= */
+  function calculateWFA(){
+    const out = document.getElementById("wfaResult");
+    if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
+
+    const sex = document.getElementById("wfaSex").value;
+    const age = parseFloat(document.getElementById("wfaAge").value);
+    const w = parseFloat(document.getElementById("wfaWeight").value);
+
+    if (isNaN(age) || isNaN(w)) { out.innerHTML = "Fill all fields"; return; }
+    if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
+
+    const table = (sex === "boy") ? wfaBoys : wfaGirls;
+    const r = interpLMS(table, age, "Age");
+    if (!r) { out.innerHTML = "Reference not found"; return; }
+
+    const z = lmsZ(w, r.L, r.M, r.S);
+    const cls = classifyZ(z, "Severe Underweight", "Underweight");
+
+    out.innerHTML =
+      "<b>WFA Z-score:</b> " + (isFinite(z) ? z.toFixed(2) : "N/A") + "<br>" +
+      "<b>Status:</b> <span class='badge " + cls.cls + "'>" + cls.text + "</span>";
+
+    window.__lastWFA = {sex, ageMonths:age, weightKg:w, z, status:cls.text};
+  }
+
+  function printWFA(){
+    if (!window.__lastWFA) return;
+    const d = window.__lastWFA;
+    const now = new Date();
+    const html = `
+    <html><head><meta charset="UTF-8"><title>WFA Report</title>
+    <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
+    </head><body>
+      <h2>WFA Report (0–59 months)</h2>
+      <div class="muted">${now.toLocaleString()}</div>
+      <table>
+        <tr><td>Sex</td><td>${d.sex}</td></tr>
+        <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
+        <tr><td>Weight</td><td>${d.weightKg} kg</td></tr>
+        <tr><td>WFA Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
+        <tr><td>Status</td><td><b>${d.status}</b></td></tr>
+      </table>
+    </body></html>`;
+    const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
+  }
+
+  /* =========================================================
+     HFA CARD
+  ========================================================= */
+  function calculateHFA(){
+    const out = document.getElementById("hfaResult");
+    if (!DATA_READY) { out.innerHTML = "<span class='loading'>Reference data still loading…</span>"; return; }
+
+    const sex = document.getElementById("hfaSex").value;
+    const age = parseFloat(document.getElementById("hfaAge").value);
+    const h = parseFloat(document.getElementById("hfaHeight").value);
+
+    if (isNaN(age) || isNaN(h)) { out.innerHTML = "Fill all fields"; return; }
+    if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
+
+    const table = (sex === "boy") ? hfaBoys : hfaGirls;
+    const r = interpLMS(table, age, "Age");
+    if (!r) { out.innerHTML = "Reference not found"; return; }
+
+    const z = lmsZ(h, r.L, r.M, r.S);
+    const cls = classifyZ(z, "Severe Stunting", "Stunted");
+
+    out.innerHTML =
+      "<b>HFA Z-score:</b> " + (isFinite(z) ? z.toFixed(2) : "N/A") + "<br>" +
+      "<b>Status:</b> <span class='badge " + cls.cls + "'>" + cls.text + "</span>";
+
+    window.__lastHFA = {sex, ageMonths:age, heightCm:h, z, status:cls.text};
+  }
+
+  function printHFA(){
+    if (!window.__lastHFA) return;
+    const d = window.__lastHFA;
+    const now = new Date();
+    const html = `
+    <html><head><meta charset="UTF-8"><title>HFA Report</title>
+    <style>body{font-family:Arial;padding:20px;} .muted{color:#5d6d7e;} table{width:100%;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #eee}</style>
+    </head><body>
+      <h2>HFA Report (0–59 months)</h2>
+      <div class="muted">${now.toLocaleString()}</div>
+      <table>
+        <tr><td>Sex</td><td>${d.sex}</td></tr>
+        <tr><td>Age</td><td>${d.ageMonths} months</td></tr>
+        <tr><td>Height/Length</td><td>${d.heightCm} cm</td></tr>
+        <tr><td>HFA Z-score</td><td>${isFinite(d.z) ? d.z.toFixed(2) : "N/A"}</td></tr>
+        <tr><td>Status</td><td><b>${d.status}</b></td></tr>
+      </table>
+    </body></html>`;
+    const w = window.open("", "_blank"); w.document.open(); w.document.write(html); w.document.close();
+  }
+
+  /* =========================================================
+     IMAM WIZARD
+  ========================================================= */
+
+  function wizGo(step){
+    for (let i=1; i<=7; i++){
+      const el = document.getElementById("w"+i);
+      if (el) el.style.display = "none";
+    }
+    const target = document.getElementById("w"+step);
+    if (target) target.style.display = "block";
+  }
+
+  function clearWizardFlags(){
+    const ids = ["wDanger","wStabilized","wIMCI","wInDepth","wRelapse","wPrevSAM","wSocial"];
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id === "wStabilized") el.checked = true;
+      else el.checked = false;
+    });
+  }
+
+  function wizReset(){
+    document.getElementById("wizSex").value = "boy";
+    document.getElementById("wizAge").value = "";
+    document.getElementById("wizWeight").value = "";
+    document.getElementById("wizHeight").value = "";
+    document.getElementById("wizMuac").value = "";
+
+    const oed = document.getElementById("wOedema");
+    if (oed) oed.value = "none";
+
+    const appetite = document.getElementById("wAppetite");
+    const appetiteHint = document.getElementById("wAppetiteHint");
+    if (appetite) {
+      appetite.value = "pass";
+      appetite.style.display = "none";
+    }
+    if (appetiteHint) {
+      appetiteHint.style.display = "none";
+      appetiteHint.textContent = "";
+    }
+
+    const warn = document.getElementById("wStep6Warn");
+    if (warn) {
+      warn.style.display = "none";
+      warn.textContent = "";
+    }
+
+    clearWizardFlags();
+
+    const out = document.getElementById("wizResult");
+    if (out) out.innerHTML = "<span class='loading'>Click “Calculate” to generate results…</span>";
+
+    window.__lastWizard = null;
+    wizGo(1);
+  }
+
+  function getWizardInputs(){
+    return {
+      sex: document.getElementById("wizSex").value,
+      age: parseFloat(document.getElementById("wizAge").value),
+      weightKg: parseFloat(document.getElementById("wizWeight").value),
+      heightCm: parseFloat(document.getElementById("wizHeight").value),
+      muacCm: parseFloat(document.getElementById("wizMuac").value),
+      oedema: document.getElementById("wOedema").value,
+      danger: document.getElementById("wDanger").checked,
+      stabilized: document.getElementById("wStabilized").checked,
+      appetite: document.getElementById("wAppetite").value,
+      imci: document.getElementById("wIMCI").checked,
+      inDepth: document.getElementById("wInDepth").checked,
+      relapse: document.getElementById("wRelapse").checked,
+      prevSAM: document.getElementById("wPrevSAM").checked,
+      social: document.getElementById("wSocial").checked
+    };
+  }
+
+  function computeWizardModel(sex, age, weightKg, heightCm, muacCm, oedema){
+    const whzTable = (age <= 24)
+      ? ((sex === "boy") ? wflBoys : wflGirls)
+      : ((sex === "boy") ? wfhBoys : wfhGirls);
+
+    const key = detectLenHeiKey(whzTable);
+    const whzRef = key ? interpLMS(whzTable, heightCm, key) : null;
+    const zWhz = whzRef ? lmsZ(weightKg, whzRef.L, whzRef.M, whzRef.S) : NaN;
+
+    const wfaTable = (sex === "boy") ? wfaBoys : wfaGirls;
+    const wfaRef = interpLMS(wfaTable, age, "Age");
+    const zWfa = wfaRef ? lmsZ(weightKg, wfaRef.L, wfaRef.M, wfaRef.S) : NaN;
+
+    const hfaTable = (sex === "boy") ? hfaBoys : hfaGirls;
+    const hfaRef = interpLMS(hfaTable, age, "Age");
+    const zHfa = hfaRef ? lmsZ(heightCm, hfaRef.L, hfaRef.M, hfaRef.S) : NaN;
+
+    const bWHZ = classifyZ(zWhz, "SAM", "MAM");
+    const bWFA = classifyZ(zWfa, "Severe Underweight", "Underweight");
+    const bHFA = classifyZ(zHfa, "Severe Stunting", "Stunted");
+    const bMU  = classifyMuac(muacCm);
+
+    const hasOedema = (oedema === "plus1" || oedema === "plus2" || oedema === "plus3");
+    const isSAM = hasOedema || (isFinite(zWhz) && zWhz < -3) || (isFinite(muacCm) && muacCm < 11.5);
+    const isMAM = !isSAM && (((isFinite(zWhz) && zWhz >= -3 && zWhz < -2) || (isFinite(muacCm) && muacCm >= 11.5 && muacCm < 12.5)));
+    const appetiteRequired = isSAM && oedema !== "plus3";
+
+    return {
+      ok: true,
+      input:{ sex, ageMonths:age, weightKg, heightCm, muacCm, oedema },
+      z:{ whz:zWhz, wfa:zWfa, hfa:zHfa },
+      badges:{ whz:bWHZ, wfa:bWFA, hfa:bHFA, muac:bMU },
+      hasOedema,
+      isSAM,
+      isMAM,
+      appetiteRequired
+    };
+  }
+
+  function showAppetiteControl(show, message){
+    const appetiteBox = document.getElementById("wAppetite");
+    const appetiteHint = document.getElementById("wAppetiteHint");
+    if (!appetiteBox || !appetiteHint) return;
+
+    appetiteBox.style.display = show ? "block" : "none";
+    appetiteHint.style.display = "block";
+    appetiteHint.textContent = message || (show ? "Appetite test is required." : "Appetite test not required.");
+  }
+
+  function prepareWizardStep(){
+    const warn = document.getElementById("wStep6Warn");
+    if (warn) {
+      warn.style.display = "none";
+      warn.textContent = "";
+    }
+
+    if (!DATA_READY) {
+      if (warn) {
+        warn.style.display = "block";
+        warn.textContent = "Reference data still loading…";
+      }
+      return false;
+    }
+
+    const data = getWizardInputs();
+    if (isNaN(data.age) || isNaN(data.weightKg) || isNaN(data.heightCm) || isNaN(data.muacCm)) {
+      if (warn) {
+        warn.style.display = "block";
+        warn.textContent = "Please fill Age, Weight, Height, and MUAC before continuing.";
+      }
+      return false;
+    }
+
+    if (data.age < 0 || data.age > 59) {
+      if (warn) {
+        warn.style.display = "block";
+        warn.textContent = "Wizard supports children aged 0–59 months only.";
+      }
+      return false;
+    }
+
+    const model = computeWizardModel(data.sex, data.age, data.weightKg, data.heightCm, data.muacCm, data.oedema);
+
+    if (model.appetiteRequired) {
+      const appetiteBox = document.getElementById("wAppetite");
+      const wasHidden = appetiteBox && appetiteBox.style.display === "none";
+
+      showAppetiteControl(true, "Appetite test is REQUIRED for this SAM pathway. Select the appetite result, then click Next again.");
+
+      if (wasHidden) {
+        if (warn) {
+          warn.style.display = "block";
+          warn.textContent = "Appetite test is required. Please choose Pass or Fail, then click Next again.";
+        }
+        return false;
+      }
+    } else {
+      if (data.oedema === "plus3") {
+        showAppetiteControl(false, "Appetite test NOT required for oedema +++.");
+      } else {
+        showAppetiteControl(false, "Appetite test not required.");
+      }
+    }
+
+    return true;
+  }
+
+  function buildWizardDecision(model, flags){
+    const path = [];
+    let decision = { label: "NORMAL", cls: "bg-green" };
+
+    if (flags.danger || !flags.stabilized) {
+      if (flags.danger) path.push("Danger/emergency signs present");
+      if (!flags.stabilized) path.push("Child not stabilized");
+      decision = { label: "EMERGENCY / INPATIENT CARE", cls: "bg-red" };
+      return { decision, path, pathway: "Emergency" };
+    }
+
+    if (model.isSAM) {
+      if (model.hasOedema) {
+        if (model.input.oedema === "plus3") path.push("Bilateral oedema +++");
+        else path.push("Bilateral oedema present");
+      }
+      if (isFinite(model.input.muacCm) && model.input.muacCm < 11.5) path.push("MUAC < 11.5 cm");
+      if (isFinite(model.z.whz) && model.z.whz < -3) path.push("WHZ < -3");
+
+      if (model.appetiteRequired) {
+        if (flags.appetite === "fail") {
+          path.push("Appetite test failed");
+          decision = { label: "ADMIT: INPATIENT (SAM - FAILED APPETITE TEST)", cls: "bg-red" };
+          return { decision, path, pathway: "SAM" };
+        }
+        path.push("Appetite test passed");
+      } else if (model.input.oedema === "plus3") {
+        path.push("Appetite test not required for oedema +++");
+      }
+
+      if (flags.imci) {
+        path.push("IMCI medical problems present");
+        decision = { label: "ADMIT: INPATIENT (SAM WITH MEDICAL PROBLEMS)", cls: "bg-red" };
+        return { decision, path, pathway: "SAM" };
+      }
+
+      if (flags.inDepth) {
+        path.push("Needs in-depth assessment");
+        decision = { label: "ADMIT / REFER FOR IN-DEPTH ASSESSMENT", cls: "bg-red" };
+        return { decision, path, pathway: "SAM" };
+      }
+
+      decision = { label: "OUTPATIENT CARE (SAM / OTC)", cls: "bg-yellow" };
+      path.push("Stable SAM pathway for outpatient care");
+      return { decision, path, pathway: "SAM" };
+    }
+
+    if (model.isMAM) {
+      if (isFinite(model.input.muacCm) && model.input.muacCm >= 11.5 && model.input.muacCm < 12.5) path.push("MUAC 11.5 to <12.5 cm");
+      if (isFinite(model.z.whz) && model.z.whz >= -3 && model.z.whz < -2) path.push("WHZ -3 to < -2");
+
+      const riskFlags = [];
+      if (flags.relapse) riskFlags.push("Failed/relapsed previous MAM");
+      if (flags.prevSAM) riskFlags.push("Previous SAM");
+      if (flags.social) riskFlags.push("Severe social factors");
+
+      if (flags.imci) path.push("IMCI medical problems present");
+      if (flags.inDepth) path.push("Needs in-depth assessment");
+      riskFlags.forEach(r => path.push(r));
+
+      if (flags.imci || flags.inDepth || riskFlags.length > 0) {
+        decision = { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS)", cls: "bg-red" };
+        return { decision, path, pathway: "MAM" };
+      }
+
+      decision = { label: "OUTPATIENT CARE (MAM)", cls: "bg-yellow" };
+      path.push("MAM without added risk factors");
+      return { decision, path, pathway: "MAM" };
+    }
+
+    if (flags.imci) {
+      path.push("No acute malnutrition admission threshold met");
+      path.push("IMCI medical problems present");
+      decision = { label: "INPATIENT CARE (MEDICAL / IMCI)", cls: "bg-red" };
+      return { decision, path, pathway: "Normal / Medical" };
+    }
+
+    if (flags.inDepth) {
+      path.push("No acute malnutrition admission threshold met");
+      path.push("Needs in-depth assessment");
+      decision = { label: "REFER FOR IN-DEPTH ASSESSMENT", cls: "bg-yellow" };
+      return { decision, path, pathway: "Normal / In-depth assessment" };
+    }
+
+    path.push("MUAC and WHZ not in SAM/MAM admission bands");
+    path.push("No oedema");
+    decision = { label: "NORMAL / ROUTINE CARE", cls: "bg-green" };
+    return { decision, path, pathway: "Normal" };
+  }
+
+  function renderWizard(model){
+    const out = document.getElementById("wizResult");
+    if (!model || !model.ok){
+      out.innerHTML = "<span class='loading'>" + ((model && model.error) || "Invalid") + "</span>";
+      return;
+    }
+
+    const { input, z, badges, decision, path, pathway } = model;
+    const rows = [];
+
+    rows.push(`
+      <div class="row">
+        <div class="row-left">
+          <div class="row-title">Pathway</div>
+          <div class="row-sub">IMAM care decision track</div>
+        </div>
+        <span class="badge bg-gray">${pathway}</span>
+      </div>
+    `);
+
+    rows.push(`
+      <div class="row">
+        <div class="row-left">
+          <div class="row-title">WHZ (Wasting)</div>
+          <div class="row-sub">Weight-for-Length/Height Z-score</div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <div><b>${isFinite(z.whz) ? z.whz.toFixed(2) : "N/A"}</b></div>
+          <span class="badge ${badges.whz.cls}">${badges.whz.text}</span>
+        </div>
+      </div>
+    `);
+
+    rows.push(`
+      <div class="row">
+        <div class="row-left">
+          <div class="row-title">WFA (Underweight)</div>
+          <div class="row-sub">Weight-for-Age Z-score</div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <div><b>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</b></div>
+          <span class="badge ${badges.wfa.cls}">${badges.wfa.text}</span>
+        </div>
+      </div>
+    `);
+
+    rows.push(`
+      <div class="row">
+        <div class="row-left">
+          <div class="row-title">HFA (Stunting)</div>
+          <div class="row-sub">Height-for-Age Z-score</div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <div><b>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</b></div>
+          <span class="badge ${badges.hfa.cls}">${badges.hfa.text}</span>
+        </div>
+      </div>
+    `);
+
+    rows.push(`
+      <div class="row">
+        <div class="row-left">
+          <div class="row-title">MUAC</div>
+          <div class="row-sub">Mid-Upper Arm Circumference</div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <div><b>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"} cm</b></div>
+          <span class="badge ${badges.muac.cls}">${badges.muac.text}</span>
+        </div>
+      </div>
+    `);
+
     rows.push(`
       <div class="row">
         <div class="row-left">
           <div class="row-title">Oedema</div>
           <div class="row-sub">Bilateral pitting oedema</div>
         </div>
-        <span class="badge bg-red">YES (SAM)</span>
+        <span class="badge ${input.oedema === "none" ? "bg-green" : "bg-red"}">${input.oedema === "none" ? "None" : input.oedema}</span>
       </div>
     `);
+
+    out.innerHTML = `
+      <div class="rows">${rows.join("")}</div>
+
+      <div class="finalBox">
+        <div class="finalTitle">Admission Decision</div>
+        <span class="badge ${decision.cls}">${decision.label}</span>
+
+        <div class="muted" style="margin-top:12px;"><b>Decision path:</b></div>
+        <ul class="pathList">
+          ${(path || []).map(item => `<li>${item}</li>`).join("")}
+        </ul>
+
+        <div class="muted" style="margin-top:10px;">
+          <b>Below-normal zones:</b><br>
+          • <span class="badge bg-red">Z &lt; -3</span> Severe<br>
+          • <span class="badge bg-yellow">-3 ≤ Z &lt; -2</span> Moderate
+        </div>
+      </div>
+    `;
   }
 
-  rows.push(`
-    <div class="row">
-      <div class="row-left">
-        <div class="row-title">WHZ (Wasting)</div>
-        <div class="row-sub">Weight-for-Length/Height Z-score</div>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <div><b>${isFinite(z.whz) ? z.whz.toFixed(2) : "N/A"}</b></div>
-        <span class="badge ${badges.whz.cls}">${badges.whz.text}</span>
-      </div>
-    </div>
-  `);
+  function calculateWizard() {
+    try {
+      const out = document.getElementById("wizResult");
+      if (!out) return;
 
-  rows.push(`
-    <div class="row">
-      <div class="row-left">
-        <div class="row-title">WFA (Underweight)</div>
-        <div class="row-sub">Weight-for-Age Z-score</div>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <div><b>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</b></div>
-        <span class="badge ${badges.wfa.cls}">${badges.wfa.text}</span>
-      </div>
-    </div>
-  `);
+      if (!DATA_READY) {
+        out.innerHTML = "<span class='loading'>Reference data still loading…</span>";
+        return;
+      }
 
-  rows.push(`
-    <div class="row">
-      <div class="row-left">
-        <div class="row-title">HFA (Stunting)</div>
-        <div class="row-sub">Height-for-Age Z-score</div>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <div><b>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</b></div>
-        <span class="badge ${badges.hfa.cls}">${badges.hfa.text}</span>
-      </div>
-    </div>
-  `);
+      const data = getWizardInputs();
 
-  rows.push(`
-    <div class="row">
-      <div class="row-left">
-        <div class="row-title">MUAC</div>
-        <div class="row-sub">Mid-Upper Arm Circumference</div>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <div><b>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"} cm</b></div>
-        <span class="badge ${badges.muac.cls}">${badges.muac.text}</span>
-      </div>
-    </div>
-  `);
+      if (isNaN(data.age) || isNaN(data.weightKg) || isNaN(data.heightCm) || isNaN(data.muacCm)) {
+        out.innerHTML = "Fill Age, Weight, Height, and MUAC";
+        return;
+      }
 
-  out.innerHTML = `
-    <div class="rows">${rows.join("")}</div>
-    <div class="finalBox">
-      <div class="finalTitle">Admission Decision</div>
-      <span class="badge ${decision.cls}">${decision.label}</span>
-      <div class="muted" style="margin-top:10px;">
-        <b>Below-normal zones:</b><br>
-        • <span class="badge bg-red">Z &lt; -3</span> Severe<br>
-        • <span class="badge bg-yellow">-3 ≤ Z &lt; -2</span> Moderate
-      </div>
-    </div>
-  `;
-}
+      if (data.age < 0 || data.age > 59) {
+        out.innerHTML = "0–59 months only";
+        return;
+      }
 
-function wizGo(step){
-  for (let i=1; i<=7; i++){
-    const el = document.getElementById("w"+i);
-    if (el) el.style.display = "none";
-  }
-  const target = document.getElementById("w"+step);
-  if (target) target.style.display = "block";
-}
+      const baseModel = computeWizardModel(data.sex, data.age, data.weightKg, data.heightCm, data.muacCm, data.oedema);
 
-function wizReset(){
-  document.getElementById("wizSex").value = "boy";
-  document.getElementById("wizAge").value = "";
-  document.getElementById("wizWeight").value = "";
-  document.getElementById("wizHeight").value = "";
-  document.getElementById("wizMuac").value = "";
-  document.getElementById("wizOedema").value = "no";
-  document.getElementById("wizResult").innerHTML = "<span class='loading'>Click “Calculate” to generate results…</span>";
-  window.__lastWizard = null;
-  wizGo(1);
-}
+      if (baseModel.appetiteRequired) {
+        showAppetiteControl(true, "Appetite test is REQUIRED for this SAM pathway.");
+      } else if (data.oedema === "plus3") {
+        showAppetiteControl(false, "Appetite test NOT required for oedema +++.");
+      } else {
+        showAppetiteControl(false, "Appetite test not required.");
+      }
 
-function shouldShowAppetite(muac, oedema, z) {
+      const decisionBundle = buildWizardDecision(baseModel, {
+        danger: data.danger,
+        stabilized: data.stabilized,
+        appetite: data.appetite,
+        imci: data.imci,
+        inDepth: data.inDepth,
+        relapse: data.relapse,
+        prevSAM: data.prevSAM,
+        social: data.social
+      });
 
-  // ✅ oedema +++ → appetite NOT required
-  if (oedema === "plus3") return false;
+      const model = {
+        ...baseModel,
+        decision: decisionBundle.decision,
+        path: decisionBundle.path,
+        pathway: decisionBundle.pathway,
+        flags: {
+          danger: data.danger,
+          stabilized: data.stabilized,
+          appetite: data.appetite,
+          imci: data.imci,
+          inDepth: data.inDepth,
+          relapse: data.relapse,
+          prevSAM: data.prevSAM,
+          social: data.social
+        }
+      };
 
-  const muacLt115 = muac > 0 && muac < 11.5;
+      window.__lastWizard = model;
+      renderWizard(model);
 
-  const oedemaPlus12 = (oedema === "plus1" || oedema === "plus2");
-
-  const samByZ = (z !== null && z < -3);
-
-  // ✅ show appetite ONLY in SAM pathway
-  return muacLt115 || oedemaPlus12 || samByZ;
-}
-
-// ---------- FIX 1: admissionDecision must match your oedema values ----------
-function admissionDecision(whzZ, mu, oedema){
-  const hasOedema = (oedema === "plus1" || oedema === "plus2" || oedema === "plus3");
-  if (oedema === "plus3") return { label: "ADMIT: INPATIENT (SAM - OEDEMA +++)", cls: "bg-red" };
-  if (hasOedema) return { label: "ADMIT: INPATIENT (SAM - OEDEMA)", cls: "bg-red" };
-
-  if ((isFinite(whzZ) && whzZ < -3) || (isFinite(mu) && mu < 11.5))
-    return { label: "ADMIT: INPATIENT (SAM)", cls: "bg-red" };
-
-  if ((isFinite(whzZ) && whzZ < -2) || (isFinite(mu) && mu < 12.5))
-    return { label: "OUTPATIENT CARE (OTC)", cls: "bg-yellow" };
-
-  return { label: "NORMAL", cls: "bg-green" };
-}
-
-// ---------- FIX 2: wizReset uses correct element IDs + correct oedema default ----------
-function wizReset(){
-  document.getElementById("wizSex").value = "boy";
-  document.getElementById("wizAge").value = "";
-  document.getElementById("wizWeight").value = "";
-  document.getElementById("wizHeight").value = "";
-  document.getElementById("wizMuac").value = "";
-
-  // Your HTML uses id="wOedema" (NOT wizOedema) and values are none/plus1/plus2/plus3
-  const oed = document.getElementById("wOedema");
-  if (oed) oed.value = "none";
-
-  const out = document.getElementById("wizResult");
-  if (out) out.innerHTML = "<span class='loading'>Click “Calculate” to generate results…</span>";
-
-  window.__lastWizard = null;
-  wizGo(1);
-}
-
-// ---------- FIX 3: shouldShowAppetite stays OK (but keep it exactly once) ----------
-function shouldShowAppetite(muac, oedema, z) {
-  if (oedema === "plus3") return false;            // oedema +++ → appetite NOT required
-
-  const muacLt115 = muac > 0 && muac < 11.5;
-  const oedemaPlus12 = (oedema === "plus1" || oedema === "plus2");
-  const samByZ = (z !== null && z < -3);
-
-  return muacLt115 || oedemaPlus12 || samByZ;      // show appetite only in SAM pathway
-}
-
-// ---------- FIX 4: calculateWizard fully closed and safe ----------
-function calculateWizard() {
-  try {
-    const out = document.getElementById("wizResult");
-    if (!out) return;
-
-    if (!DATA_READY) {
-      out.innerHTML = "<span class='loading'>Reference data still loading…</span>";
-      return;
+    } catch (err) {
+      console.error(err);
+      alert("Wizard error: " + err.message);
     }
-
-    const sex = document.getElementById("wizSex").value;
-    const age = parseFloat(document.getElementById("wizAge").value);
-    const w   = parseFloat(document.getElementById("wizWeight").value);
-    const h   = parseFloat(document.getElementById("wizHeight").value);
-    const mu  = parseFloat(document.getElementById("wizMuac").value);
-    const oedema = document.getElementById("wOedema").value;
-
-    if (isNaN(age) || isNaN(w) || isNaN(h)) { out.innerHTML = "Fill Age, Weight, Height"; return; }
-    if (age < 0 || age > 59) { out.innerHTML = "0–59 months only"; return; }
-
-    // WHZ z-score from last WHZ calc (optional)
-    const z = window.__lastWHZ ? window.__lastWHZ.z : null;
-
-    // Appetite visibility control
-    const appetiteBox = document.getElementById("wAppetite");
-    const appetiteHint = document.getElementById("wAppetiteHint");
-    if (appetiteBox && appetiteHint) {
-      const show = shouldShowAppetite(mu, oedema, z);
-      appetiteBox.style.display = show ? "block" : "none";
-      appetiteHint.style.display = "block";
-      appetiteHint.textContent = show
-        ? "Appetite test is REQUIRED (SAM assessment)."
-        : (oedema === "plus3" ? "Appetite test NOT required for oedema +++." : "Appetite test not required.");
-    }
-
-    const model = computeWizardModel(sex, age, w, h, mu, oedema);
-    window.__lastWizard = model;
-    renderWizard(model);
-
-  } catch (err) {
-    console.error(err);
-    alert("Wizard error: " + err.message);
   }
-}
 
+  function printWizard(){
+    if (!window.__lastWizard || !window.__lastWizard.ok) return;
 
-function printWizard(){
-  if (!window.__lastWizard || !window.__lastWizard.ok) return;
-  const model = window.__lastWizard;
-  const { input, z, badges, decision } = model;
-  const now = new Date();
+    const model = window.__lastWizard;
+    const { input, z, badges, decision, path, pathway, flags } = model;
+    const now = new Date();
 
-  const html = `
-  <html><head><meta charset="UTF-8"><title>IMAM Wizard Report</title>
-  <style>
-    body{font-family:Arial;padding:20px;}
-    .muted{color:#5d6d7e;}
-    .box{border:1px solid #ddd;padding:12px;border-radius:10px;margin-top:12px;}
-    table{width:100%;border-collapse:collapse;margin-top:8px;}
-    td{padding:6px;border-bottom:1px solid #eee;}
-    .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:bold;}
-    .red{background:#fdecea;color:#b02a37;}
-    .yellow{background:#fff4d6;color:#8a6d00;}
-    .green{background:#e7f7ee;color:#1f7a3a;}
-    .gray{background:#eef3f7;color:#2c3e50;}
-  </style></head><body>
-    <h2>Nutrition Assessment Report (IMAM Wizard)</h2>
-    <div class="muted">${now.toLocaleString()}</div>
+    const html = `
+    <html><head><meta charset="UTF-8"><title>IMAM Wizard Report</title>
+    <style>
+      body{font-family:Arial;padding:20px;}
+      .muted{color:#5d6d7e;}
+      .box{border:1px solid #ddd;padding:12px;border-radius:10px;margin-top:12px;}
+      table{width:100%;border-collapse:collapse;margin-top:8px;}
+      td{padding:6px;border-bottom:1px solid #eee; vertical-align:top;}
+      .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:bold;}
+      .red{background:#fdecea;color:#b02a37;}
+      .yellow{background:#fff4d6;color:#8a6d00;}
+      .green{background:#e7f7ee;color:#1f7a3a;}
+      .gray{background:#eef3f7;color:#2c3e50;}
+      ul{margin:8px 0 0 18px;}
+    </style></head><body>
+      <h2>Nutrition Assessment Report (IMAM Wizard)</h2>
+      <div class="muted">${now.toLocaleString()}</div>
 
-    <div class="box">
-      <b>Inputs</b>
-      <table>
-        <tr><td>Sex</td><td>${input.sex}</td></tr>
-        <tr><td>Age</td><td>${input.ageMonths} months</td></tr>
-        <tr><td>Weight</td><td>${input.weightKg} kg</td></tr>
-        <tr><td>Height/Length</td><td>${input.heightCm} cm</td></tr>
-        <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) + " cm" : "N/A"}</td></tr>
-        <tr><td>Oedema</td><td>${input.oedema === "yes" ? "Yes" : "No"}</td></tr>
-      </table>
-    </div>
-
-    <div class="box">
-      <b>Z-scores & Classification</b>
-      <table>
-        <tr><td>WHZ</td><td>${isFinite(z.whz) ? z.whz.toFixed(2) : "N/A"}</td><td>${badges.whz.text}</td></tr>
-        <tr><td>WFA</td><td>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</td><td>${badges.wfa.text}</td></tr>
-        <tr><td>HFA</td><td>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</td><td>${badges.hfa.text}</td></tr>
-        <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"}</td><td>${badges.muac.text}</td></tr>
-      </table>
-    </div>
-
-    <div class="box">
-      <b>Admission Decision</b><br>
-      <span class="tag ${decision.cls.includes("red") ? "red" : decision.cls.includes("yellow") ? "yellow" : decision.cls.includes("green") ? "green" : "gray"}">${decision.label}</span>
-      <div class="muted" style="margin-top:10px;">
-        Below-normal zones: Z &lt; -3 (Severe), -3 ≤ Z &lt; -2 (Moderate)
+      <div class="box">
+        <b>Inputs</b>
+        <table>
+          <tr><td>Sex</td><td>${input.sex}</td></tr>
+          <tr><td>Age</td><td>${input.ageMonths} months</td></tr>
+          <tr><td>Weight</td><td>${input.weightKg} kg</td></tr>
+          <tr><td>Height/Length</td><td>${input.heightCm} cm</td></tr>
+          <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) + " cm" : "N/A"}</td></tr>
+          <tr><td>Oedema</td><td>${input.oedema}</td></tr>
+          <tr><td>Danger signs</td><td>${flags.danger ? "Yes" : "No"}</td></tr>
+          <tr><td>Stabilized</td><td>${flags.stabilized ? "Yes" : "No"}</td></tr>
+          <tr><td>Appetite result</td><td>${model.appetiteRequired ? flags.appetite : "Not required"}</td></tr>
+          <tr><td>IMCI medical problems</td><td>${flags.imci ? "Yes" : "No"}</td></tr>
+          <tr><td>Need in-depth assessment</td><td>${flags.inDepth ? "Yes" : "No"}</td></tr>
+          <tr><td>Failed/Relapsed previous MAM</td><td>${flags.relapse ? "Yes" : "No"}</td></tr>
+          <tr><td>Previous SAM</td><td>${flags.prevSAM ? "Yes" : "No"}</td></tr>
+          <tr><td>Severe social factors</td><td>${flags.social ? "Yes" : "No"}</td></tr>
+        </table>
       </div>
-    </div>
 
-  </body></html>`;
+      <div class="box">
+        <b>Z-scores & Classification</b>
+        <table>
+          <tr><td>Pathway</td><td colspan="2">${pathway}</td></tr>
+          <tr><td>WHZ</td><td>${isFinite(z.whz) ? z.whz.toFixed(2) : "N/A"}</td><td>${badges.whz.text}</td></tr>
+          <tr><td>WFA</td><td>${isFinite(z.wfa) ? z.wfa.toFixed(2) : "N/A"}</td><td>${badges.wfa.text}</td></tr>
+          <tr><td>HFA</td><td>${isFinite(z.hfa) ? z.hfa.toFixed(2) : "N/A"}</td><td>${badges.hfa.text}</td></tr>
+          <tr><td>MUAC</td><td>${isFinite(input.muacCm) ? input.muacCm.toFixed(1) : "N/A"}</td><td>${badges.muac.text}</td></tr>
+        </table>
+      </div>
 
-  const w = window.open("", "_blank");
-  w.document.open(); w.document.write(html); w.document.close();
-}
+      <div class="box">
+        <b>Admission Decision</b><br>
+        <span class="tag ${decision.cls.includes("red") ? "red" : decision.cls.includes("yellow") ? "yellow" : decision.cls.includes("green") ? "green" : "gray"}">${decision.label}</span>
+        <div class="muted" style="margin-top:10px;"><b>Decision path</b></div>
+        <ul>
+          ${(path || []).map(item => `<li>${item}</li>`).join("")}
+        </ul>
+        <div class="muted" style="margin-top:10px;">
+          Below-normal zones: Z &lt; -3 (Severe), -3 ≤ Z &lt; -2 (Moderate)
+        </div>
+      </div>
+    </body></html>`;
+
+    const w = window.open("", "_blank");
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+  }
 </script>
 </body>
 </html>
