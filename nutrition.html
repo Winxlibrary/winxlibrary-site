@@ -468,22 +468,29 @@
     const model = window.__lastWizard;
     const { input, z, decision, pathway } = model;
 
-    const record = {
-      savedAt: new Date().toLocaleString(),
-      patientId: input.patientId || "",
-      facility: input.facility || "",
-      sex: input.sex || "",
-      ageMonths: input.ageMonths ?? "",
-      muacCm: isFinite(input.muacCm) ? input.muacCm : "",
-      oedema: input.oedema || "",
-      weightKg: isFinite(input.weightKg) ? input.weightKg : "",
-      heightCm: isFinite(input.heightCm) ? input.heightCm : "",
-      whz: isFinite(z.whz) ? Number(z.whz.toFixed(2)) : "",
-      wfa: isFinite(z.wfa) ? Number(z.wfa.toFixed(2)) : "",
-      hfa: isFinite(z.hfa) ? Number(z.hfa.toFixed(2)) : "",
-      pathway: pathway || "",
-      decision: decision.label || ""
-    };
+const record = {
+  savedAt: new Date().toLocaleString(),
+  patientId: input.patientId || "",
+  facility: input.facility || "",
+  sex: input.sex || "",
+  ageMonths: input.ageMonths ?? "",
+  muacCm: isFinite(input.muacCm) ? input.muacCm : "",
+  oedema: input.oedema || "",
+  weightKg: isFinite(input.weightKg) ? input.weightKg : "",
+  heightCm: isFinite(input.heightCm) ? input.heightCm : "",
+  pathway: pathway || "",
+  decision: decision.label || "",
+
+  // ✅ Z-SCORE OUTCOMES (ONLY IF PRESENT)
+  whzOutcome: model.usedWHZ && isFinite(z.whz) ? model.badges.whz.text : "",
+  wfaOutcome: isFinite(z.wfa) ? model.badges.wfa.text : "",
+  hfaOutcome: isFinite(z.hfa) ? model.badges.hfa.text : "",
+
+  // ✅ Z-SCORE VALUES
+  whz: model.usedWHZ && isFinite(z.whz) ? Number(z.whz.toFixed(2)) : "",
+  wfa: isFinite(z.wfa) ? Number(z.wfa.toFixed(2)) : "",
+  hfa: isFinite(z.hfa) ? Number(z.hfa.toFixed(2)) : ""
+};
 
     patientRecords.push(record);
     saveRecordsToStorage();
@@ -496,39 +503,49 @@
       return;
     }
 
-    const headers = [
-      "Saved At",
-      "Patient ID",
-      "Facility",
-      "Sex",
-      "Age (months)",
-      "MUAC (cm)",
-      "Oedema",
-      "Weight (kg)",
-      "Height/Length (cm)",
-      "WHZ",
-      "WFA",
-      "HFA",
-      "Pathway",
-      "Decision"
-    ];
+const headers = [
+  "Saved At",
+  "Patient ID",
+  "Facility",
+  "Sex",
+  "Age (months)",
+  "MUAC (cm)",
+  "Oedema",
+  "Weight (kg)",
+  "Height (cm)",
+  "Pathway",
+  "Decision",
 
-    const rows = patientRecords.map(r => [
-      r.savedAt,
-      r.patientId,
-      r.facility,
-      r.sex,
-      r.ageMonths,
-      r.muacCm,
-      r.oedema,
-      r.weightKg,
-      r.heightCm,
-      r.whz,
-      r.wfa,
-      r.hfa,
-      r.pathway,
-      r.decision
-    ]);
+  "WHZ Outcome",
+  "WFA Outcome",
+  "HFA Outcome",
+
+  "WHZ Z-score",
+  "WFA Z-score",
+  "HFA Z-score"
+];
+
+const rows = patientRecords.map(r => [
+  r.savedAt,
+  r.patientId,
+  r.facility,
+  r.sex,
+  r.ageMonths,
+  r.muacCm,
+  r.oedema,
+  r.weightKg,
+  r.heightCm,
+  r.pathway,
+  r.decision,
+
+  r.whzOutcome,
+  r.wfaOutcome,
+  r.hfaOutcome,
+
+  r.whz,
+  r.wfa,
+  r.hfa
+]);
 
     const csv = [headers, ...rows]
       .map(row => row.map(escapeCSV).join(","))
