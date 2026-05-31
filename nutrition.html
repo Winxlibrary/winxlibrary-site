@@ -133,7 +133,7 @@
 
   <div class="container">
     <div style="text-align:center; margin-top:10px;">
-      <img src="logo.png" alt="WinxLibrary Logo" width="120">
+      <img src="logo.png" width="90"><br>
     </div>
     <div style="text-align:center; margin-top:10px;">
       <h2>Nutrition Assessment Reference Tools</h2>
@@ -302,12 +302,11 @@
       <label>Patient ID</label>
      <input id="wizPatientId" placeholder="e.g. OPD-2026-001">
 
-     <label>Facility Name</label>
-     <input id="wizFacility" placeholder="e.g. Magezi Hospital">
-      
+          
       <div id="w2" class="stepBox" style="display:none;">
         <h4>Step 2: Basic Info</h4>
-
+        <label>Facility Name</label>
+       <input id="wizFacility" placeholder="e.g. Magezi Hospital">
         <label>Sex</label>
         <select id="wizSex">
           <option value="boy">Boy</option>
@@ -959,16 +958,16 @@
 
     return {
       ok: true,
-      input: {
-        sex,
-        ageMonths: age,
-        weightKg,
-        heightCm,
-        muacCm,
-        oedema
-        patientId: data.patientId,
-        facility: data.facility
-      },
+ input: {
+  sex,
+  ageMonths: age,
+  weightKg,
+  heightCm,
+  muacCm,
+  oedema,
+  patientId: data.patientId,
+  facility: data.facility
+},
       z: { whz: zWhz, wfa: zWfa, hfa: zHfa },
       badges: { whz: bWHZ, wfa: bWFA, hfa: bHFA, muac: bMU },
       hasOedema,
