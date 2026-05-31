@@ -1160,6 +1160,19 @@
   }
 
   function calculateWizard() {
+    // 🔴 TRIAGE FIRST
+if (data.danger || !data.stabilized) {
+  WizResult.innerHTML = `
+    <div class="badge bg-red">EMERGENCY / INPATIENT CARE</div>
+    <ul>
+      ${data.danger ? "<li>Danger signs present</li>" : ""}
+      ${!data.stabilized ? "<li>Child not stabilized</li>" : ""}
+      <li>Immediate referral required</li>
+    </ul>
+  `;
+  return;  // ✅ STOP EVERYTHING
+}
+    
     try {
       const out = document.getElementById("wizResult");
       if (!out) return;
