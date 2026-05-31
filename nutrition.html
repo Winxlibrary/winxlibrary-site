@@ -497,70 +497,112 @@ const record = {
     alert("Record saved locally.");
   }
 
-  function downloadExcel(){
-    if (!patientRecords.length) {
-      alert("No saved records to export.");
-      return;
-    }
-
-const headers = [
-  "Saved At",
-  "Patient ID",
-  "Facility",
-  "Sex",
-  "Age (months)",
-  "MUAC (cm)",
-  "Oedema",
-  "Weight (kg)",
-  "Height (cm)",
-  "Pathway",
-  "Decision",
-
-  "WHZ Outcome",
-  "WFA Outcome",
-  "HFA Outcome",
-
-  "WHZ Z-score",
-  "WFA Z-score",
-  "HFA Z-score"
-];
-
-const rows = patientRecords.map(r => [
-  r.savedAt,
-  r.patientId,
-  r.facility,
-  r.sex,
-  r.ageMonths,
-  r.muacCm,
-  r.oedema,
-  r.weightKg,
-  r.heightCm,
-  r.pathway,
-  r.decision,
-
-  r.whzOutcome,
-  r.wfaOutcome,
-  r.hfaOutcome,
-
-  r.whz,
-  r.wfa,
-  r.hfa
-]);
-
-    const csv = [headers, ...rows]
-      .map(row => row.map(escapeCSV).join(","))
-      .join("\n");
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Winxlibrary_IMAM_Records.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+function downloadExcel(){
+  if (!patientRecords.length) {
+    alert("No saved records to export.");
+    return;
   }
+
+  // Summary counts based on decision/pathway text already stored in each record
+  const total = patientRecords.length;
+  const samCount = patientRecords.filter(r =>
+    String(r.pathway || "").toUpperCase() === "SAM" ||
+    String(r.decision || "").toUpperCase().includes("SAM")
+  ).length;
+
+  const mamCount = patientRecords.filter(r =>
+    String(r.pathway || "").toUpperCase() === "MAM" ||
+    String(r.decision || "").toUpperCase().includes("MAM")
+  ).length;
+
+  const emergencyCount = patientRecords.filter(r =>
+    String(r.pathway || "").toUpperCase().includes("EMERGENCY") ||
+    String(r.decision || "").toUpperCase().includes("EMERGENCY")
+  ).length;
+
+  const inpatientCount = patientRecords.filter(r =>
+    String(r.decision || "").toUpperCase().includes("INPATIENT") ||
+    String(r.decision || "").toUpperCase().includes("ADMIT")
+  ).length;
+
+  const outpatientCount = patientRecords.filter(r =>
+    String(r.decision || "").toUpperCase().includes("OUTPATIENT")
+  ).length;
+
+  const normalCount = patientRecords.filter(r =>
+    String(r.pathway || "").toUpperCase() === "NORMAL" ||
+    String(r.decision || "").toUpperCase().includes("NORMAL / ROUTINE CARE")
+  ).length;
+
+  const headers = [
+    "Saved At",
+    "Patient ID",
+    "Facility",
+    "Sex",
+    "Age (months)",
+    "MUAC (cm)",
+    "Oedema",
+    "Weight (kg)",
+    "Height/Length (cm)",
+    "Pathway",
+    "Decision",
+    "WHZ Outcome",
+    "WFA Outcome",
+    "HFA Outcome",
+    "WHZ Z-score",
+    "WFA Z-score",
+    "HFA Z-score"
+  ];
+
+  const rows = patientRecords.map(r => [
+    r.savedAt,
+    r.patientId,
+    r.facility,
+    r.sex,
+    r.ageMonths,
+    r.muacCm,
+    r.oedema,
+    r.weightKg,
+    r.heightCm,
+    r.pathway,
+    r.decision,
+    r.whzOutcome,
+    r.wfaOutcome,
+    r.hfaOutcome,
+    r.whz,
+    r.wfa,
+    r.hfa
+  ]);
+
+  // Summary block at top of CSV
+  const summaryRows = [
+    ["Winxlibrary IMAM Records Summary"],
+    ["Generated At", new Date().toLocaleString()],
+    ["Total Records", total],
+    ["SAM Count", samCount],
+    ["MAM Count", mamCount],
+    ["Emergency Count", emergencyCount],
+    ["Inpatient Count", inpatientCount],
+    ["Outpatient Count", outpatientCount],
+    ["Normal / Routine Care Count", normalCount],
+    [""]
+  ];
+
+  const csv = [...summaryRows, headers, ...rows]
+    .map(row => row.map(escapeCSV).join(","))
+    .join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Winxlibrary_IMAM_Records.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 
   function clearSavedData(){
     if (!confirm("Clear all saved patient records from this browser?")) return;
