@@ -775,23 +775,23 @@
   }
 
   function getWizardInputs(){
-    return {
-      sex: document.getElementById("wizSex").value,
-      age: parseFloat(document.getElementById("wizAge").value),
-      weightKg: parseFloat(document.getElementById("wizWeight").value),
-      heightCm: parseFloat(document.getElementById("wizHeight").value),
-      muacCm: parseFloat(document.getElementById("wizMuac").value),
-      oedema: document.getElementById("wOedema").value,
-      danger: document.getElementById("wDanger").checked,
-      stabilized: document.getElementById("wStabilized").checked,
-      appetite: document.getElementById("wAppetite").value,
-      imci: document.getElementById("wIMCI").checked,
-      inDepth: document.getElementById("wInDepth").checked,
-      relapse: document.getElementById("wRelapse").checked,
-      prevSAM: document.getElementById("wPrevSAM").checked,
-      social: document.getElementById("wSocial").checked
-    };
-  }
+return {
+  sex: document.getElementById("wizSex").value,
+  age: parseFloat(document.getElementById("wizAge").value),
+  weightKg: parseFloat(document.getElementById("wizWeight").value),
+  heightCm: parseFloat(document.getElementById("wizHeight").value),
+  muacCm: parseFloat(document.getElementById("wizMuac").value),
+  oedema: document.getElementById("wOedema").value,
+  danger: document.getElementById("wDanger").checked,
+  stabilized: document.getElementById("wStabilized").checked,
+  appetite: document.getElementById("wAppetite").value,
+  imci: document.getElementById("wIMCI").checked,
+
+  // ✅ FIX: removed wInDepth completely
+  relapse: document.getElementById("wRelapse").checked,
+  prevSAM: document.getElementById("wPrevSAM").checked,
+  social: document.getElementById("wSocial").checked
+};
 
   function computeWizardModel(sex, age, weightKg, heightCm, muacCm, oedema){
     const whzTable = (age <= 24)
@@ -979,7 +979,7 @@ if (!isSAM) {
       if (flags.inDepth) path.push("Needs in-depth assessment");
       riskFlags.forEach(r => path.push(r));
 
-      if (flags.imci || flags.inDepth || riskFlags.length > 0) {
+      if (flags.imci || riskFlags.length > 0) {
         decision = { label: "ADMIT / REFER (MAM WITH RISK OR COMPLICATIONS)", cls: "bg-red" };
         return { decision, path, pathway: "MAM" };
       }
