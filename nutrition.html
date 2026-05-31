@@ -1328,7 +1328,7 @@ td{padding:6px;border-bottom:1px solid #eee;}
 
 <!-- ✅ LOGO + HEADER -->
 <div style="text-align:center;">
-  <img src="logo.png" width="90"><br>
+  <img src="${window.location.origin + '/logo.png'}" width="90"><br>
   <h2>Winxlibrary IMAM Assessment Report</h2>
   <div>${model.input.facility || ""}</div>
   <div class="muted">${new Date().toLocaleString()}</div>
