@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Winxlibrary</title>
+<title>WinxLibrary</title>
 
 <style>
 body {
@@ -38,6 +38,25 @@ body {
   margin: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #27ae60;
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.app-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 10px;
 }
 
 .button {
@@ -48,6 +67,10 @@ body {
   color: white;
   text-decoration: none;
   border-radius: 5px;
+}
+
+.button:hover {
+  background: #2980b9;
 }
 </style>
 </head>
@@ -66,6 +89,7 @@ body {
 <div class="container">
 
 <img src="logo.png" alt="WinxLibrary Logo" width="150">
+
 <p>Your hub for professional software tools.</p>
 
 <!-- EXISTING CARD -->
@@ -78,9 +102,9 @@ body {
   </a>
 </div>
 
-<!-- ✅ NEW CARD -->
+<!-- EXISTING CARD -->
 <div class="card">
-  <h2>Nutrition Assessment  Rereference Tools</h2>
+  <h2>Nutrition Assessment Reference Tools</h2>
   <p>
     Calculate BMI, Z-scores (WHZ, WFA, HFA), and perform clinical nutrition assessment 
     using professional tools powered by WinxLibrary.
@@ -89,6 +113,28 @@ body {
   <a href="nutrition.html" class="button">
     Open Tools
   </a>
+</div>
+
+<!-- ✅ VSLA APP CARD -->
+<div class="card">
+
+  <!-- ✅ NEW LABEL -->
+  <div class="badge">NEW</div>
+
+  <!-- ✅ APP LOGO -->
+  <img src="vsla.png" alt="VSLA App Logo" class="app-logo">
+
+  <h2>VSLA Management System</h2>
+
+  <p>
+    A complete digital platform for Village Savings and Loan Associations (VSLA).
+    Manage members, track contributions, loans, and finances securely online.
+  </p>
+
+  <a href="https://vslapp.winxlibrary.com" target="_blank" class="button">
+    Open VSLA App
+  </a>
+
 </div>
 
 </div>
