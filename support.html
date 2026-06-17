@@ -5,7 +5,7 @@
 <title>Support | WinxLibrary</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- ✅ FontAwesome (FIXED) -->
+<!-- ✅ FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
@@ -32,7 +32,7 @@ body {
   margin: auto;
 }
 
-h1, h3 {
+h1, h2, h3 {
   color: #2c3e50;
 }
 
@@ -147,7 +147,7 @@ Fastest response for urgent help, demos, and inquiries.
   ✔ Priority support for partners
 </p>
 
-<form id="contactForm" action="https://formspree.io/f/xvzyrpzl" method="POST">
+<form id="contactForm" action="https://formspree.io/f/xvzyrpzl" method="POST" enctype="multipart/form-data">
   
   <label>Your Name:</label>
   <input type="text" name="name" required>
@@ -167,12 +167,17 @@ Fastest response for urgent help, demos, and inquiries.
   </select>
 
   <label>Your Message:</label>
-  <textarea name="message" rows="5" required></textarea>
+  <textarea name="message" rows="5" placeholder="Tell us what you need..." required></textarea>
 
-  <!-- ❗ NOTE: file upload removed for reliability -->
-  <p class="small-note">Tip: Describe the issue clearly or include details.</p>
+  <!-- ✅ FILE UPLOAD -->
+  <label>Attach Screenshot (optional):</label>
+  <input type="file" name="attachment" accept="image/*">
 
-  <!-- ✅ AUTO REPLY -->
+  <p class="small-note">
+    📎 Upload errors may occur on free Formspree plan (try under 5MB).
+  </p>
+
+  <!-- ✅ EMAIL CONFIG -->
   <input type="hidden" name="_subject" value="New Support Request - WinxLibrary">
 
   <button type="submit">Send Message</button>
@@ -183,7 +188,7 @@ Fastest response for urgent help, demos, and inquiries.
 
 <h3>💡 Tip</h3>
 <p class="small-note">
-Include tool name, error message, or steps you followed to help us assist faster.
+Include tool name, error message, or steps followed for faster support.
 </p>
 
 </div>
@@ -206,7 +211,9 @@ form.addEventListener("submit", function(e) {
       document.getElementById("successMsg").style.display = "block";
       form.reset();
     } else {
-      alert("Something went wrong. Check your Formspree setup.");
+      response.json().then(data => {
+        alert("Error: " + JSON.stringify(data));
+      });
     }
   })
   .catch(error => {
