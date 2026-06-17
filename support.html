@@ -169,18 +169,25 @@ Fastest response for urgent help, demos, and inquiries.
   <label>Your Message:</label>
   <textarea name="message" rows="5" placeholder="Tell us what you need..." required></textarea>
 
-  <!-- ✅ FILE UPLOAD -->
-  <label>Attach Screenshot (optional):</label>
-  <input type="file" name="attachment" accept="image/*">
-
+<!-- ✅ FALLBACK INSTEAD OF FILE UPLOAD -->
+<label>Attach Screenshot (optional):</label>
   <p class="small-note">
-    📎 Upload errors may occur on free Formspree plan (try under 5MB).
+  📎 File upload not supported here.  
+  Please send screenshots via WhatsApp after submitting the form.
   </p>
 
   <!-- ✅ EMAIL CONFIG -->
   <input type="hidden" name="_subject" value="New Support Request - WinxLibrary">
 
   <button type="submit">Send Message</button>
+
+  <p style="font-size:13px; color:#555; margin-top:10px;">
+After submitting, you can send your screenshot here:
+<br>
+<a href="https://wa.me/256775937437" target="_blank" style="color:#25D366; font-weight:bold;">
+📲 Send Screenshot on WhatsApp
+</a>
+</p>
 
 </form>
 
