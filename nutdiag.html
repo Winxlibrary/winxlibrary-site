@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NutDiag User Guide</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 950px;
+    margin: 40px auto;
+    line-height: 1.7;
+    color: #333;
+  }
+  h1, h2, h3 {
+    color: #2c3e50;
+  }
+  .section { margin-bottom: 35px; }
+  .box {
+    background: #f4f6f8;
+    padding: 12px;
+    border-left: 4px solid #0078d4;
+  }
+  .warning {
+    background: #fdecea;
+    padding: 12px;
+    border-left: 4px solid red;
+  }
+</style>
+</head>
+<body>
+
+<h1>NutDiag – User Guide</h1>
+<p>
+NutDiag is a clinical decision-support and survey tool used to assess child nutrition status,
+classify malnutrition (SAM/MAM/Normal), and support field data collection.
+</p>
+
+<!-- NAVIGATION -->
+<div class="section">
+<h2>Navigation Overview</h2>
+<p>The system has 5 main sections:</p>
+<ul>
+  <li><strong>Wizard</strong> – Step-by-step diagnosis</li>
+  <li><strong>ZScore</strong> – Quick WHZ calculation</li>
+  <li><strong>BMI</strong> – For children 5–19 years</li>
+  <li><strong>Survey</strong> – SMART data collection</li>
+  <li><strong>Exports</strong> – View, download, and manage records</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>1. Wizard (IMAM-Based Clinical Assessment)</h2>
+
+<p>
+The Wizard is designed as a <strong>guided clinical workflow</strong> based on the 
+IMAM Guidelines – Module 5: <em>Identification and Classification of Wasting and Nutritional Oedema (6–59 months)</em>.
+It supports health workers to follow the correct steps for screening, classification, and decision-making.
+</p>
+
+<h3>Clinical Workflow (Aligned to IMAM Module 5)</h3>
+
+<ol>
+  <li>
+    <strong>Step 1: Triage & Stabilisation</strong><br>
+    - Identify danger signs using IMCI/ETAT principles  
+    - Determine if the child is clinically stabilised <br>
+    - <strong>Not stabilised → immediate referral for emergency care</strong>
+  </li>
+
+  <li>
+    <strong>Step 2: Nutritional Assessment</strong><br>
+    - Measure MUAC (cm)  
+    - Check for bilateral pitting oedema  
+    - (If needed) measure weight and height  
+    - Use Z-score (WHZ/WLZ) where required  
+  </li>
+
+  <li>
+    <strong>Step 3: Classification</strong><br>
+    The system automatically classifies the child:
+    <ul>
+      <li>MUAC &lt; 11.5 cm OR oedema → <strong>SAM</strong></li>
+      <li>MUAC 11.5–12.5 cm → <strong>MAM</strong></li>
+      <li>MUAC ≥ 12.5 cm → <strong>Normal</strong></li>
+      <li>Z-score may upgrade severity (worst classification applies)</li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Step 4: Appetite Test</strong><br>
+    - Conducted for children with SAM or suspected complications  
+    - <strong>Pass:</strong> child eats adequately → may be managed outpatient  
+    - <strong>Fail:</strong> poor intake → indicates medical complications → inpatient care  
+  </li>
+
+  <li>
+    <strong>Step 5: Clinical Checks</strong><br>
+    - Assess IMCI conditions and complications  
+    - Identify infections, metabolic problems, or severe illness  
+  </li>
+
+  <li>
+    <strong>Step 6: Risk Factors</strong><br>
+    - Previous SAM  
+    - Relapsed MAM  
+    - Social or household risks  
+    - These influence treatment decisions
+  </li>
+
+  <li>
+    <strong>Step 7: Decision & Care Path</strong><br>
+    The system determines management:
+    <ul>
+      <li><strong>SAM + complications / failed appetite → Inpatient care (ITC)</strong></li>
+      <li><strong>SAM uncomplicated → Outpatient care (OTP)</strong></li>
+      <li><strong>MAM → Supplementary feeding program</strong></li>
+      <li><strong>Normal → Routine care</strong></li>
+    </ul>
+  </li>
+
+</ol>
+
+<h3>Key Clinical Principles</h3>
+<ul>
+  <li>Oedema automatically indicates <strong>Severe Acute Malnutrition (SAM)</strong></li>
+  <li>Appetite test is critical to detect <strong>complicated SAM</strong></li>
+  <li>The most severe indicator (MUAC, oedema, or Z-score) determines classification</li>
+  <li>Failed appetite = high risk → requires inpatient treatment</li>
+</ul>
+
+<div class="warning">
+<strong>Critical Warning:</strong><br>
+Children with:
+<ul>
+  <li>Failed appetite test</li>
+  <li>Medical complications</li>
+  <li>Severe oedema (+++)</li>
+</ul>
+must be <strong>referred immediately for inpatient care</strong>.
+</div>
+
+<h3>What the System Does for You</h3>
+<ul>
+  <li>Guides you step-by-step (no need to memorize protocol)</li>
+  <li>Automatically calculates Z-scores</li>
+  <li>Applies IMAM classification rules</li>
+  <li>Suggests appropriate care pathway</li>
+  <li>Ensures no critical step is skipped</li>
+</ul>
+
+<p><strong>Tip:</strong> Follow each step carefully and always review the final recommendation before saving.</p>
+
+</div>
+
+<!-- ZSCORE -->
+<div class="section">
+<h2>2. Z-Score Page</h2>
+
+<p>Use this page for quick anthropometric assessment.</p>
+
+<h3>Steps:</h3>
+<ul>
+  <li>Select child sex</li>
+  <li>Enter age (months)</li>
+  <li>Enter weight (kg) and height (cm)</li>
+  <li>Click <strong>Compute</strong></li>
+</ul>
+
+<h3>Result:</h3>
+<ul>
+  <li>WHZ score is calculated automatically</li>
+  <li>Classification is displayed:
+    <ul>
+      <li>WHZ &lt; -3 → SAM</li>
+      <li>WHZ -2 to -3 → MAM</li>
+      <li>WHZ ≥ -2 → Normal</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Results are saved for later export.</p>
+
+</div>
+
+<!-- BMI -->
+<div class="section">
+<h2>3. BMI for Age (5–19 Years)</h2>
+
+<p>Use this section for older children and adolescents.</p>
+
+<ul>
+  <li>Enter age, weight, and height</li>
+  <li>System calculates BMI-for-age</li>
+  <li>Provides classification (e.g. underweight, normal)</li>
+</ul>
+
+</div>
+
+<!-- SURVEY -->
+<div class="section">
+<h2>4. Survey (SMART Data Collection)</h2>
+
+<p>This section is used for household surveys and structured field data collection.</p>
+
+<h3>A. Location Setup</h3>
+<ul>
+  <li>Select District → Sub-county → Parish → Village</li>
+  <li>All fields must be selected before saving</li>
+</ul>
+
+<h3>B. Household Information</h3>
+<ul>
+  <li>Enter cluster number</li>
+  <li>Enter team number</li>
+  <li>Enter household ID</li>
+  <li>Select interview date</li>
+</ul>
+
+<h3>C. Child Data Entry</h3>
+<ul>
+  <li>Add one or more children</li>
+  <li>For each child:
+    <ul>
+      <li>Select sex</li>
+      <li>Enter age (manual or via DOB)</li>
+      <li>Enter weight and height</li>
+      <li>Enter MUAC (mm)</li>
+      <li>Indicate oedema</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>D. Automatic Calculations</h3>
+<ul>
+  <li>WHZ, WFA, and HFA are computed automatically</li>
+  <li>Status is classified as:
+    <ul>
+      <li>SAM</li>
+      <li>MAM</li>
+      <li>Normal</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>E. Saving & Workflow</h3>
+<ul>
+  <li>Click <strong>Save Record</strong> to store data</li>
+  <li>Click <strong>Next Household</strong> to continue</li>
+</ul>
+
+<div class="warning">
+<strong>Important:</strong>  
+You must save before moving to the next household or data will be lost.
+</div>
+
+<h3>F. Export</h3>
+<ul>
+  <li>Click <strong>Export ENA CSV</strong> to download survey data</li>
+  <li>Use “Reset Dataset” only when starting a new cluster</li>
+</ul>
+
+</div>
+
+<!-- EXPORT -->
+<div class="section">
+<h2>5. Exports / History</h2>
+
+<p>This section stores all previous assessments.</p>
+
+<ul>
+  <li>View all saved child records</li>
+  <li>Download data as CSV file</li>
+  <li>Share via WhatsApp</li>
+  <li>Clear all stored data if necessary</li>
+</ul>
+
+<div class="box">
+<strong>Tip:</strong> Export your data regularly to prevent data loss.
+</div>
+
+</div>
+
+<div class="section">
+<h2>Data Power & Excel Reporting Capabilities</h2>
+
+<p>
+NutDiag is designed not only for assessment, but also as a <strong>high-impact data and reporting tool</strong>.
+All information collected across the Wizard, Z-Score, BMI, and Survey modules is consolidated into structured datasets
+that can be instantly exported and used in Excel for rapid analysis and decision-making.
+</p>
+
+<h3>Integrated Data Across All Modules</h3>
+<ul>
+  <li>Clinical assessments (SAM, MAM, Normal)</li>
+  <li>Anthropometric measurements (MUAC, WHZ, BMI, etc.)</li>
+  <li>Appetite test and clinical indicators</li>
+  <li>Survey and household-level data</li>
+  <li>Geographical data (District → Village)</li>
+</ul>
+
+<h3>Why This is Powerful</h3>
+<ul>
+  <li><strong>One unified dataset</strong> – no need to compile data from different tools</li>
+  <li><strong>Standardized format</strong> – ready for Excel, ENA SMART, or national systems</li>
+  <li><strong>Real-time availability</strong> – no waiting for data entry or aggregation</li>
+  <li><strong>Supports both clinical and survey workflows</strong></li>
+</ul>
+
+<h3>Using the Data in Excel</h3>
+<p>After exporting CSV files, you can:</p>
+<ul>
+  <li>Create <strong>instant summaries</strong> (e.g. number of SAM, MAM cases)</li>
+  <li>Track <strong>trends over time</strong> (daily, weekly, cluster-level)</li>
+  <li>Compare <strong>locations or teams</strong></li>
+  <li>Generate reports for <strong>districts, partners, or ministries</strong></li>
+  <li>Prepare data for <strong>DHIS2, ENA SMART, or partner reporting tools</strong></li>
+</ul>
+
+<h3>Typical Reporting Workflow</h3>
+<ol>
+  <li>Collect and save data in NutDiag (any module)</li>
+  <li>Go to <strong>Exports</strong> and download CSV</li>
+  <li>Open file in Excel</li>
+  <li>Use filters or pivot tables to summarize results</li>
+  <li>Generate tables, charts, or reports</li>
+</ol>
+
+<div class="box">
+<strong>Example Use Cases:</strong>
+<ul>
+  <li>Daily OTC/ITC admission summaries</li>
+  <li>SMART survey cluster reporting</li>
+  <li>Facility-level nutrition dashboards</li>
+  <li>Rapid emergency response reporting</li>
+</ul>
+</div>
+
+<div class="warning">
+<strong>Best Practice:</strong><br>
+Export and back up your data regularly (daily or per session) to ensure accurate reporting and prevent data loss.
+</div>
+
+
+
+</div>
+
+<!-- SUMMARY -->
+<div class="section">
+<h2>Key Clinical Rules</h2>
+<ul>
+  <li>MUAC &lt; 11.5 cm → SAM</li>
+  <li>MUAC 11.5–12.5 cm → MAM</li>
+  <li>Oedema indicates SAM regardless of MUAC</li>
+  <li>Z-score is required when MUAC is borderline</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Offline & Online Use</h2>
+
+<p>
+NutDiag is designed to function in both <strong>offline and online environments</strong>,
+making it suitable for use in remote field settings as well as health facility environments.
+</p>
+
+<h3>Offline Capability</h3>
+<ul>
+  <li>All core modules (Wizard, ZScore, BMI, Survey) work after the app is loaded</li>
+  <li>You can enter, assess, and save data without continuous internet access</li>
+  <li>Data is stored locally on the device (browser storage)</li>
+  <li>Supports uninterrupted field work in low-connectivity areas</li>
+</ul>
+
+<div class="box">
+<strong>Field Advantage:</strong><br>
+Once opened, NutDiag can be used continuously in remote areas without network coverage.
+</div>
+
+<h3>Online Capability</h3>
+<ul>
+  <li>Required for initial loading of the application</li>
+  <li>Allows downloading (exporting) data and sharing reports</li>
+  <li>Supports backup and integration with cloud or program systems</li>
+</ul>
+
+<h3>Important Limitations (Flutter Web App)</h3>
+<ul>
+  <li><strong>Internet is required to open or reload the app</strong> (first access or after closing)</li>
+  <li>If the browser is refreshed without connectivity, the app may not load</li>
+  <li>Data is stored locally – clearing browser data or using another device will remove saved records</li>
+</ul>
+
+<div class="warning">
+<strong>Important:</strong><br>
+Always ensure you open the app while connected to the internet before going offline for field work.
+Regularly export and back up your data to prevent loss.
+</div>
+
+<h3>Recommended Workflow</h3>
+<ol>
+  <li>Open NutDiag while connected to the internet</li>
+  <li>Proceed to field work and collect data offline</li>
+  <li>Save all records during use</li>
+  <li>When connected again, export CSV files</li>
+  <li>Open in Excel and generate reports</li>
+</ol>
+
+</div>
+
+<div class="section box">
+<strong>Best Practices:</strong>
+<ul>
+  <li>Always double-check measurements</li>
+  <li>Ensure correct age (critical for Z-score)</li>
+  <li>Save records immediately after assessment</li>
+  <li>Refer SAM cases without delay</li>
+</ul>
+</div>
+
+</body>
+</html>
+
